@@ -189,7 +189,7 @@ class RAGEngine:
             d = doc.copy()
             d["rerank_score"] = float(score)
 
-            # ===== SAFE popularity parsing =====
+            # SAFE popularity parsing
             raw_view = str(d.get("dilihat", "0"))
             match = re.search(r"\d+", raw_view)
             popularity = float(match.group()) if match else 0.0
@@ -402,3 +402,4 @@ class RAGEngine:
         except Exception:
             logger.error("OpenRouter failed")
             return "Sistem sedang tidak tersedia."
+
