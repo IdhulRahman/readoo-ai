@@ -16,3 +16,4 @@ onnxruntime
 bcrypt
 cryptography
 litellm
+pandas
