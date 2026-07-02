@@ -2,7 +2,7 @@ import os
 import sqlite3
 import logging
 import bcrypt
-from datetime import datetime
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -10,13 +10,13 @@ DB_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.ab
 DB_PATH = os.path.join(DB_DIR, "readoo.db")
 
 
-def get_db_connection():
+def get_db_connection() -> sqlite3.Connection:
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
 
-def init_db():
+def init_db() -> None:
     os.makedirs(DB_DIR, exist_ok=True)
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -48,9 +48,9 @@ def init_db():
     CREATE TABLE IF NOT EXISTS collections (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT UNIQUE NOT NULL,
-        embedding_cols TEXT NOT NULL,  -- JSON string of list
-        display_cols TEXT NOT NULL,    -- JSON string of list
-        active INTEGER DEFAULT 0,      -- 1 if active, 0 otherwise
+        embedding_cols TEXT NOT NULL,
+        display_cols TEXT NOT NULL,
+        active INTEGER DEFAULT 0,
         created_at TEXT NOT NULL
     )
     """)
@@ -60,8 +60,8 @@ def init_db():
     CREATE TABLE IF NOT EXISTS documents (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         collection_id INTEGER NOT NULL,
-        content TEXT NOT NULL,          -- Compiled text for embedding
-        metadata TEXT NOT NULL,         -- JSON string of row dict
+        content TEXT NOT NULL,
+        metadata TEXT NOT NULL,
         FOREIGN KEY (collection_id) REFERENCES collections(id) ON DELETE CASCADE
     )
     """)
@@ -74,6 +74,31 @@ def init_db():
     )
     """)
 
+    # Create chat_history table (persistent chat history)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS chat_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        role TEXT NOT NULL,
+        content TEXT NOT NULL,
+        session_id TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+    """)
+
+    # Create chat_sessions table
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS chat_sessions (
+        id TEXT PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        title TEXT DEFAULT 'Chat Baru',
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+    """)
+
     # Insert default settings if not exist
     default_settings = [
         ("assistant_name", "Aiko"),
@@ -81,7 +106,7 @@ def init_db():
         ("system_prompt", "Kamu adalah asisten AI bernama {name} yang ramah. Jawab pertanyaan pengguna menggunakan konteks berikut:\n\n{context}\n\nPertanyaan pengguna: {query}\n\nJawablah dengan sopan, informatif, dan ringkas dalam bahasa Indonesia."),
         ("llm_provider", "groq"),
         ("llm_model", "llama3-8b-8192"),
-        ("llm_api_key", ""),  # Encrypted Fernet key
+        ("llm_api_key", ""),
         ("tts_language", "id-ID"),
         ("tts_voice", "id-ID-GadisNeural"),
         ("tts_provider", "edge-tts"),
@@ -91,7 +116,7 @@ def init_db():
     for key, value in default_settings:
         cursor.execute("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)", (key, value))
 
-    # Insert seed users if not exist (using 'admin' and 'user' as emails for direct easy login)
+    # Insert seed users if not exist
     cursor.execute("SELECT id FROM users WHERE email = 'admin'")
     if not cursor.fetchone():
         admin_pass = bcrypt.hashpw(b"admin", bcrypt.gensalt()).decode("utf-8")

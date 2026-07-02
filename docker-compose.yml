@@ -11,16 +11,20 @@ services:
       - WHISPER_MODEL=base
       - USE_RERANKER=false
       - GROQ_API_KEY=${GROQ_API_KEY}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     ports:
       - "5000:5000"
     volumes:
       - ./backend/data:/app/data
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      - redis
     restart: unless-stopped
 
   frontend:
-    build: ./frontend
+    build: ./frontend-react
     container_name: readoo-frontend
     ports:
       - "3000:3000"
@@ -31,3 +35,15 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: readoo-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+volumes:
+  redis-data:

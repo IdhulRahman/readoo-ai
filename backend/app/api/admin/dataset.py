@@ -1,0 +1,118 @@
+import os
+import uuid
+import logging
+import pandas as pd
+from flask import request, jsonify
+
+from app.api import api_bp
+from app.api.middleware import require_auth
+from app.services.chat_service import ChatService
+
+logger = logging.getLogger(__name__)
+
+chat_service = ChatService()
+
+base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+UPLOAD_DIR = os.path.join(base_dir, "data", "uploads")
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+
+@api_bp.route("/admin/dataset/upload", methods=["POST"])
+@require_auth(role="admin")
+def admin_upload_dataset():
+    if "file" not in request.files:
+        return jsonify({"error": "File CSV wajib diunggah"}), 400
+
+    csv_file = request.files["file"]
+    if not csv_file.filename.endswith(".csv"):
+        return jsonify({"error": "Hanya mendukung file format CSV"}), 400
+
+    temp_filename = f"temp_{uuid.uuid4().hex[:8]}.csv"
+    temp_path = os.path.join(UPLOAD_DIR, temp_filename)
+    csv_file.save(temp_path)
+
+    # Validate file size (max 10 MB)
+    if os.path.getsize(temp_path) > 10 * 1024 * 1024:
+        os.remove(temp_path)
+        return jsonify({"error": "Ukuran file CSV maksimal adalah 10 MB"}), 400
+
+    try:
+        df = pd.read_csv(temp_path)
+        headers = list(df.columns)
+        
+        # Limit preview to 10 rows
+        preview_data = df.head(10).fillna("").to_dict(orient="records")
+        
+        return jsonify({
+            "temp_file": temp_filename,
+            "headers": headers,
+            "preview": preview_data,
+            "total_rows": len(df)
+        })
+    except Exception as e:
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+        return jsonify({"error": f"Gagal membaca file CSV: {e}"}), 400
+
+
+@api_bp.route("/admin/dataset/import", methods=["POST"])
+@require_auth(role="admin")
+def admin_import_dataset():
+    payload = request.get_json(silent=True) or {}
+    name = payload.get("name", "").strip()
+    embedding_cols = payload.get("embedding_cols", [])
+    display_cols = payload.get("display_cols", [])
+    temp_file = payload.get("temp_file", "")
+
+    if not name or not embedding_cols or not display_cols or not temp_file:
+        return jsonify({"error": "Parameter name, embedding_cols, display_cols, dan temp_file wajib diisi"}), 400
+
+    temp_path = os.path.join(UPLOAD_DIR, temp_file)
+    if not os.path.exists(temp_path):
+        return jsonify({"error": "Berkas CSV sementara tidak ditemukan di server"}), 400
+
+    try:
+        df = pd.read_csv(temp_path)
+        
+        col_id = chat_service.vector_store.add_collection_from_csv(name, embedding_cols, display_cols, df)
+        
+        # Clean temp file
+        os.remove(temp_path)
+        
+        return jsonify({
+            "success": True,
+            "collection_id": col_id,
+            "document_count": len(df)
+        })
+    except Exception as e:
+        logger.exception("Import dataset failed")
+        return jsonify({"error": f"Impor dataset gagal: {e}"}), 500
+
+
+@api_bp.route("/admin/dataset/export/<int:col_id>", methods=["GET"])
+@require_auth(role="admin")
+def admin_export_dataset(col_id):
+    """Export collection documents as JSON."""
+    from app.infrastructure.database import get_db_connection
+    import json
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT name FROM collections WHERE id = ?", (col_id,))
+    col = cursor.fetchone()
+    if not col:
+        conn.close()
+        return jsonify({"error": "Collection not found"}), 404
+    
+    cursor.execute("SELECT metadata FROM documents WHERE collection_id = ?", (col_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    
+    documents = [json.loads(r["metadata"]) for r in rows]
+    
+    return jsonify({
+        "collection_name": col["name"],
+        "documents": documents,
+        "total": len(documents)
+    })

@@ -17,7 +17,20 @@ def create_app():
     CORS(app)
 
     # Register blueprint with /api prefix
-    from app.api.routes import api_bp
+    from app.api import api_bp
     app.register_blueprint(api_bp, url_prefix="/api")
+
+    # Register error handlers
+    @app.errorhandler(404)
+    def not_found(e):
+        return {"error": "Endpoint tidak ditemukan"}, 404
+
+    @app.errorhandler(405)
+    def method_not_allowed(e):
+        return {"error": "Method tidak diizinkan"}, 405
+
+    @app.errorhandler(500)
+    def internal_error(e):
+        return {"error": "Terjadi kesalahan internal server"}, 500
 
     return app
