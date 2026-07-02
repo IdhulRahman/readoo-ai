@@ -1,8 +1,8 @@
 import os
-import glob
-import pickle
+import json
 import logging
-import re
+import sqlite3
+from datetime import datetime
 
 import faiss
 import numpy as np
@@ -10,13 +10,17 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer, CrossEncoder
 
 from app.core.config import settings
+from app.infrastructure.database import get_db_connection
 
 logger = logging.getLogger(__name__)
 
 
 class VectorStore:
     def __init__(self):
-        self._init_paths()
+        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        self.data_dir = os.path.join(base_dir, "data")
+        self.store_dir = os.path.join(self.data_dir, "vector_store")
+        os.makedirs(self.store_dir, exist_ok=True)
 
         # Initialize embedding model
         self.encoder = SentenceTransformer(settings.EMBEDDING_MODEL)
@@ -28,270 +32,243 @@ class VectorStore:
         else:
             self.reranker = None
 
-        # Build or load vector index
-        if self._store_exists():
-            self._load_store()
+        self.index = None
+        self.active_collection_id = None
+        self.load_active_collection()
+
+    def load_active_collection(self):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, name FROM collections WHERE active = 1 LIMIT 1")
+        row = cursor.fetchone()
+        conn.close()
+
+        if row:
+            col_id = row["id"]
+            self.active_collection_id = col_id
+            index_path = os.path.join(self.store_dir, f"collection_{col_id}.index")
+            if os.path.exists(index_path):
+                try:
+                    self.index = faiss.read_index(index_path)
+                    logger.info("Loaded FAISS index for active collection '%s' (ID %d)", row["name"], col_id)
+                    return
+                except Exception as e:
+                    logger.error("Failed to load FAISS index at %s: %s", index_path, e)
+            
+            # Rebuild index if file is missing
+            self.rebuild_index(col_id)
         else:
-            self._build_store_from_csv()
+            logger.warning("No active RAG collection found in database.")
+            self.index = None
+            self.active_collection_id = None
 
-    def _init_paths(self):
-        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        self.data_dir = os.path.join(base_dir, "data")
-        self.store_dir = os.path.join(self.data_dir, "vector_store")
+    def rebuild_index(self, collection_id):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, content FROM documents WHERE collection_id = ?", (collection_id,))
+        rows = cursor.fetchall()
+        conn.close()
 
-        self.index_path = os.path.join(self.store_dir, "knowledge.index")
-        self.meta_path = os.path.join(self.store_dir, "metadata.pkl")
-
-        os.makedirs(self.store_dir, exist_ok=True)
-
-    def _store_exists(self):
-        return (
-            os.path.exists(self.index_path)
-            and os.path.exists(self.meta_path)
-        )
-
-    def _load_store(self):
-        self.index = faiss.read_index(self.index_path)
-        with open(self.meta_path, "rb") as f:
-            self.metadata = pickle.load(f)
-
-        logger.info("Vector store loaded (%d items)", len(self.metadata))
-
-    def _build_store_from_csv(self):
-        csv_files = glob.glob(os.path.join(self.data_dir, "*.csv"))
-        if not csv_files:
-            logger.warning("No CSV files found in data directory: %s", self.data_dir)
+        if not rows:
+            logger.warning("No documents found for collection %d. Clearing index.", collection_id)
+            self.index = None
             return
 
-        vectors = []
-        self.metadata = []
+        logger.info("Rebuilding FAISS index for collection %d with %d documents...", collection_id, len(rows))
+        
+        doc_ids = []
+        texts = []
+        for r in rows:
+            doc_ids.append(r["id"])
+            texts.append(r["content"])
 
-        for path in csv_files:
-            df = pd.read_csv(path)
-            df.columns = [c.strip().lower() for c in df.columns]
+        # Embed all texts
+        embeddings = self.encoder.encode(texts, show_progress_bar=False)
+        embeddings = np.array(embeddings, dtype=np.float32)
 
-            for _, row in df.iterrows():
-                title = str(row.get("judul", "")).strip()
-                if not title:
-                    continue
+        # Create IndexIDMap to preserve SQLite Primary Key IDs inside FAISS
+        sub_index = faiss.IndexFlatL2(self.dimension)
+        index = faiss.IndexIDMap(sub_index)
+        
+        ids_arr = np.array(doc_ids, dtype=np.int64)
+        index.add_with_ids(embeddings, ids_arr)
 
-                abstraksi = str(row.get("abstraksi", ""))[:300]
+        # Save to disk
+        index_path = os.path.join(self.store_dir, f"collection_{collection_id}.index")
+        faiss.write_index(index, index_path)
+        
+        # Reload if active
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT active FROM collections WHERE id = ?", (collection_id,))
+        active_row = cursor.fetchone()
+        conn.close()
 
-                # Text for generating embeddings
-                text = (
-                    f"{row.get('klasifikasi','')} "
-                    f"{row.get('jenis_buku','')} "
-                    f"{title} "
-                    f"{row.get('subjek','')} "
-                    f"{row.get('pengarang','')} "
-                    f"{abstraksi}"
-                )
+        if active_row and active_row["active"] == 1:
+            self.index = index
+            self.active_collection_id = collection_id
+            logger.info("Loaded rebuilt FAISS index for active collection %d into memory", collection_id)
+        else:
+            logger.info("FAISS index rebuilt on disk for collection %d", collection_id)
 
-                vector = self.encoder.encode([text], show_progress_bar=False)[0]
-                vectors.append(vector)
-
-                self.metadata.append(
-                    {
-                        "id": row.get("id", "-"),
-                        "judul": title,
-                        "pengarang": row.get("pengarang", ""),
-                        "kode": row.get("kode", ""),
-                        "klasifikasi": row.get("klasifikasi", ""),
-                        "jenis_buku": row.get("jenis_buku", ""),
-                        "subjek": row.get("subjek", ""),
-                        "rak": row.get("no_rak", "-"),
-                        "penerbit": row.get("penerbit", "-"),
-                        "kota_penerbit": row.get("kota_penerbit", "-"),
-                        "tahun": row.get("tahun_terbit", "-"),
-                        "dilihat": row.get("dilihat", 0),
-                        "image_base64": str(row.get("image_base64", "")).strip(),
-                    }
-                )
-
-        if vectors:
-            self.index = faiss.IndexFlatL2(self.dimension)
-            self.index.add(np.asarray(vectors, dtype=np.float32))
-
-            faiss.write_index(self.index, self.index_path)
-            with open(self.meta_path, "wb") as f:
-                pickle.dump(self.metadata, f)
-
-            logger.info("Vector store built (%d items)", len(self.metadata))
-
-    def search(self, query, top_k=20):
-        if not hasattr(self, "index") or self.index.ntotal == 0:
+    def search(self, query_text, top_k=5):
+        if self.index is None:
+            logger.warning("Search failed: No active FAISS index loaded.")
             return []
 
-        query_vec = self.encoder.encode([query], show_progress_bar=False)
+        # Embed query
+        query_vec = self.encoder.encode([query_text], show_progress_bar=False)
+        query_vec = np.array(query_vec, dtype=np.float32)
 
-        _, indices = self.index.search(
-            np.asarray(query_vec, dtype=np.float32),
-            top_k,
+        # Search FAISS
+        distances, ids = self.index.search(query_vec, top_k)
+        
+        # Filter padding IDs (-1)
+        matched_ids = [int(i) for i in ids[0] if i != -1]
+        if not matched_ids:
+            return []
+
+        # Fetch matching documents from SQLite
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        placeholders = ",".join("?" for _ in matched_ids)
+        cursor.execute(
+            f"SELECT id, metadata, content FROM documents WHERE id IN ({placeholders})",
+            matched_ids
         )
+        rows = cursor.fetchall()
+        conn.close()
 
-        return [
-            self.metadata[i]
-            for i in indices[0]
-            if 0 <= i < len(self.metadata)
-        ]
+        # Sort documents to match FAISS ranking order
+        doc_map = {r["id"]: r for r in rows}
+        ordered_docs = []
+        for doc_id in matched_ids:
+            if doc_id in doc_map:
+                row = doc_map[doc_id]
+                meta = json.loads(row["metadata"])
+                meta["id"] = row["id"]
+                meta["_content"] = row["content"]
+                ordered_docs.append(meta)
 
-    def rerank(self, query, docs, top_k=5):
-        if not docs:
-            return []
+        return ordered_docs
 
-        # Bypass reranking if disabled
-        if not settings.USE_RERANKER or self.reranker is None:
-            ranked = []
-            for d in docs:
-                d_copy = d.copy()
-                d_copy["rerank_score"] = 1.0
+    def rerank(self, query_text, documents, top_k=5):
+        if not self.reranker or not documents:
+            return documents[:top_k]
 
-                raw_view = str(d_copy.get("dilihat", "0"))
-                match = re.search(r"\d+", raw_view)
-                popularity = float(match.group()) if match else 0.0
-                d_copy["rerank_score"] += 0.01 * np.log1p(popularity)
+        pairs = [[query_text, doc.get("_content", "")] for doc in documents]
+        scores = self.reranker.compute_score(pairs)
 
-                ranked.append(d_copy)
-
-            ranked.sort(key=lambda x: x["rerank_score"], reverse=True)
-            return ranked[:top_k]
-
-        pairs = [
-            (query, f"{d['judul']} {d.get('subjek','')} {d.get('pengarang','')}")
-            for d in docs
-        ]
-        scores = self.reranker.predict(pairs)
+        if isinstance(scores, float):
+            scores = [scores]
 
         ranked = []
-        for doc, score in zip(docs, scores):
-            d = doc.copy()
+        for d, score in zip(documents, scores):
             d["rerank_score"] = float(score)
-
-            raw_view = str(d.get("dilihat", "0"))
-            match = re.search(r"\d+", raw_view)
-            popularity = float(match.group()) if match else 0.0
-            d["rerank_score"] += 0.01 * np.log1p(popularity)
-
+            
+            # Metric popular scaling if views or popularity is present in metadata
+            views = 0
+            for key in ["views", "dilihat", "popularity"]:
+                if key in d:
+                    try:
+                        views = float(d[key])
+                        break
+                    except (ValueError, TypeError):
+                        pass
+            d["rerank_score"] += 0.01 * np.log1p(views)
             ranked.append(d)
 
         ranked.sort(key=lambda x: x["rerank_score"], reverse=True)
-        filtered = [
-            d for d in ranked
-            if d["rerank_score"] >= settings.RERANK_THRESHOLD
-        ]
+        return ranked[:top_k]
 
-        if len(filtered) < 5:
-            filtered = ranked[:top_k]
-
-        return filtered[:top_k]
-
-    def get_all_books(self):
-        csv_files = glob.glob(os.path.join(self.data_dir, "*.csv"))
-        if not csv_files:
-            return []
+    def add_collection_from_csv(self, name, embedding_cols, display_cols, df):
+        conn = get_db_connection()
+        cursor = conn.cursor()
         
-        books = []
-        for path in csv_files:
-            try:
-                df = pd.read_csv(path)
-                df.columns = [c.strip().lower() for c in df.columns]
-                for _, row in df.iterrows():
-                    books.append({
-                        "id": str(row.get("id", "-")),
-                        "judul": str(row.get("judul", "")),
-                        "pengarang": str(row.get("pengarang", "")),
-                        "kode": str(row.get("kode", "")),
-                        "klasifikasi": str(row.get("klasifikasi", "")),
-                        "jenis_buku": str(row.get("jenis_buku", "")),
-                        "subjek": str(row.get("subjek", "")),
-                        "rak": str(row.get("no_rak", "-")),
-                        "penerbit": str(row.get("penerbit", "-")),
-                        "kota_penerbit": str(row.get("kota_penerbit", "-")),
-                        "tahun": str(row.get("tahun_terbit", "-")),
-                        "dilihat": int(row.get("dilihat", 0)) if pd.notna(row.get("dilihat")) and str(row.get("dilihat")).isdigit() else 0,
-                        "image_base64": str(row.get("image_base64", "")).strip(),
-                        "abstraksi": str(row.get("abstraksi", ""))
-                    })
-            except Exception as e:
-                logger.error("Failed to read CSV %s: %s", path, e)
-        return books
-
-    def _save_all_to_csv(self, books):
-        csv_files = glob.glob(os.path.join(self.data_dir, "*.csv"))
-        csv_path = csv_files[0] if csv_files else os.path.join(self.data_dir, "koleksi_buku.csv")
+        # Deactivate any previous collections since we set this one active
+        cursor.execute("UPDATE collections SET active = 0")
         
-        data = []
-        for b in books:
-            data.append({
-                "id": b.get("id"),
-                "judul": b.get("judul"),
-                "pengarang": b.get("pengarang"),
-                "kode": b.get("kode", ""),
-                "klasifikasi": b.get("klasifikasi", ""),
-                "jenis_buku": b.get("jenis_buku", ""),
-                "subjek": b.get("subjek", ""),
-                "no_rak": b.get("rak"),
-                "penerbit": b.get("penerbit"),
-                "kota_penerbit": b.get("kota_penerbit"),
-                "tahun_terbit": b.get("tahun"),
-                "dilihat": b.get("dilihat", 0),
-                "abstraksi": b.get("abstraksi", ""),
-                "image_base64": b.get("image_base64", "")
-            })
-        
+        now = datetime.now().isoformat()
         try:
-            df = pd.DataFrame(data)
-            df.to_csv(csv_path, index=False)
-            logger.info("Successfully saved %d books to %s", len(books), csv_path)
-            return True
-        except Exception as e:
-            logger.exception("Failed to write books to CSV: %s", e)
-            return False
+            cursor.execute(
+                "INSERT INTO collections (name, embedding_cols, display_cols, active, created_at) VALUES (?, ?, ?, ?, ?)",
+                (name, json.dumps(embedding_cols), json.dumps(display_cols), 1, now)
+            )
+            col_id = cursor.lastrowid
+        except sqlite3.IntegrityError:
+            conn.rollback()
+            conn.close()
+            raise ValueError(f"Collection with name '{name}' already exists.")
 
-    def add_book(self, book_data):
-        books = self.get_all_books()
+        df.columns = [c.strip() for c in df.columns]
+
+        # Insert documents
+        for _, row in df.iterrows():
+            content_parts = []
+            for col in embedding_cols:
+                if col in row:
+                    content_parts.append(str(row[col]))
+            content = " ".join(content_parts).strip()
+            
+            if not content:
+                continue
+
+            meta = {}
+            for col in df.columns:
+                val = row[col]
+                if pd.isna(val):
+                    val = ""
+                meta[col] = val
+
+            cursor.execute(
+                "INSERT INTO documents (collection_id, content, metadata) VALUES (?, ?, ?)",
+                (col_id, content, json.dumps(meta))
+            )
+
+        conn.commit()
+        conn.close()
+
+        # Rebuild FAISS index
+        self.rebuild_index(col_id)
         
-        # Auto generate simple integer ID
-        ids = []
-        for b in books:
+        # Load in memory
+        self.active_collection_id = col_id
+        index_path = os.path.join(self.store_dir, f"collection_{col_id}.index")
+        self.index = faiss.read_index(index_path)
+        
+        return col_id
+
+    def delete_collection(self, collection_id):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        cursor.execute("SELECT active FROM collections WHERE id = ?", (collection_id,))
+        row = cursor.fetchone()
+        was_active = row and row["active"] == 1
+        
+        cursor.execute("DELETE FROM collections WHERE id = ?", (collection_id,))
+        conn.commit()
+        conn.close()
+
+        # Clean index file
+        index_path = os.path.join(self.store_dir, f"collection_{collection_id}.index")
+        if os.path.exists(index_path):
             try:
-                ids.append(int(b["id"]))
-            except ValueError:
-                pass
-        new_id = str(max(ids) + 1) if ids else "1"
-        book_data["id"] = new_id
-        
-        books.append(book_data)
-        if self._save_all_to_csv(books):
-            self._build_store_from_csv()
-            return new_id
-        return None
+                os.remove(index_path)
+            except Exception:
+                logger.error("Failed to delete index file %s", index_path)
 
-    def update_book(self, book_id, book_data):
-        books = self.get_all_books()
-        updated = False
-        
-        for i, b in enumerate(books):
-            if b["id"] == str(book_id):
-                book_data["id"] = str(book_id)
-                if "dilihat" not in book_data or book_data["dilihat"] is None:
-                    book_data["dilihat"] = b.get("dilihat", 0)
-                books[i] = book_data
-                updated = True
-                break
-                
-        if updated and self._save_all_to_csv(books):
-            self._build_store_from_csv()
-            return True
-        return False
-
-    def delete_book(self, book_id):
-        books = self.get_all_books()
-        initial_len = len(books)
-        books = [b for b in books if b["id"] != str(book_id)]
-        
-        if len(books) < initial_len and self._save_all_to_csv(books):
-            self._build_store_from_csv()
-            return True
-        return False
-
+        if was_active:
+            self.index = None
+            self.active_collection_id = None
+            
+            # Activate another collection if exists
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT id FROM collections LIMIT 1")
+            other = cursor.fetchone()
+            if other:
+                cursor.execute("UPDATE collections SET active = 1 WHERE id = ?", (other["id"],))
+                conn.commit()
+            conn.close()
+            self.load_active_collection()

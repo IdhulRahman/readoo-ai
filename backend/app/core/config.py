@@ -10,6 +10,7 @@ class Settings:
     # Server configuration
     PORT: int = int(os.getenv("PYTHON_PORT", 5000))
     HOST: str = os.getenv("PYTHON_HOST", "0.0.0.0")
+    ENCRYPTION_KEY: str = os.getenv("ENCRYPTION_KEY", "")
 
     # LLM configuration
     LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "groq").lower()

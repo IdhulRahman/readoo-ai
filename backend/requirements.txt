@@ -13,3 +13,6 @@ waitress
 einops
 supertonic
 onnxruntime
+bcrypt
+cryptography
+litellm
