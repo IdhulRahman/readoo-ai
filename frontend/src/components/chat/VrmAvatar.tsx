@@ -10,6 +10,27 @@ interface VrmAvatarProps {
   onStatusChange?: (status: string) => void;
 }
 
+// Global cache to allow instant reloading/rendering of Aiko on page transitions
+let cachedVrm: VRM | null = null;
+let cachedClips: Record<string, THREE.AnimationClip> = {};
+
+export const clearVrmCache = () => {
+  if (cachedVrm) {
+    cachedVrm.scene.traverse((obj: any) => {
+      if (obj.geometry) obj.geometry.dispose();
+      if (obj.material) {
+        if (Array.isArray(obj.material)) {
+          obj.material.forEach((m: any) => m.dispose());
+        } else {
+          obj.material.dispose();
+        }
+      }
+    });
+    cachedVrm = null;
+  }
+  cachedClips = {};
+};
+
 export const VrmAvatar: React.FC<VrmAvatarProps> = ({
   animation = 'idle',
   onStatusChange,
@@ -41,7 +62,7 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
   const isBlinkingRef = useRef<boolean>(false);
 
   // Constants
-  const SHIFT_X = -0.22;
+  const SHIFT_X = 0.0;
   const CAMERA_Y_OFFSET = -0.07;
   const LOOK_AT_OFFSET = -0.07;
   const ZOOM_LEVEL = 1.3;
@@ -79,6 +100,8 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
   }, [animation]);
 
   useEffect(() => {
+    let isCurrent = true;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -107,7 +130,7 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     container.appendChild(renderer.domElement);
 
-    const clock = new THREE.Clock();
+    let lastTime = performance.now();
     const lookAtTarget = new THREE.Object3D();
     scene.add(lookAtTarget);
     lookAtTargetRef.current = lookAtTarget;
@@ -122,6 +145,7 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
     const loadVrmaAnimation = async (url: string, name: string, vrm: VRM) => {
       try {
         const gltf = await loader.loadAsync(url);
+        if (!isCurrent) return null;
         const vrmAnimations = gltf.userData.vrmAnimations;
         if (vrmAnimations && vrmAnimations[0]) {
           const clip = createVRMAnimationClip(vrmAnimations[0], vrm);
@@ -135,9 +159,68 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
     };
 
     const loadModel = async () => {
+      // 1. If cached, load model and animation instantly from memory
+      if (cachedVrm && cachedClips.idle) {
+        vrmRef.current = cachedVrm;
+        scene.add(cachedVrm.scene);
+
+        const humanoid = cachedVrm.humanoid;
+        if (humanoid) {
+          const rArm = humanoid.getNormalizedBoneNode('rightUpperArm');
+          const lArm = humanoid.getNormalizedBoneNode('leftUpperArm');
+          if (rArm) rArm.rotation.z = -Math.PI / 3;
+          if (lArm) lArm.rotation.z = Math.PI / 3;
+
+          const head = humanoid.getNormalizedBoneNode('head');
+          if (head) {
+            const pos = new THREE.Vector3();
+            head.getWorldPosition(pos);
+
+            camera.position.x = SHIFT_X;
+            camera.position.y = pos.y + CAMERA_Y_OFFSET;
+            camera.position.z = ZOOM_LEVEL;
+
+            const lookAtY = pos.y + LOOK_AT_OFFSET;
+            camera.lookAt(SHIFT_X, lookAtY, 0);
+            lookAtTarget.position.set(SHIFT_X, lookAtY, 1.0);
+          }
+        }
+
+        if (cachedVrm.lookAt) {
+          cachedVrm.lookAt.target = lookAtTarget;
+        }
+
+        const mixer = new THREE.AnimationMixer(cachedVrm.scene);
+        mixerRef.current = mixer;
+
+        loadedClipsRef.current = cachedClips;
+
+        const action = mixer.clipAction(cachedClips.idle);
+        action.setEffectiveWeight(1.0);
+        action.play();
+        currentActionRef.current = action;
+
+        updateStatus('Siap');
+        return;
+      }
+
+      // 2. If not cached, load from network/filesystem
       updateStatus('Memuat Aiko...');
       try {
         const gltf = await loader.loadAsync(MODEL_PATH);
+        if (!isCurrent) {
+          gltf.scene.traverse((obj: any) => {
+            if (obj.geometry) obj.geometry.dispose();
+            if (obj.material) {
+              if (Array.isArray(obj.material)) {
+                obj.material.forEach((m: any) => m.dispose());
+              } else {
+                obj.material.dispose();
+              }
+            }
+          });
+          return;
+        }
         const vrm: VRM = gltf.userData.vrm;
         vrmRef.current = vrm;
         scene.add(vrm.scene);
@@ -176,6 +259,8 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
         // Load animations
         updateStatus('Memuat Gerakan...');
         const idleClip = await loadVrmaAnimation(ANIMATION_MAP.idle, 'idle', vrm);
+        if (!isCurrent) return;
+
         if (idleClip) {
           loadedClipsRef.current.idle = idleClip;
           loadedClipsRef.current.wave = idleClip;
@@ -185,10 +270,19 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
           action.setEffectiveWeight(1.0);
           action.play();
           currentActionRef.current = action;
+
+          // Populate cache
+          cachedVrm = vrm;
+          cachedClips = {
+            idle: idleClip,
+            wave: idleClip,
+            thinking: idleClip,
+          };
         }
 
         updateStatus('Siap');
       } catch (err) {
+        if (!isCurrent) return;
         console.error('Failed to load VRM avatar', err);
         updateStatus('Error Memuat');
       }
@@ -229,9 +323,13 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
 
     // 4. Animation loop
     const renderScene = () => {
+      if (!isCurrent) return;
       animationFrameId = requestAnimationFrame(renderScene);
 
-      const dt = clock.getDelta();
+      const time = performance.now();
+      const dt = Math.min(0.1, (time - lastTime) / 1000);
+      lastTime = time;
+
       const vrm = vrmRef.current;
       const mixer = mixerRef.current;
 
@@ -318,6 +416,7 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
 
     // Cleanup
     return () => {
+      isCurrent = false;
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
       container.removeEventListener('mousemove', handleMouseMove);

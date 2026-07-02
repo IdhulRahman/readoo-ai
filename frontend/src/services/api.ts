@@ -54,6 +54,12 @@ export const auth = {
       method: 'POST',
       body: JSON.stringify({ email }),
     }),
+
+  changePassword: (data: { old_password: string; new_password: string }) =>
+    request<{ success: boolean; message: string }>('/auth/change-password', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
 };
 
 // Chat
@@ -142,13 +148,13 @@ export const admin = {
   uploadDataset: (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
-    return request<{ temp_file: string; headers: string[]; preview: Record<string, unknown>[]; total_rows: number }>(
+    return request<any>(
       '/admin/dataset/upload',
       { method: 'POST', body: formData }
     );
   },
 
-  importDataset: (data: { name: string; embedding_cols: string[]; display_cols: string[]; temp_file: string }) =>
+  importDataset: (data: any) =>
     request<{ success: boolean; collection_id: number; document_count: number }>('/admin/dataset/import', {
       method: 'POST',
       body: JSON.stringify(data),

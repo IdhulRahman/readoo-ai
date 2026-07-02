@@ -18,7 +18,7 @@ class ChatService:
 
     def _get_settings(self) -> dict:
         """Get dynamic settings from database."""
-        return SettingsRepository.get_settings_by_keys(["assistant_name", "greeting_message", "system_prompt"])
+        return SettingsRepository.get_settings_by_keys(["assistant_name", "greeting_message", "assistant_job"])
 
     def _get_llm_settings(self) -> dict:
         """Get LLM settings from database."""
@@ -212,7 +212,7 @@ class ChatService:
         cfg = self._get_settings()
         assistant_name = cfg.get("assistant_name", "Aiko")
         greeting_message = cfg.get("greeting_message", "Halo! Ada yang bisa saya bantu?")
-        system_prompt_template = cfg.get("system_prompt", "")
+        assistant_job = cfg.get("assistant_job", "Customer Service Toko Elektronik")
 
         # Create/get session
         session_id = self._create_or_get_session(user_id, session_id)
@@ -227,10 +227,13 @@ class ChatService:
         context_str = self._build_context(reranked, display_cols)
 
         # Build system prompt
-        system_prompt = system_prompt_template.format(
-            name=assistant_name,
-            context=context_str,
-            query=user_msg
+        system_prompt = (
+            f"Kamu adalah {assistant_name}, seorang {assistant_job} yang ramah dan profesional.\n"
+            "Jawablah pertanyaan pengguna dengan jujur, ringkas, dan jelas berdasarkan konteks berikut.\n"
+            "Jika informasi tidak terdapat pada konteks, jawablah dengan sopan bahwa kamu tidak tahu, dan jangan membuat-buat informasi.\n\n"
+            f"Konteks:\n{context_str}\n\n"
+            f"Pertanyaan Pengguna: {user_msg}\n"
+            "Jawaban:"
         )
 
         # Get chat history
@@ -255,7 +258,7 @@ class ChatService:
         cfg = self._get_settings()
         assistant_name = cfg.get("assistant_name", "Aiko")
         greeting_message = cfg.get("greeting_message", "Halo! Ada yang bisa saya bantu?")
-        system_prompt_template = cfg.get("system_prompt", "")
+        assistant_job = cfg.get("assistant_job", "Customer Service Toko Elektronik")
 
         # Create/get session
         session_id = self._create_or_get_session(user_id, session_id)
@@ -271,10 +274,13 @@ class ChatService:
         context_str = self._build_context(reranked, display_cols)
 
         # Build system prompt
-        system_prompt = system_prompt_template.format(
-            name=assistant_name,
-            context=context_str,
-            query=user_msg
+        system_prompt = (
+            f"Kamu adalah {assistant_name}, seorang {assistant_job} yang ramah dan profesional.\n"
+            "Jawablah pertanyaan pengguna dengan jujur, ringkas, dan jelas berdasarkan konteks berikut.\n"
+            "Jika informasi tidak terdapat pada konteks, jawablah dengan sopan bahwa kamu tidak tahu, dan jangan membuat-buat informasi.\n\n"
+            f"Konteks:\n{context_str}\n\n"
+            f"Pertanyaan Pengguna: {user_msg}\n"
+            "Jawaban:"
         )
 
         # Get chat history
@@ -305,7 +311,7 @@ class ChatService:
         cfg = self._get_settings()
         assistant_name = cfg.get("assistant_name", "Aiko")
         greeting_message = cfg.get("greeting_message", "Halo! Ada yang bisa saya bantu?")
-        system_prompt_template = cfg.get("system_prompt", "")
+        assistant_job = cfg.get("assistant_job", "Customer Service Toko Elektronik")
 
         session_id = self._create_or_get_session(user_id, session_id)
 
@@ -324,10 +330,13 @@ class ChatService:
 
         context_str = self._build_context(reranked, display_cols)
 
-        system_prompt = system_prompt_template.format(
-            name=assistant_name,
-            context=context_str,
-            query=user_msg
+        system_prompt = (
+            f"Kamu adalah {assistant_name}, seorang {assistant_job} yang ramah dan profesional.\n"
+            "Jawablah pertanyaan pengguna dengan jujur, ringkas, dan jelas berdasarkan konteks berikut.\n"
+            "Jika informasi tidak terdapat pada konteks, jawablah dengan sopan bahwa kamu tidak tahu, dan jangan membuat-buat informasi.\n\n"
+            f"Konteks:\n{context_str}\n\n"
+            f"Pertanyaan Pengguna: {user_msg}\n"
+            "Jawaban:"
         )
 
         history = self._get_chat_history(session_id, user_id)

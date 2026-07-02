@@ -52,7 +52,7 @@ def admin_test_llm_connection():
         return jsonify({"success": True, "response": content})
     except Exception as e:
         logger.exception("LiteLLM test connection failed")
-        return jsonify({"success": False, "error": str(e)}), 500
+        return jsonify({"success": False, "error": str(e)})
 
 
 @api_bp.route("/admin/llm/detect-models", methods=["POST"])
@@ -129,8 +129,32 @@ def admin_detect_models():
         logger.warning("Auto model detection failed: %s. Using fallback list.", e)
         error_msg = f"Koneksi gagal: {e}. Menggunakan daftar model bawaan."
 
-    if not models:
-        models = fallback_models.get(provider, [])
+    # Prioritize standard models from fallback list to the top
+    standards = fallback_models.get(provider, [])
+    prioritized_models = []
+    
+    # Filter and clean models list
+    models = [m for m in models if m]
+    
+    for std in standards:
+        matches = [m for m in models if m.lower() == std.lower() or std.lower() in m.lower()]
+        for m in matches:
+            if m not in prioritized_models:
+                prioritized_models.append(m)
+                
+    # Add all remaining models that are not in the prioritized list
+    for m in models:
+        if m not in prioritized_models:
+            # Skip model if it looks like an incompatible third-party model
+            if "/" in m and not m.startswith(f"{provider}/"):
+                continue
+            prioritized_models.append(m)
+            
+    # If the list is empty, use the fallback list
+    if not prioritized_models:
+        prioritized_models = standards
+        
+    models = prioritized_models
 
     return jsonify({
         "success": True,

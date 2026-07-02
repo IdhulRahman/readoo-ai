@@ -2,26 +2,23 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { admin } from '../services/api';
-import type { Collection, AdminStats, Settings } from '../types';
+import type { Collection, AdminStats } from '../types';
 import {
   LayoutDashboard,
   Database,
   Settings2,
   Users,
   ArrowLeft,
-  Volume2,
-  Brain,
 } from 'lucide-react';
 import { DashboardTab } from '../components/admin/DashboardTab';
 import { CollectionsTab } from '../components/admin/CollectionsTab';
 import { DatasetUploadTab } from '../components/admin/DatasetUploadTab';
-import { SettingsTab } from '../components/admin/SettingsTab';
+import { PersonalisasiTab } from '../components/admin/PersonalisasiTab';
 import { UsersTab } from '../components/admin/UsersTab';
-import { LLMTestTab } from '../components/admin/LLMTestTab';
-import { TTSTestTab } from '../components/admin/TTSTestTab';
 import { Button } from '../components/ui/Button';
+import { clearVrmCache } from '../components/chat/VrmAvatar';
 
-type Tab = 'dashboard' | 'collections' | 'dataset' | 'settings' | 'users' | 'llm' | 'tts';
+type Tab = 'dashboard' | 'collections' | 'dataset' | 'personalisasi' | 'users';
 
 export default function AdminPage() {
   const { logout } = useAuth();
@@ -29,7 +26,6 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [collections, setCollections] = useState<Collection[]>([]);
-  const [settings, setSettings] = useState<Settings>({});
   const [users, setUsers] = useState<{ id: number; nama_lengkap: string; email: string; role: string }[]>([]);
   const [message, setMessage] = useState('');
 
@@ -44,15 +40,12 @@ export default function AdminPage() {
     admin.getCollections().then(setCollections).catch(() => {});
   };
 
-  const loadSettings = () => {
-    admin.getSettings().then(setSettings).catch(() => {});
-  };
-
   const loadUsers = () => {
     admin.getUsers().then(setUsers).catch(() => {});
   };
 
   const handleLogout = async () => {
+    clearVrmCache();
     await logout();
     navigate('/login');
   };
@@ -113,24 +106,12 @@ export default function AdminPage() {
     }
   };
 
-  const handleSaveSettings = async (formSettings: Record<string, string>) => {
-    try {
-      await admin.saveSettings(formSettings);
-      loadSettings();
-      showMessage('Pengaturan berhasil disimpan');
-    } catch (e) {
-      alert(e instanceof Error ? e.message : 'Gagal menyimpan pengaturan');
-    }
-  };
-
   const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
     { id: 'collections', label: 'Koleksi', icon: <Database className="w-4 h-4" /> },
     { id: 'dataset', label: 'Dataset', icon: <Database className="w-4 h-4" /> },
-    { id: 'settings', label: 'Pengaturan', icon: <Settings2 className="w-4 h-4" /> },
+    { id: 'personalisasi', label: 'Personalisasi AI', icon: <Settings2 className="w-4 h-4" /> },
     { id: 'users', label: 'Pengguna', icon: <Users className="w-4 h-4" /> },
-    { id: 'llm', label: 'LLM', icon: <Brain className="w-4 h-4" /> },
-    { id: 'tts', label: 'TTS', icon: <Volume2 className="w-4 h-4" /> },
   ];
 
   return (
@@ -160,19 +141,18 @@ export default function AdminPage() {
         </div>
       )}
 
-      <div className="flex max-w-7xl mx-auto min-h-[calc(100vh-4rem)]">
+      <div className="flex flex-col md:flex-row max-w-7xl mx-auto min-h-[calc(100vh-4rem)]">
         {/* Sidebar Navigation */}
-        <nav className="w-56 flex-shrink-0 border-r border-gray-200 dark:border-gray-700 p-2">
+        <nav className="w-full md:w-56 flex-shrink-0 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700 p-2 flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible whitespace-nowrap md:whitespace-normal scrollbar-none">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => {
                 setActiveTab(tab.id);
                 if (tab.id === 'collections') loadCollections();
-                if (tab.id === 'settings') loadSettings();
                 if (tab.id === 'users') loadUsers();
               }}
-              className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm mb-1 transition-colors ${
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm mb-0 mr-1 md:mb-1 md:mr-0 transition-colors ${
                 activeTab === tab.id
                   ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 font-medium'
                   : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400'
@@ -184,7 +164,7 @@ export default function AdminPage() {
         </nav>
 
         {/* Content Area */}
-        <div className="flex-1 p-6 overflow-y-auto">
+        <div className="flex-1 p-4 md:p-6 overflow-y-auto">
           {activeTab === 'dashboard' && <DashboardTab stats={stats} />}
 
           {activeTab === 'collections' && (
@@ -206,8 +186,8 @@ export default function AdminPage() {
             />
           )}
 
-          {activeTab === 'settings' && (
-            <SettingsTab settings={settings} onSave={handleSaveSettings} />
+          {activeTab === 'personalisasi' && (
+            <PersonalisasiTab onSuccess={showMessage} />
           )}
 
           {activeTab === 'users' && (
@@ -217,10 +197,6 @@ export default function AdminPage() {
               onDeleteUser={handleDeleteUser}
             />
           )}
-
-          {activeTab === 'llm' && <LLMTestTab />}
-
-          {activeTab === 'tts' && <TTSTestTab />}
         </div>
       </div>
     </div>

@@ -1,8 +1,5 @@
 import React from 'react';
 import { Trash2 } from 'lucide-react';
-import { Card } from '../ui/Card';
-import { Select } from '../ui/Select';
-import { Button } from '../ui/Button';
 
 interface User {
   id: number;
@@ -24,36 +21,62 @@ export const UsersTab: React.FC<UsersTabProps> = ({
 }) => {
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-6">Manajemen Pengguna</h2>
-      <div className="space-y-2">
-        {users.map((u) => (
-          <Card key={u.id} className="flex items-center justify-between">
-            <div>
-              <p className="font-medium text-gray-900 dark:text-white">{u.nama_lengkap}</p>
-              <p className="text-sm text-gray-500">
-                {u.email} · <span className="font-semibold">{u.role}</span>
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Select
-                value={u.role}
-                onChange={(e) => onUpdateRole(u.id, e.target.value)}
-                options={[
-                  { value: 'user', label: 'User' },
-                  { value: 'admin', label: 'Admin' },
-                ]}
-                className="text-sm py-1 px-2 h-9 w-28 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800"
-              />
-              <button
-                onClick={() => onDeleteUser(u.id)}
-                className="p-2 hover:bg-red-100 dark:hover:bg-red-900/30 rounded text-red-500"
-                title="Hapus Pengguna"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-            </div>
-          </Card>
-        ))}
+      <h2 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">Manajemen Pengguna</h2>
+      
+      <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-gray-50 dark:bg-gray-750 border-b border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-4">Nama Lengkap</th>
+              <th className="px-6 py-4">Email</th>
+              <th className="px-6 py-4">Role</th>
+              <th className="px-6 py-4 text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700 text-sm text-gray-700 dark:text-gray-300">
+            {users.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="px-6 py-8 text-center text-gray-400">
+                  Tidak ada pengguna terdaftar.
+                </td>
+              </tr>
+            ) : (
+              users.map((u) => (
+                <tr key={u.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                  <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                    {u.nama_lengkap}
+                  </td>
+                  <td className="px-6 py-4">
+                    {u.email}
+                  </td>
+                  <td className="px-6 py-4">
+                    <select
+                      value={u.role}
+                      onChange={(e) => onUpdateRole(u.id, e.target.value)}
+                      className="text-xs font-medium py-1.5 px-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-750 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all cursor-pointer"
+                    >
+                      <option value="user">User</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <button
+                      onClick={() => {
+                        if (confirm(`Apakah Anda yakin ingin menghapus pengguna ${u.nama_lengkap}?`)) {
+                          onDeleteUser(u.id);
+                        }
+                      }}
+                      className="p-2 hover:bg-red-50 dark:hover:bg-red-950/45 rounded-lg text-red-500 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                      title="Hapus Pengguna"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

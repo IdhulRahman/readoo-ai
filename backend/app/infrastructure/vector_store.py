@@ -278,6 +278,36 @@ class VectorStore:
 
             CollectionRepository.create_document(col_id, content, json.dumps(meta))
 
+        self.rebuild_index(col_id)
+        
+        # Load in memory
+        self.active_collection_id = col_id
+        index_path = os.path.join(self.store_dir, f"collection_{col_id}.index")
+        self.index = faiss.read_index(index_path)
+        
+        return col_id
+
+    def add_collection_from_unstructured(self, name, chunks, original_filename):
+        import sqlite3
+        CollectionRepository.deactivate_all_collections()
+        
+        now = datetime.now().isoformat()
+        embedding_cols = ["text"]
+        display_cols = ["text"]
+        
+        try:
+            col_id = CollectionRepository.create_collection(
+                name, json.dumps(embedding_cols), json.dumps(display_cols), 1, now
+            )
+        except sqlite3.IntegrityError:
+            raise ValueError(f"Collection with name '{name}' already exists.")
+            
+        for chunk in chunks:
+            content = chunk["content"]
+            meta = chunk["metadata"]
+            meta["source"] = original_filename
+            CollectionRepository.create_document(col_id, content, json.dumps(meta))
+            
         # Rebuild FAISS index
         self.rebuild_index(col_id)
         

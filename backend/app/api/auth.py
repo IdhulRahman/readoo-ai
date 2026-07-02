@@ -92,3 +92,26 @@ def auth_forgot_password():
         "success": True,
         "message": "Link pemulihan password telah dikirim ke email Anda (Silakan cek log terminal/console)."
     })
+
+
+from app.api.middleware import require_auth
+from flask import g
+
+@api_bp.route("/auth/change-password", methods=["POST"])
+@require_auth()
+def auth_change_password():
+    payload = request.get_json(silent=True) or {}
+    old_password = payload.get("old_password", "").strip()
+    new_password = payload.get("new_password", "").strip()
+
+    if not old_password or not new_password:
+        return jsonify({"error": "Password lama dan baru wajib diisi"}), 400
+
+    user = UserRepository.get_user_by_id(g.user_id)
+    if not user or not check_password(old_password, user["password_hash"]):
+        return jsonify({"error": "Password lama salah"}), 400
+
+    hashed = hash_password(new_password)
+    UserRepository.update_user_password(g.user_id, hashed)
+
+    return jsonify({"success": True, "message": "Password berhasil diubah"})

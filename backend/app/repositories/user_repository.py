@@ -80,3 +80,16 @@ class UserRepository:
         conn.commit()
         conn.close()
         return True
+
+    @staticmethod
+    def update_user_password(user_id: int, password_hash: str) -> bool:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id FROM users WHERE id = ?", (user_id,))
+        if not cursor.fetchone():
+            conn.close()
+            return False
+        cursor.execute("UPDATE users SET password_hash = ? WHERE id = ?", (password_hash, user_id))
+        conn.commit()
+        conn.close()
+        return True

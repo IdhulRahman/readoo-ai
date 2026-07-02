@@ -1,14 +1,14 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { chat, voice } from '../services/api';
+import { chat, voice, auth } from '../services/api';
 import type { ChatMessage, ChatSession, ChatItem } from '../types';
-import { Send, LogOut, MessageSquare, Menu } from 'lucide-react';
+import { Send, LogOut, MessageSquare, Menu, Key, X } from 'lucide-react';
 import { Sidebar } from '../components/chat/Sidebar';
 import { ChatBubble } from '../components/chat/ChatBubble';
 import { ItemCard } from '../components/chat/ItemCard';
 import { AudioRecorder } from '../components/chat/AudioRecorder';
-import { VrmAvatar } from '../components/chat/VrmAvatar';
+import { VrmAvatar, clearVrmCache } from '../components/chat/VrmAvatar';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { Button } from '../components/ui/Button';
 
@@ -28,6 +28,15 @@ export default function ChatPage() {
   const [items, setItems] = useState<ChatItem[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [avatarAnim, setAvatarAnim] = useState<'idle' | 'wave' | 'thinking'>('idle');
+
+  // Change Password Modal states
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSuccess, setPasswordSuccess] = useState('');
+  const [passwordLoading, setPasswordLoading] = useState(false);
 
   const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
 
@@ -51,6 +60,7 @@ export default function ChatPage() {
   }, [loadSessions]);
 
   const handleLogout = async () => {
+    clearVrmCache();
     await logout();
     navigate('/login');
   };
@@ -219,17 +229,65 @@ export default function ChatPage() {
     setAvatarAnim('idle');
   };
 
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordError('');
+    setPasswordSuccess('');
+
+    if (!oldPassword || !newPassword || !confirmNewPassword) {
+      setPasswordError('Semua field wajib diisi.');
+      return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      setPasswordError('Konfirmasi password baru tidak cocok.');
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      setPasswordError('Password baru minimal harus 6 karakter.');
+      return;
+    }
+
+    setPasswordLoading(true);
+    try {
+      await auth.changePassword({ old_password: oldPassword, new_password: newPassword });
+      setPasswordSuccess('Password Anda berhasil diperbarui!');
+      setOldPassword('');
+      setNewPassword('');
+      setConfirmNewPassword('');
+      setTimeout(() => {
+        setShowPasswordModal(false);
+        setPasswordSuccess('');
+      }, 1500);
+    } catch (err) {
+      setPasswordError(err instanceof Error ? err.message : 'Gagal mengubah password.');
+    } finally {
+      setPasswordLoading(false);
+    }
+  };
+
   return (
     <div className="flex h-screen bg-white dark:bg-gray-900">
-      <Sidebar
-        sessions={sessions}
-        currentSession={currentSession}
-        onSelectSession={selectSession}
-        onDeleteSession={deleteSession}
-        onNewChat={newChat}
-        sidebarOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
+      {mode === 'chat' && (
+        <Sidebar
+          sessions={sessions}
+          currentSession={currentSession}
+          onSelectSession={selectSession}
+          onDeleteSession={deleteSession}
+          onNewChat={newChat}
+          sidebarOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Backdrop for mobile sidebar */}
+      {sidebarOpen && mode === 'chat' && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 bg-black/40 z-25 lg:hidden transition-opacity duration-200"
+        />
+      )}
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden relative">
@@ -240,12 +298,14 @@ export default function ChatPage() {
         <header className="border-b border-gray-200 dark:border-gray-700 px-4 py-3 bg-white dark:bg-gray-900 flex-shrink-0 z-20">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded text-gray-500"
-              >
-                <Menu className="w-5 h-5" />
-              </button>
+              {mode === 'chat' && (
+                <button
+                  onClick={() => setSidebarOpen(true)}
+                  className="lg:hidden p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded text-gray-500"
+                >
+                  <Menu className="w-5 h-5" />
+                </button>
+              )}
               <h1 className="font-semibold text-gray-900 dark:text-white">Readoo AI</h1>
             </div>
             
@@ -284,6 +344,13 @@ export default function ChatPage() {
                   Admin
                 </Button>
               )}
+              <button
+                onClick={() => setShowPasswordModal(true)}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg text-gray-500 dark:text-gray-400"
+                title="Ganti Password"
+              >
+                <Key className="w-4 h-4" />
+              </button>
               <button
                 onClick={handleLogout}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg text-gray-500 dark:text-gray-400"
@@ -398,6 +465,116 @@ export default function ChatPage() {
           </div>
         </div>
       </div>
+
+      {/* Change Password Modal */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-opacity duration-200">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-md shadow-2xl border border-gray-150 dark:border-gray-700 overflow-hidden transform transition-all duration-300 animate-scale-in">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+              <div className="flex items-center gap-2">
+                <Key className="w-5 h-5 text-primary-500" />
+                <h3 className="font-semibold text-gray-900 dark:text-white">Ganti Password</h3>
+              </div>
+              <button
+                onClick={() => {
+                  setShowPasswordModal(false);
+                  setPasswordError('');
+                  setPasswordSuccess('');
+                  setOldPassword('');
+                  setNewPassword('');
+                  setConfirmNewPassword('');
+                }}
+                className="p-1 hover:bg-gray-150 dark:hover:bg-gray-700 rounded-lg text-gray-400 hover:text-gray-500 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <form onSubmit={handleChangePassword} className="p-6 space-y-4">
+              {passwordError && (
+                <div className="p-3 bg-red-50 dark:bg-red-950/45 text-red-600 dark:text-red-400 text-xs rounded-lg border border-red-100 dark:border-red-900/50 font-medium">
+                  {passwordError}
+                </div>
+              )}
+              {passwordSuccess && (
+                <div className="p-3 bg-green-50 dark:bg-green-950/45 text-green-600 dark:text-green-400 text-xs rounded-lg border border-green-100 dark:border-green-900/50 font-medium">
+                  {passwordSuccess}
+                </div>
+              )}
+
+              <div className="space-y-1">
+                <label className="block text-xs font-semibold text-gray-505 dark:text-gray-400 uppercase tracking-wider">
+                  Password Lama
+                </label>
+                <input
+                  type="password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-750 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all text-sm"
+                  placeholder="Masukkan password lama"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-xs font-semibold text-gray-505 dark:text-gray-400 uppercase tracking-wider">
+                  Password Baru
+                </label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-750 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all text-sm"
+                  placeholder="Minimal 6 karakter"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-xs font-semibold text-gray-550 dark:text-gray-400 uppercase tracking-wider">
+                  Konfirmasi Password Baru
+                </label>
+                <input
+                  type="password"
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-750 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all text-sm"
+                  placeholder="Ulangi password baru"
+                  required
+                />
+              </div>
+
+              {/* Modal Footer */}
+              <div className="flex justify-end gap-2 pt-2 border-t border-gray-100 dark:border-gray-700 mt-6">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowPasswordModal(false);
+                    setPasswordError('');
+                    setPasswordSuccess('');
+                    setOldPassword('');
+                    setNewPassword('');
+                    setConfirmNewPassword('');
+                  }}
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-650 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm"
+                  disabled={passwordLoading}
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium text-sm flex items-center gap-1.5"
+                  disabled={passwordLoading}
+                >
+                  {passwordLoading ? 'Menyimpan...' : 'Simpan'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
