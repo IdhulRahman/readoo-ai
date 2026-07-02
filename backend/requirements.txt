@@ -1,0 +1,15 @@
+flask
+flask-cors
+python-dotenv
+requests
+sentence-transformers
+faiss-cpu
+openai-whisper
+numpy
+torch
+scipy
+edge-tts
+waitress
+einops
+supertonic
+onnxruntime

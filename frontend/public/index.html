@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Readoo. - Smart Library</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Import Map -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.176.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.176.0/examples/jsm/",
+            "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3/lib/three-vrm.module.min.js",
+            "@pixiv/three-vrm-animation": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm-animation@3/lib/three-vrm-animation.module.min.js"
+        }
+    }
+    </script>
+</head>
+
+<body>
+
+<div class="bg-deco deco-1"></div>
+<div class="bg-deco deco-2"></div>
+
+<!-- WELCOME SCREEN -->
+<section id="welcome-screen">
+    <div class="welcome-content">
+        <div class="hello-text">Hello Telyutizen</div>
+        <h1 class="welcome-title">Discover Your Next Great Read.</h1>
+        <p class="welcome-sub">
+            Experience the future of library search with our Intelligent AI Assistant &amp; 3D Avatar
+        </p>
+        <button class="btn-start" onclick="enterApp()">
+            Let's Get Started <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </div>
+</section>
+
+<!-- APP SCREEN -->
+<section id="app-screen">
+    
+    <!-- TOP NAVBAR -->
+    <header class="app-navbar">
+        <div class="navbar-brand">
+            <i class="fa-solid fa-graduation-cap"></i> Readoo<span>.</span>
+        </div>
+        <div class="navbar-actions">
+            <!-- Mode Switcher (Tab Menu) -->
+            <div id="mode-switcher-el" class="mode-switch-container">
+                <button id="nav-text" class="switch-btn active" onclick="switchTab('text')">
+                    <i class="fa-solid fa-message"></i> Chat
+                </button>
+                <button id="nav-3d" class="switch-btn" onclick="switchTab('3d')">
+                    <i class="fa-solid fa-cube"></i> Assistant
+                </button>
+            </div>
+            <!-- Role Toggle Button -->
+            <button id="btn-toggle-role" class="btn-role-switch" onclick="toggleRole()">
+                <i class="fa-solid fa-user-gear"></i> Switch to Admin
+            </button>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="content-wrapper">
+
+            <!-- TEXT MODE (USER CHAT) -->
+            <div id="view-text" class="view-section active">
+                <div class="greeting-area">
+                    <h2>Halo Telyutizen</h2>
+                    <p>Ayo temukan bacaan sesuai minat kamu!</p>
+                </div>
+
+                <div id="chat-history" class="chat-container">
+                    <div class="msg bot">
+                        Halo! Saya asisten perpustakaan Anda. Buku apa yang Anda cari?
+                    </div>
+                </div>
+
+                <div class="input-container-wrapper">
+                    <div class="input-box">
+                        <input
+                            type="text"
+                            id="text-input"
+                            placeholder="Tuliskan judul buku, topik, atau pengarang..."
+                            autocomplete="off"
+                        >
+                        <button class="btn-send" onclick="sendTextChat()">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3D MODE (USER ASSISTANT) -->
+            <div id="view-3d" class="view-section hidden">
+                <div id="canvas-container"></div>
+
+                <!-- Speech bubble for avatar replies -->
+                <div id="speech-bubble" class="hidden">
+                    <p id="bubble-text">Halo! Katakan sesuatu...</p>
+                </div>
+
+                <div id="avatar-ui">
+                    <div class="carousel-wrapper">
+                        <button id="prev-book" class="nav-btn left hidden" onclick="scrollCarousel(-1)">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+
+                        <div id="book-recommendations" class="book-floating-card hidden"></div>
+
+                        <button id="next-book" class="nav-btn right hidden" onclick="scrollCarousel(1)">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="controls-area">
+                        <div class="speech-input-box">
+                            <input
+                                type="text"
+                                id="speech-display"
+                                placeholder="Tekan mic dan mulai bicara..."
+                                autocomplete="off"
+                                readonly
+                            >
+                        </div>
+                        <button id="mic-btn" class="btn-mic">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN MODE (CRUD DASHBOARD) -->
+            <div id="view-admin" class="view-section hidden">
+                <div class="admin-header">
+                    <h2>Admin <span>Dashboard</span></h2>
+                    <button class="btn-add-book" onclick="openAddBookModal()">
+                        <i class="fa-solid fa-plus"></i> Add New Book
+                    </button>
+                </div>
+
+                <!-- Statistics -->
+                <div class="admin-stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-book"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-total-books">0</h3>
+                            <p>Total Books</p>
+                        </div>
+                    </div>
+                    <div class="stat-card accent">
+                        <div class="stat-icon"><i class="fa-solid fa-tags"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-total-categories">0</h3>
+                            <p>Total Categories</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table for CRUD -->
+                <div class="table-wrapper">
+                    <table class="admin-table">
+                         <thead>
+                             <tr>
+                                 <th>Book Title</th>
+                                 <th>Author</th>
+                                 <th>Classification</th>
+                                 <th>Shelf / Rak</th>
+                                 <th>Published</th>
+                                 <th>Actions</th>
+                             </tr>
+                         </thead>
+                         <tbody id="admin-books-tbody">
+                             <!-- Dynamically populated -->
+                         </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- MODAL BOX (ADD/EDIT BOOK) -->
+<div id="book-modal" class="modal-overlay" onclick="closeBookModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 id="modal-title">Add New Book</h3>
+            <button class="btn-close-modal" onclick="closeBookModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="book-form" onsubmit="saveBook(event)">
+            <div class="modal-body">
+                <input type="hidden" id="form-book-id">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="form-title">Judul Buku *</label>
+                        <input type="text" id="form-title" required placeholder="Contoh: Pemrograman Python Modern">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-author">Pengarang / Penulis *</label>
+                        <input type="text" id="form-author" required placeholder="Contoh: Rinaldi Munir">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-code">Kode Buku</label>
+                        <input type="text" id="form-code" placeholder="Contoh: INF-001">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-classification">Klasifikasi</label>
+                        <input type="text" id="form-classification" placeholder="Contoh: Informatika">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-booktype">Jenis Buku</label>
+                        <input type="text" id="form-booktype" placeholder="Contoh: Buku Teks">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-subject">Subjek</label>
+                        <input type="text" id="form-subject" placeholder="Contoh: Algoritma">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-shelf">Nomor Rak *</label>
+                        <input type="text" id="form-shelf" required placeholder="Contoh: Rak A-1">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-publisher">Penerbit</label>
+                        <input type="text" id="form-publisher" placeholder="Contoh: Erlangga">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-city">Kota Penerbit</label>
+                        <input type="text" id="form-city" placeholder="Contoh: Bandung">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-year">Tahun Terbit *</label>
+                        <input type="text" id="form-year" required placeholder="Contoh: 2021">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-views">Dilihat (Views)</label>
+                        <input type="number" id="form-views" value="0">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="form-image">Cover Image (Base64 / URL)</label>
+                        <input type="text" id="form-image" placeholder="Masukkan URL gambar atau Base64 string">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="form-abstract">Abstraksi / Deskripsi</label>
+                        <textarea id="form-abstract" placeholder="Masukkan deskripsi singkat buku..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-cancel" onclick="closeBookModal()">Cancel</button>
+                <button type="submit" class="btn-modal-submit">Save Book</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script type="module" src="/js/avatar-core.js"></script>
+<script src="/js/main.js"></script>
+
+</body>
+</html>

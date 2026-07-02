@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: readoo-backend
+    environment:
+      - LLM_PROVIDER=groq
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - TTS_PROVIDER=edge-tts
+      - WHISPER_MODEL=base
+      - USE_RERANKER=false
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend/data:/app/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: readoo-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - PYTHON_HOST=backend
+      - PYTHON_PORT=5000
+    depends_on:
+      - backend
+    restart: unless-stopped

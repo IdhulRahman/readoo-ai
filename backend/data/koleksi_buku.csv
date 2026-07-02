@@ -1,0 +1,6 @@
+id,judul,pengarang,klasifikasi,jenis_buku,subjek,no_rak,penerbit,kota_penerbit,tahun_terbit,dilihat,abstraksi,image_base64
+1,Struktur Data dan Algoritma dengan Python,Rinaldi Munir,Informatika,Buku Teks,Algoritma & Pemrograman,Rak A-1,Penerbit Informatika,Bandung,2021,120,Buku ini membahas konsep struktur data dasar hingga lanjut menggunakan bahasa pemrograman Python secara mendalam.,
+2,Belajar Jaringan Komputer Modern,Iwan Sofana,Komunikasi,Buku Teks,Jaringan Komputer,Rak B-3,Informatika Bandung,Bandung,2020,85,Panduan praktis merancang dan mengelola jaringan komputer modern untuk pemula dan profesional.,
+3,Pengantar Rekayasa Perangkat Lunak,Roger S. Pressman,Informatika,Buku Teks,Software Engineering,Rak A-2,McGraw-Hill,Jakarta,2019,250,Buku rujukan utama tentang metodologi pengembangan rekayasa perangkat lunak dan manajemen proyek.,
+4,Sistem Informasi Manajemen edisi 15,Kenneth C. Laudon,Manajemen,Buku Teks,Sistem Informasi,Rak C-1,Salemba Empat,Jakarta,2018,145,Pembahasan mendalam mengenai bagaimana bisnis memanfaatkan sistem informasi untuk mencapai tujuan bisnis strategis.,
+5,Kalkulus dan Geometri Analitis Jilid 1,Edwin J. Purcell,Sains,Buku Teks,Matematika,Rak D-2,Erlangga,Jakarta,2017,310,Buku teks kalkulus klasik yang sangat populer di kalangan mahasiswa teknik dan ilmu komputer.,
