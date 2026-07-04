@@ -17,6 +17,13 @@ logger = logging.getLogger(__name__)
 
 class VectorStore:
     def __init__(self):
+        import torch
+        try:
+            torch.set_num_threads(2)
+            logger.info("PyTorch CPU threads successfully limited to 2")
+        except Exception as e:
+            logger.warning("Failed to set PyTorch thread limit: %s", e)
+
         base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         self.data_dir = os.path.join(base_dir, "data")
         self.store_dir = os.path.join(self.data_dir, "vector_store")
@@ -330,3 +337,33 @@ class VectorStore:
                 logger.error("Failed to delete index file %s", index_path)
 
         self.load_active_collection()
+
+    def delete_document_from_index(self, collection_id, doc_id):
+        index_path = os.path.join(self.store_dir, f"collection_{collection_id}.index")
+        if os.path.exists(index_path):
+            try:
+                index = faiss.read_index(index_path)
+                index.remove_ids(np.array([doc_id], dtype=np.int64))
+                faiss.write_index(index, index_path)
+                if self.active_collection_id == collection_id:
+                    self.index = index
+                logger.info("Successfully removed document ID %d from FAISS index %d incrementally", doc_id, collection_id)
+            except Exception as e:
+                logger.error("Failed to incrementally remove doc ID %d from FAISS index: %s", doc_id, e)
+                self.rebuild_index(collection_id)
+
+    def add_document_to_index(self, collection_id, doc_id, content):
+        index_path = os.path.join(self.store_dir, f"collection_{collection_id}.index")
+        if os.path.exists(index_path):
+            try:
+                index = faiss.read_index(index_path)
+                embedding = self.encoder.encode([content], show_progress_bar=False)
+                embedding = np.array(embedding, dtype=np.float32)
+                index.add_with_ids(embedding, np.array([doc_id], dtype=np.int64))
+                faiss.write_index(index, index_path)
+                if self.active_collection_id == collection_id:
+                    self.index = index
+                logger.info("Successfully added document ID %d to FAISS index %d incrementally", doc_id, collection_id)
+            except Exception as e:
+                logger.error("Failed to incrementally add doc ID %d to FAISS index: %s", doc_id, e)
+                self.rebuild_index(collection_id)

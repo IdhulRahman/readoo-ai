@@ -16,38 +16,6 @@ base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.pa
 UPLOAD_DIR = os.path.join(base_dir, "data", "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-
-def extract_text_from_pdf(file_path):
-    import pypdf
-    reader = pypdf.PdfReader(file_path)
-    pages_text = []
-    for i, page in enumerate(reader.pages):
-        text = page.extract_text()
-        if text:
-            pages_text.append((i + 1, text))
-    return pages_text
-
-
-def chunk_text(pages_text, chunk_size=800, overlap=150):
-    chunks = []
-    for page_num, text in pages_text:
-        text_len = len(text)
-        start = 0
-        while start < text_len:
-            end = start + chunk_size
-            chunk = text[start:end].strip()
-            if chunk:
-                chunks.append({
-                    "content": chunk,
-                    "metadata": {
-                        "page": page_num,
-                        "text": chunk
-                    }
-                })
-            start += (chunk_size - overlap)
-    return chunks
-
-
 @api_bp.route("/admin/dataset/upload", methods=["POST"])
 @require_auth(role="admin")
 def admin_upload_dataset():
@@ -58,7 +26,7 @@ def admin_upload_dataset():
     filename = uploaded_file.filename
     ext = os.path.splitext(filename)[1].lower()
 
-    allowed_exts = [".csv", ".xlsx", ".xls", ".pdf", ".txt"]
+    allowed_exts = [".csv", ".xlsx", ".xls"]
     if ext not in allowed_exts:
         return jsonify({"error": f"Format file tidak didukung. Dukungan: {', '.join(allowed_exts)}"}), 400
 
@@ -72,51 +40,22 @@ def admin_upload_dataset():
         return jsonify({"error": "Ukuran file maksimal adalah 10 MB"}), 400
 
     try:
-        if ext in [".csv", ".xlsx", ".xls"]:
-            # Structured data
-            if ext == ".csv":
-                df = pd.read_csv(temp_path)
-            else:
-                df = pd.read_excel(temp_path)
-
-            headers = [str(c).strip() for c in df.columns]
-            preview_data = df.head(10).fillna("").to_dict(orient="records")
-
-            return jsonify({
-                "file_type": "structured",
-                "temp_file": temp_filename,
-                "headers": headers,
-                "preview": preview_data,
-                "total_rows": len(df)
-            })
-
-        elif ext == ".pdf":
-            # PDF file
-            pages_text = extract_text_from_pdf(temp_path)
-            full_text = " ".join([txt for _, txt in pages_text])
-            preview_text = full_text[:1000]
-
-            return jsonify({
-                "file_type": "unstructured",
-                "temp_file": temp_filename,
-                "preview_text": preview_text,
-                "total_pages": len(pages_text),
-                "total_chars": len(full_text)
-            })
-
+        # Structured data (CSV/Excel)
+        if ext == ".csv":
+            df = pd.read_csv(temp_path)
         else:
-            # TXT file
-            with open(temp_path, "r", encoding="utf-8", errors="ignore") as f:
-                full_text = f.read()
-            preview_text = full_text[:1000]
+            df = pd.read_excel(temp_path)
 
-            return jsonify({
-                "file_type": "unstructured",
-                "temp_file": temp_filename,
-                "preview_text": preview_text,
-                "total_pages": 1,
-                "total_chars": len(full_text)
-            })
+        headers = [str(c).strip() for c in df.columns]
+        preview_data = df.head(10).fillna("").to_dict(orient="records")
+
+        return jsonify({
+            "file_type": "structured",
+            "temp_file": temp_filename,
+            "headers": headers,
+            "preview": preview_data,
+            "total_rows": len(df)
+        })
 
     except Exception as e:
         if os.path.exists(temp_path):
@@ -131,7 +70,6 @@ def admin_import_dataset():
     payload = request.get_json(silent=True) or {}
     name = payload.get("name", "").strip()
     temp_file = payload.get("temp_file", "")
-    file_type = payload.get("file_type", "structured")
 
     if not name or not temp_file:
         return jsonify({"error": "Parameter name dan temp_file wajib diisi"}), 400
@@ -143,35 +81,19 @@ def admin_import_dataset():
     ext = os.path.splitext(temp_file)[1].lower()
 
     try:
-        if file_type == "structured" or ext in [".csv", ".xlsx", ".xls"]:
-            embedding_cols = payload.get("embedding_cols", [])
-            display_cols = payload.get("display_cols", [])
+        embedding_cols = payload.get("embedding_cols", [])
+        display_cols = payload.get("display_cols", [])
 
-            if not embedding_cols or not display_cols:
-                return jsonify({"error": "Kolom embedding dan display wajib dipilih untuk data terstruktur"}), 400
+        if not embedding_cols or not display_cols:
+            return jsonify({"error": "Kolom embedding dan display wajib dipilih"}), 400
 
-            if ext == ".csv":
-                df = pd.read_csv(temp_path)
-            else:
-                df = pd.read_excel(temp_path)
-
-            col_id = chat_service.vector_store.add_collection_from_csv(name, embedding_cols, display_cols, df)
-            doc_count = len(df)
-
+        if ext == ".csv":
+            df = pd.read_csv(temp_path)
         else:
-            # Unstructured text import (PDF, TXT)
-            if ext == ".pdf":
-                pages_text = extract_text_from_pdf(temp_path)
-            else:
-                with open(temp_path, "r", encoding="utf-8", errors="ignore") as f:
-                    pages_text = [(1, f.read())]
+            df = pd.read_excel(temp_path)
 
-            chunks = chunk_text(pages_text)
-            if not chunks:
-                return jsonify({"error": "Tidak ada konten teks yang dapat diekstraksi dari dokumen"}), 400
-
-            col_id = chat_service.vector_store.add_collection_from_unstructured(name, chunks, temp_file)
-            doc_count = len(chunks)
+        col_id = chat_service.vector_store.add_collection_from_csv(name, embedding_cols, display_cols, df)
+        doc_count = len(df)
 
         # Clean temp file
         if os.path.exists(temp_path):

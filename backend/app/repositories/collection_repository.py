@@ -98,15 +98,17 @@ class CollectionRepository:
         return True
 
     @staticmethod
-    def create_document(collection_id: int, content: str, metadata: str) -> None:
+    def create_document(collection_id: int, content: str, metadata: str) -> int:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
             "INSERT INTO documents (collection_id, content, metadata) VALUES (?, ?, ?)",
             (collection_id, content, metadata)
         )
+        doc_id = cursor.lastrowid
         conn.commit()
         conn.close()
+        return doc_id
 
     @staticmethod
     def get_documents_by_collection(collection_id: int) -> List[sqlite3.Row]:

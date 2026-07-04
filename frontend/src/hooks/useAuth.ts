@@ -1,18 +1,35 @@
 import { useState, useEffect, useCallback } from 'react';
 import { auth } from '../services/api';
-import type { AuthResponse } from '../types';
+
+type UserType = { token: string; role: string; nama_lengkap: string } | null;
+
+let globalUser: UserType = (() => {
+  const token = localStorage.getItem('token');
+  const role = localStorage.getItem('role');
+  const nama = localStorage.getItem('nama_lengkap');
+  if (token && role) return { token, role, nama_lengkap: nama || '' };
+  return null;
+})();
+
+const listeners = new Set<(u: UserType) => void>();
+
+function setGlobalUser(newUser: UserType) {
+  globalUser = newUser;
+  listeners.forEach((l) => l(newUser));
+}
 
 export function useAuth() {
-  const [user, setUser] = useState<{ token: string; role: string; nama_lengkap: string } | null>(() => {
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-    const nama = localStorage.getItem('nama_lengkap');
-    if (token && role) return { token, role, nama_lengkap: nama || '' };
-    return null;
-  });
-
+  const [user, setUser] = useState<UserType>(globalUser);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUser(globalUser);
+    listeners.add(setUser);
+    return () => {
+      listeners.delete(setUser);
+    };
+  }, []);
 
   const login = useCallback(async (email: string, password: string) => {
     setLoading(true);
@@ -22,7 +39,7 @@ export function useAuth() {
       localStorage.setItem('token', data.token);
       localStorage.setItem('role', data.role);
       localStorage.setItem('nama_lengkap', data.nama_lengkap);
-      setUser(data);
+      setGlobalUser(data);
       return data;
     } catch (e) {
       const message = e instanceof Error ? e.message : 'Login gagal';
@@ -57,7 +74,7 @@ export function useAuth() {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('nama_lengkap');
-    setUser(null);
+    setGlobalUser(null);
   }, []);
 
   const isAdmin = user?.role === 'admin';

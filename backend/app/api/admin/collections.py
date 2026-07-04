@@ -83,7 +83,7 @@ def admin_get_collection_documents(col_id):
 @api_bp.route("/admin/documents/<int:doc_id>", methods=["DELETE"])
 @require_auth(role="admin")
 def admin_delete_document(doc_id):
-    """Delete a single document from a collection."""
+    """Delete a single document from a collection incrementally."""
     row = CollectionRepository.get_document(doc_id)
     if not row:
         return jsonify({"error": "Document not found"}), 404
@@ -91,7 +91,40 @@ def admin_delete_document(doc_id):
     collection_id = row["collection_id"]
     CollectionRepository.delete_document(doc_id)
     
-    # Rebuild index for this collection
-    chat_service.vector_store.rebuild_index(collection_id)
+    # Remove from FAISS index incrementally
+    chat_service.vector_store.delete_document_from_index(collection_id, doc_id)
     
     return jsonify({"success": True})
+
+
+@api_bp.route("/admin/collections/<int:col_id>/documents", methods=["POST"])
+@require_auth(role="admin")
+def admin_add_document(col_id):
+    """Add a single document to a collection incrementally."""
+    payload = request.get_json(silent=True) or {}
+    
+    col = CollectionRepository.get_collection(col_id)
+    if not col:
+        return jsonify({"error": "Collection not found"}), 404
+        
+    embedding_cols = json.loads(col["embedding_cols"])
+    
+    # Extract content based on embedding_cols
+    content_parts = []
+    for col_name in embedding_cols:
+        if col_name in payload:
+            content_parts.append(str(payload[col_name]))
+    content = " ".join(content_parts).strip()
+    
+    if not content:
+        return jsonify({"error": "Konten untuk kolom embedding tidak boleh kosong."}), 400
+        
+    # Insert to database
+    doc_id = CollectionRepository.create_document(col_id, content, json.dumps(payload))
+    if not doc_id:
+        return jsonify({"error": "Gagal menambahkan dokumen ke database"}), 500
+        
+    # Add incrementally to FAISS index
+    chat_service.vector_store.add_document_to_index(col_id, doc_id, content)
+    
+    return jsonify({"success": True, "id": doc_id})

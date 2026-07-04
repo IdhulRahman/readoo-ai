@@ -45,7 +45,7 @@ def chat_stream():
     
     def generate():
         for chunk in chat_service.generate_streaming_response(data.message, payload.get("session_id"), g.user_id):
-            yield f"data: {json.dumps({'text': chunk})}\n\n"
+            yield f"data: {chunk}\n\n"
         yield "data: [DONE]\n\n"
     
     return Response(

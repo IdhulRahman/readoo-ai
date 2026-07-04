@@ -23,7 +23,7 @@ export const UsersTab: React.FC<UsersTabProps> = ({
     <div>
       <h2 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">Manajemen Pengguna</h2>
       
-      <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800">
+      <div className="max-h-[480px] overflow-y-auto overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800 scrollbar-thin">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-50 dark:bg-gray-750 border-b border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">

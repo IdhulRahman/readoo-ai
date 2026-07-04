@@ -105,7 +105,7 @@ def init_db() -> None:
         ("greeting_message", "Halo! Saya asisten AI Anda. Ada yang bisa saya bantu hari ini?"),
         ("system_prompt", "Kamu adalah asisten AI bernama {name} yang ramah. Jawab pertanyaan pengguna menggunakan konteks berikut:\n\n{context}\n\nPertanyaan pengguna: {query}\n\nJawablah dengan sopan, informatif, dan ringkas dalam bahasa Indonesia."),
         ("llm_provider", "groq"),
-        ("llm_model", "llama3-8b-8192"),
+        ("llm_model", "llama-3.1-8b-instant"),
         ("llm_api_key", ""),
         ("tts_language", "id-ID"),
         ("tts_voice", "id-ID-GadisNeural"),

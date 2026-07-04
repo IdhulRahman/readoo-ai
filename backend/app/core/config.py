@@ -15,7 +15,7 @@ class Settings:
     # LLM configuration
     LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "groq").lower()
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
-    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama3-8b-8192")
+    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
     OLLAMA_BASE_URL: str = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
     OLLAMA_MODEL: str = os.getenv("OLLAMA_MODEL", "llama3")
     OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")

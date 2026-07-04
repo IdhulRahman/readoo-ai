@@ -8,7 +8,7 @@ import { admin } from '../../services/api';
 
 export const LLMTestTab: React.FC = () => {
   const [provider, setProvider] = useState('groq');
-  const [model, setModel] = useState('llama3-8b-8192');
+  const [model, setModel] = useState('llama-3.1-8b-instant');
   const [apiKey, setApiKey] = useState('');
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);

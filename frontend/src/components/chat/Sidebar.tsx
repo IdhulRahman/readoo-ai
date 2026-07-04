@@ -53,12 +53,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <div
               key={s.id}
               onClick={() => onSelectSession(s.id)}
-              className={`flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 ${
-                currentSession === s.id ? 'bg-gray-100 dark:bg-gray-700' : ''
+              className={`flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 transition-all duration-150 ${
+                currentSession === s.id
+                  ? 'bg-blue-50/80 dark:bg-blue-900/20 border-l-4 border-l-blue-500 pl-2 font-medium'
+                  : 'border-l-4 border-l-transparent'
               }`}
             >
-              <MessageSquare className="w-4 h-4 text-gray-400 flex-shrink-0" />
-              <span className="text-sm text-gray-700 dark:text-gray-300 truncate flex-1">
+              <MessageSquare className={`w-4 h-4 flex-shrink-0 ${currentSession === s.id ? 'text-blue-500' : 'text-gray-400'}`} />
+              <span className={`text-sm truncate flex-1 ${currentSession === s.id ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'}`}>
                 {s.title}
               </span>
               <button

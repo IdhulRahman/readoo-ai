@@ -142,6 +142,12 @@ export const admin = {
   getCollectionDocuments: (colId: number) =>
     request<Record<string, unknown>[]>(`/admin/collections/${colId}/documents`),
 
+  addDocument: (colId: number, data: Record<string, unknown>) =>
+    request<{ success: boolean; id: number }>(`/admin/collections/${colId}/documents`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
   deleteDocument: (docId: number) =>
     request<{ success: boolean }>(`/admin/documents/${docId}`, { method: 'DELETE' }),
 

@@ -89,7 +89,7 @@ class ChatService:
         """Call LLM with system prompt and messages."""
         llm_cfg = self._get_llm_settings()
         provider = llm_cfg.get("llm_provider", "groq").lower()
-        model_name = llm_cfg.get("llm_model", "llama3-8b-8192")
+        model_name = llm_cfg.get("llm_model", "llama-3.1-8b-instant")
         encrypted_key = llm_cfg.get("llm_api_key", "")
         
         try:
@@ -140,7 +140,7 @@ class ChatService:
         """Call LLM with streaming response."""
         llm_cfg = self._get_llm_settings()
         provider = llm_cfg.get("llm_provider", "groq").lower()
-        model_name = llm_cfg.get("llm_model", "llama3-8b-8192")
+        model_name = llm_cfg.get("llm_model", "llama-3.1-8b-instant")
         encrypted_key = llm_cfg.get("llm_api_key", "")
         
         try:

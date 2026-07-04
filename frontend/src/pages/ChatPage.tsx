@@ -28,7 +28,6 @@ export default function ChatPage() {
   const [items, setItems] = useState<ChatItem[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [avatarAnim, setAvatarAnim] = useState<'idle' | 'wave' | 'thinking'>('idle');
-
   // Change Password Modal states
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [oldPassword, setOldPassword] = useState('');
@@ -228,7 +227,6 @@ export default function ChatPage() {
     setSidebarOpen(false);
     setAvatarAnim('idle');
   };
-
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setPasswordError('');
@@ -266,7 +264,6 @@ export default function ChatPage() {
       setPasswordLoading(false);
     }
   };
-
   return (
     <div className="flex h-screen bg-white dark:bg-gray-900">
       {mode === 'chat' && (
@@ -413,30 +410,32 @@ export default function ChatPage() {
             <div ref={messagesEndRef} />
           </div>
         ) : (
-          /* 3D Avatar View */
-          <div className="flex-1 w-full relative flex items-center justify-center p-4">
-            <VrmAvatar animation={avatarAnim} />
+          /* 3D Avatar View (Constrained to Chat Text Box bounds for perfect horizontal alignment) */
+          <div className="flex-1 w-full relative p-4 flex flex-col justify-end">
+            <div className="max-w-4xl mx-auto w-full h-full relative flex items-center justify-center">
+              <VrmAvatar animation={avatarAnim} />
 
-            {/* Float Speech Bubble Overlay */}
-            {messages.length > 0 && messages[messages.length - 1].role === 'assistant' && (
-              <div className="absolute top-10 left-1/2 transform -translate-x-1/2 bg-white/95 dark:bg-gray-850/95 shadow-xl rounded-2xl p-4 max-w-md w-full border border-gray-150 dark:border-gray-700 backdrop-blur z-10 transition-all animate-fade-in">
-                <p className="text-xs font-bold text-primary-600 dark:text-primary-400 mb-1">Aiko</p>
-                <p className="text-sm text-gray-800 dark:text-gray-100 leading-relaxed max-h-32 overflow-y-auto">
-                  {messages[messages.length - 1].content}
-                </p>
-              </div>
-            )}
+              {/* Float Speech Bubble Overlay */}
+              {messages.length > 0 && messages[messages.length - 1].role === 'assistant' && (
+                <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white/95 dark:bg-gray-850/95 shadow-xl rounded-2xl p-4 max-w-md w-full border border-gray-150 dark:border-gray-700 backdrop-blur z-10 transition-all animate-fade-in">
+                  <p className="text-xs font-bold text-primary-600 dark:text-primary-400 mb-1">Aiko</p>
+                  <p className="text-sm text-gray-800 dark:text-gray-100 leading-relaxed max-h-32 overflow-y-auto">
+                    {messages[messages.length - 1].content}
+                  </p>
+                </div>
+              )}
 
-            {/* Recommendations horizontally scrollable container */}
-            {items.length > 0 && messages.length > 0 && (
-              <div className="absolute bottom-6 inset-x-4 overflow-x-auto flex gap-3 p-2 z-10 scrollbar-none snap-x pointer-events-auto">
-                {items.map((item, i) => (
-                  <div key={i} className="flex-shrink-0 w-72 snap-center shadow-lg rounded-xl">
-                    <ItemCard item={item} />
-                  </div>
-                ))}
-              </div>
-            )}
+              {/* Recommendations horizontally scrollable container */}
+              {items.length > 0 && messages.length > 0 && (
+                <div className="absolute bottom-6 inset-x-4 overflow-x-auto flex gap-3 p-2 z-10 scrollbar-none snap-x pointer-events-auto">
+                  {items.map((item, i) => (
+                    <div key={i} className="flex-shrink-0 w-72 snap-center shadow-lg rounded-xl">
+                      <ItemCard item={item} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
 
@@ -512,7 +511,7 @@ export default function ChatPage() {
                   type="password"
                   value={oldPassword}
                   onChange={(e) => setOldPassword(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-750 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all text-sm"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-755 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all text-sm"
                   placeholder="Masukkan password lama"
                   required
                 />
@@ -526,7 +525,7 @@ export default function ChatPage() {
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-750 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all text-sm"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-650 rounded-lg bg-white dark:bg-gray-755 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all text-sm"
                   placeholder="Minimal 6 karakter"
                   required
                 />
@@ -540,7 +539,7 @@ export default function ChatPage() {
                   type="password"
                   value={confirmNewPassword}
                   onChange={(e) => setConfirmNewPassword(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-750 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all text-sm"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-650 rounded-lg bg-white dark:bg-gray-755 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition-all text-sm"
                   placeholder="Ulangi password baru"
                   required
                 />
@@ -558,7 +557,7 @@ export default function ChatPage() {
                     setNewPassword('');
                     setConfirmNewPassword('');
                   }}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-650 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm"
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-655 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm"
                   disabled={passwordLoading}
                 >
                   Batal

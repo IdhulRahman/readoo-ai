@@ -60,6 +60,7 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
   const blinkTimerRef = useRef<number>(0);
   const nextBlinkTimeRef = useRef<number>(3);
   const isBlinkingRef = useRef<boolean>(false);
+  const modelXRef = useRef<number>(0.0);
 
   // Constants
   const SHIFT_X = 0.0;
@@ -176,13 +177,16 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
             const pos = new THREE.Vector3();
             head.getWorldPosition(pos);
 
-            camera.position.x = SHIFT_X;
+            const modelX = pos.x;
+            modelXRef.current = modelX;
+
+            camera.position.x = modelX;
             camera.position.y = pos.y + CAMERA_Y_OFFSET;
             camera.position.z = ZOOM_LEVEL;
 
             const lookAtY = pos.y + LOOK_AT_OFFSET;
-            camera.lookAt(SHIFT_X, lookAtY, 0);
-            lookAtTarget.position.set(SHIFT_X, lookAtY, 1.0);
+            camera.lookAt(modelX, lookAtY, 0);
+            lookAtTarget.position.set(modelX, lookAtY, 1.0);
           }
         }
 
@@ -238,13 +242,16 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
             const pos = new THREE.Vector3();
             head.getWorldPosition(pos);
 
-            camera.position.x = SHIFT_X;
+            const modelX = pos.x - 0.2;
+            modelXRef.current = modelX;
+
+            camera.position.x = modelX;
             camera.position.y = pos.y + CAMERA_Y_OFFSET;
             camera.position.z = ZOOM_LEVEL;
 
             const lookAtY = pos.y + LOOK_AT_OFFSET;
-            camera.lookAt(SHIFT_X, lookAtY, 0);
-            lookAtTarget.position.set(SHIFT_X, lookAtY, 1.0);
+            camera.lookAt(modelX, lookAtY, 0);
+            lookAtTarget.position.set(modelX, lookAtY, 1.0);
           }
         }
 
@@ -265,7 +272,7 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
           loadedClipsRef.current.idle = idleClip;
           loadedClipsRef.current.wave = idleClip;
           loadedClipsRef.current.thinking = idleClip;
-          
+
           const action = mixer.clipAction(idleClip);
           action.setEffectiveWeight(1.0);
           action.play();
@@ -407,7 +414,7 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
       const x = ((event.clientX - rect.left) / container.clientWidth) * 2 - 1;
       const y = -((event.clientY - rect.top) / container.clientHeight) * 2 + 1;
 
-      lookAtTarget.position.x = SHIFT_X + x * 0.5;
+      lookAtTarget.position.x = modelXRef.current + x * 0.5;
       lookAtTarget.position.y = camera.position.y + y * 0.2;
     };
 
@@ -424,10 +431,10 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
-      
+
       // Close audio contexts
       if (audioContextRef.current) {
-        audioContextRef.current.close().catch(() => {});
+        audioContextRef.current.close().catch(() => { });
       }
     };
   }, []);

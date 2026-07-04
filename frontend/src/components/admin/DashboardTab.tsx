@@ -32,11 +32,11 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ stats }) => {
       {stats?.collections && stats.collections.length > 0 && (
         <Card className="mt-6">
           <h3 className="font-semibold mb-3">Koleksi & Dokumen</h3>
-          <div className="space-y-2">
+          <div className="max-h-[220px] overflow-y-auto pr-2 scrollbar-thin space-y-2">
             {stats.collections.map((c, i) => (
-              <div key={i} className="flex items-center justify-between text-sm">
+              <div key={i} className="flex items-center justify-between text-sm py-1 border-b border-gray-50 dark:border-gray-700/50 last:border-0">
                 <span className="text-gray-700 dark:text-gray-300">{c.name}</span>
-                <span className="text-gray-500">{c.document_count} dokumen</span>
+                <span className="text-gray-500 text-xs">{c.document_count} dokumen</span>
               </div>
             ))}
           </div>
