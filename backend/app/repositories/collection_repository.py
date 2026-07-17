@@ -85,11 +85,17 @@ class CollectionRepository:
         conn.commit()
         conn.close()
 
-        # If was active, activate another collection if exists
+        # FIX: Kalau collection yang dihapus tadi berstatus aktif, sistem perlu
+        # otomatis mengaktifkan collection lain. SEBELUMNYA query ini tidak
+        # punya ORDER BY, sehingga SQLite bisa mengembalikan collection MANA
+        # SAJA (dalam praktiknya cenderung yang PALING LAMA dibuat) - bukan
+        # yang paling relevan/terbaru. Ini menyebabkan collection lama yang
+        # sudah "usang" bisa tiba-tiba aktif lagi tanpa sepengetahuan user.
+        # Sekarang eksplisit diurutkan berdasarkan created_at TERBARU dulu.
         if was_active:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("SELECT id FROM collections LIMIT 1")
+            cursor.execute("SELECT id FROM collections ORDER BY created_at DESC LIMIT 1")
             other = cursor.fetchone()
             if other:
                 cursor.execute("UPDATE collections SET active = 1 WHERE id = ?", (other["id"],))

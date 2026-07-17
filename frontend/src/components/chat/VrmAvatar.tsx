@@ -8,15 +8,31 @@ interface VrmAvatarProps {
   animation?: 'idle' | 'wave' | 'thinking';
   status?: string;
   onStatusChange?: (status: string) => void;
+  assistantName?: string; // NEW: nama asisten dinamis, fallback 'Aiko'
+  // NEW: gender avatar 3D ('female' | 'male'), menentukan file VRM mana yang
+  // dimuat. Fallback 'female' supaya konsisten sama default di backend
+  // (avatar_gender) dan gak mengubah perilaku lama kalau setting belum diisi.
+  avatarGender?: 'female' | 'male';
 }
 
-// Global cache to allow instant reloading/rendering of Aiko on page transitions
-let cachedVrm: VRM | null = null;
-let cachedClips: Record<string, THREE.AnimationClip> = {};
+// NEW: path model VRM per gender. Placeholder 'samplemale.vrm' isinya sementara
+// sama dengan avatar perempuan sampai model VRM laki-laki asli tersedia --
+// begitu file itu diganti, tidak ada kode lain yang perlu disentuh.
+const MODEL_PATHS: Record<'female' | 'male', string> = {
+  female: '/assets/models/sample.vrm',
+  male: '/assets/models/samplemale.vrm',
+};
+
+// NEW: Global cache DIPISAH per gender (bukan 1 slot tunggal lagi), supaya:
+// - Balik ke gender yang sudah pernah dimuat tetap instan (dapat manfaat cache)
+// - Tapi gender yang berbeda tidak "ketiban" cache milik gender lain
+let cachedVrmMap: Partial<Record<'female' | 'male', VRM>> = {};
+let cachedClipsMap: Partial<Record<'female' | 'male', Record<string, THREE.AnimationClip>>> = {};
 
 export const clearVrmCache = () => {
-  if (cachedVrm) {
-    cachedVrm.scene.traverse((obj: any) => {
+  Object.values(cachedVrmMap).forEach((vrm) => {
+    if (!vrm) return;
+    vrm.scene.traverse((obj: any) => {
       if (obj.geometry) obj.geometry.dispose();
       if (obj.material) {
         if (Array.isArray(obj.material)) {
@@ -26,14 +42,16 @@ export const clearVrmCache = () => {
         }
       }
     });
-    cachedVrm = null;
-  }
-  cachedClips = {};
+  });
+  cachedVrmMap = {};
+  cachedClipsMap = {};
 };
 
 export const VrmAvatar: React.FC<VrmAvatarProps> = ({
   animation = 'idle',
   onStatusChange,
+  assistantName = 'Aiko', // NEW
+  avatarGender = 'female', // NEW
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -69,7 +87,12 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
   const ZOOM_LEVEL = 1.3;
   const LIP_SENSITIVITY = 3.0;
 
-  const MODEL_PATH = '/assets/models/sample.vrm';
+  // NEW: MODEL_PATH sekarang ditentukan dari prop avatarGender, bukan hardcode.
+  // Sesuai keputusan: cukup ikut nilai avatarGender saat komponen ini pertama
+  // kali mount (mis. reload halaman) -- tidak perlu auto-update real-time
+  // kalau setting diubah di tab Admin lain selagi halaman ini masih terbuka.
+  const MODEL_PATH = MODEL_PATHS[avatarGender] || MODEL_PATHS.female;
+
   const ANIMATION_MAP = {
     idle: '/assets/animations/idle_loop.vrma',
     wave: '/assets/animations/idle_loop.vrma', // Fallback to idle if other clips fail
@@ -160,8 +183,12 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
     };
 
     const loadModel = async () => {
+      // NEW: cache dicek per-gender (avatarGender), bukan 1 slot global lagi
+      const cachedVrm = cachedVrmMap[avatarGender];
+      const cachedClips = cachedClipsMap[avatarGender];
+
       // 1. If cached, load model and animation instantly from memory
-      if (cachedVrm && cachedClips.idle) {
+      if (cachedVrm && cachedClips && cachedClips.idle) {
         vrmRef.current = cachedVrm;
         scene.add(cachedVrm.scene);
 
@@ -209,7 +236,7 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
       }
 
       // 2. If not cached, load from network/filesystem
-      updateStatus('Memuat Aiko...');
+      updateStatus(`Memuat ${assistantName}...`);
       try {
         const gltf = await loader.loadAsync(MODEL_PATH);
         if (!isCurrent) {
@@ -278,9 +305,9 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
           action.play();
           currentActionRef.current = action;
 
-          // Populate cache
-          cachedVrm = vrm;
-          cachedClips = {
+          // NEW: populate cache di slot sesuai gender yang lagi aktif
+          cachedVrmMap[avatarGender] = vrm;
+          cachedClipsMap[avatarGender] = {
             idle: idleClip,
             wave: idleClip,
             thinking: idleClip,
@@ -437,7 +464,14 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
         audioContextRef.current.close().catch(() => { });
       }
     };
-  }, []);
+    // NEW: avatarGender ditambahkan ke dependency array. Efeknya: kalau prop
+    // ini berubah nilai (mis. karena fetch /api/settings/public di ChatPage
+    // baru selesai setelah avatar sempat mount duluan dengan default 'female'),
+    // avatar otomatis reload dengan model yang benar tanpa perlu refresh manual
+    // dari user -- sesuai kebutuhan minimal supaya tidak nyangkut ke gender
+    // yang salah karena race kondisi fetch async, tanpa perlu observer/listener
+    // tambahan untuk perubahan real-time dari tab Admin yang berbeda.
+  }, [avatarGender]);
 
   return (
     <div className="relative w-full h-full min-h-[400px] flex items-center justify-center bg-gradient-to-b from-blue-50/50 to-indigo-100/50 dark:from-gray-800/50 dark:to-gray-900/50 rounded-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50">
@@ -455,7 +489,7 @@ export const VrmAvatar: React.FC<VrmAvatarProps> = ({
       {/* Tiny Status Indicator */}
       {localStatus === 'Siap' && (
         <div className="absolute top-4 left-4 z-10 px-2 py-1 rounded bg-black/40 text-[10px] text-white backdrop-blur font-medium">
-          Aiko Live
+          {assistantName} Live
         </div>
       )}
     </div>

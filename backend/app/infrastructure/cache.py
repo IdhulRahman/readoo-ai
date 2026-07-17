@@ -3,6 +3,7 @@ import os
 import json
 import time
 import logging
+import threading
 from typing import Optional, Any
 
 logger = logging.getLogger(__name__)
@@ -114,27 +115,34 @@ class MemoryCache(CacheBackend):
 
 # Singleton cache instance
 _cache: Optional[CacheBackend] = None
+_cache_lock = threading.Lock()
 
 
 def get_cache() -> CacheBackend:
-    """Get or initialize cache backend."""
+    """Get or initialize cache backend (thread-safe)."""
     global _cache
     if _cache is not None:
         return _cache
 
-    # Try Redis first
-    if REDIS_AVAILABLE:
-        redis_host = os.getenv("REDIS_HOST", "localhost")
-        redis_port = int(os.getenv("REDIS_PORT", 6379))
-        try:
-            _cache = RedisCache(host=redis_host, port=redis_port)
+    with _cache_lock:
+        # Double-check: thread lain mungkin sudah selesai init duluan
+        # sementara thread ini nunggu lock
+        if _cache is not None:
             return _cache
-        except Exception:
-            pass
 
-    # Fallback to in-memory
-    _cache = MemoryCache()
-    return _cache
+        # Try Redis first
+        if REDIS_AVAILABLE:
+            redis_host = os.getenv("REDIS_HOST", "localhost")
+            redis_port = int(os.getenv("REDIS_PORT", 6379))
+            try:
+                _cache = RedisCache(host=redis_host, port=redis_port)
+                return _cache
+            except Exception:
+                pass
+
+        # Fallback to in-memory
+        _cache = MemoryCache()
+        return _cache
 
 
 # Convenience functions

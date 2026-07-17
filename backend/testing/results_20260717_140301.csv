@@ -1,0 +1,141 @@
+no,pertanyaan,kategori_uji,ekspektasi,status_code,ok,elapsed_sec,num_items,judul_muncul,error,reply
+1,rekomendasiin buku matematika,Relevan - umum,Muncul buku dari kategori Sains (mis. Calculus,200,True,3.789,5,"Discrete Mathematics with Applications | Applied mathematics for business, economics, and the social sciences | Humble Pi | Discrete Mathematics with Applications | Calculus",,"Saya dapat merekomendasikan beberapa buku matematika yang populer dan bermanfaat!
+
+Berikut beberapa pilihan:
+
+1. **Discrete Mathematics with Applications** oleh Susanna S. Epp: Buku ini sangat bagus untuk mempelajari matematika diskritis, yang sangat penting dalam komputer science dan ilmu komputer.
+2. **Calculus** oleh James Stewart: Buku ini merupakan salah satu referensi utama dalam mempelajari kalkulus, yang sangat penting dalam banyak bidang ilmu.
+3. **Applied mathematics for business, economics, and the social sciences** oleh Frank S. Budnick: Buku ini sangat bagus untuk mempelajari matematika yang aplikatif dalam bisnis, ekonomi, dan ilmu sosial.
+
+Pilihan lainnya juga ada, tergantung pada minat Anda dan bidang yang ingin Anda pelajari. Apakah Anda memiliki kebutuhan atau minat tertentu dalam matematika?"
+2,buku kalkulus,Relevan - spesifik,"Muncul ""Calculus"" oleh James Stewart",200,True,2.033,2,Calculus | Code,,"Saya menemukan buku dengan judul ""Calculus"" yang mungkin Anda cari. Berikut adalah informasi tentang buku tersebut:
+
+- Judul: Calculus
+- Pengarang: James Stewart
+- Kode: OL100903W
+- Klasifikasi: Matematika
+- Jenis_buku: Buku Teks
+- Subjek: Calculus, Problems, exercises, Analyse (wiskunde), Calcul infinitésimal, Cálculo
+- Tahun_terbit: 1986
+- Penerbit: McGraw-Hill Ryerson
+
+Apakah ini buku yang Anda cari?"
+3,buku statistik,Relevan - spesifik,"Muncul ""How to Lie with Statistics""",200,True,1.647,1,How to Lie with Statistics,,"Saya memiliki informasi tentang sebuah buku yang terkait dengan statistik. Apakah Anda sedang mencari informasi tentang buku ""How to Lie with Statistics"" karya Darrell Huff dan Irving Geis? Buku ini dapat ditemukan dengan ID 2011 pada database kami."
+4,buku tentang python,Relevan - spesifik,"Muncul ""Learning Python""",200,True,1.741,1,Learning Python,,"Kami memiliki buku tentang Python dengan judul ""Learning Python"" karya Mark Lutz dan David Ascher. Buku ini dapat ditemukan di rak R-41 dengan kode OL2784125W."
+5,buku machine learning,Relevan - spesifik,"Muncul ""Hands-On Machine Learning...""",200,True,1.951,3,"Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow | $100M Offers | Learning Python",,"Anda mencari buku tentang Machine Learning? 
+
+Kami memiliki buku yang sesuai dengan kebutuhan Anda, yaitu:
+
+- ""Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow"" oleh Aurélien Géron
+
+Buku ini membahas topik terkait Machine Learning dan Mathematics. Anda dapat melihat detail buku ini di Item #1 pada daftar buku kami."
+6,buku ekonomi,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,200,True,2.106,5,Basic economics | Think and Grow Rich | Your Next Five Moves | Freakonomics | $100M Offers,,"Anda mencari buku ekonomi? Kami memiliki beberapa pilihan buku ekonomi yang menarik.
+
+Berikut beberapa rekomendasi:
+
+1. ""Basic Economics"" oleh Thomas Sowell (Item #1) - Buku ini membahas topik terkait ekonomi, kondisi ekonomi, dan pengajaran ekonomi.
+2. ""Your Next Five Moves"" oleh Patrick Bet-David dan Greg Dinkin (Item #3) - Buku ini membahas topik terkait ekonomi dan memberikan saran untuk membuat keputusan bisnis yang tepat.
+3. ""Freakonomics"" oleh Steven D. Levitt dan Stephen J. Dubner (Item #5) - Buku ini membahas topik terkait ekonomi, aspek psikologi ekonomi, dan aspek sosial ekonomi.
+4. ""Freakonomics"" oleh Steven D. Levitt dan Stephen J. Dubner (Item #5) - Buku ini membahas topik terkait ekonomi, aspek psikologi ekonomi, dan aspek sosial ekonomi.
+
+Kami berharap Anda menemukan buku ekonomi yang sesuai dengan minat Anda!"
+7,buku bisnis,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,200,True,1.966,5,$100M Offers | Trading in the zone | Start with why | The Hard Thing About Hard Things | Think and Grow Rich,,"Kami memiliki beberapa pilihan buku bisnis yang menarik. Berikut adalah beberapa rekomendasi:
+
+1. '$100M Offers' oleh Alex Hormozi - Buku ini membahas tentang cara membuat penawaran yang efektif dalam bisnis.
+2. 'Trading in the zone' oleh Mark Douglas - Buku ini membahas tentang cara mencapai keadaan mental yang optimal untuk berinvestasi dan bertrading.
+3. 'Start with why' oleh Simon Sinek - Buku ini membahas tentang cara memahami tujuan dan nilai-nilai dalam bisnis.
+4. 'The Hard Thing About Hard Things' oleh Ben Horowitz - Buku ini membahas tentang cara menghadapi tantangan dan kesulitan dalam bisnis.
+5. 'Think and Grow Rich' oleh Napoleon Hill - Buku ini membahas tentang cara mencapai kesuksesan dan kekayaan melalui pikiran positif dan motivasi.
+
+Anda bisa memilih salah satu dari buku-buku tersebut berdasarkan minat dan kebutuhan Anda."
+8,buku komunikasi,Relevan - umum,Muncul buku dari kategori Ilmu Komunikasi (mis. How to Talk to Anyone),200,True,2.083,5,"Manifest der Kommunistischen Partei | How to Talk to Anyone | La conquête du pain | How to talk to anyone, anytime, anywhere | Convince them in 90 seconds or less",,"Anda sedang mencari buku terkait komunikasi. Kami memiliki beberapa pilihan buku yang mungkin sesuai dengan kebutuhan Anda.
+
+Berikut beberapa rekomendasi buku komunikasi yang tersedia:
+
+1. **How to Talk to Anyone** oleh Leil Lowndes - Buku ini membahas tentang bagaimana berkomunikasi dengan efektif dan cara meningkatkan kemampuan interpersonal.
+2. **Convince them in 90 seconds or less** oleh Nicholas Boothman - Buku ini membahas tentang bagaimana berkomunikasi dengan efektif dalam waktu singkat dan cara meningkatkan kemampuan nonverbal.
+3. **Manifest der Kommunistischen Partei** oleh Karl Marx dan Friedrich Engels - Meskipun buku ini lebih terkait dengan komunisme, namun juga membahas tentang komunikasi dan bagaimana membangun masyarakat yang lebih adil.
+4. **La conquête du pain** oleh Peter Kropotkin - Buku ini membahas tentang sejarah dan komunisme, namun juga membahas tentang bagaimana membangun masyarakat yang lebih adil dan berkomunikasi dengan efektif.
+5. **How to talk to anyone, anytime, anywhere** oleh Larry King - Buku ini membahas tentang bagaimana berkomunikasi dengan efektif dalam berbagai situasi dan cara meningkatkan kemampuan konversasi.
+
+Silakan memilih buku yang paling sesuai dengan kebutuhan Anda."
+9,buku teknik,Relevan - umum,Muncul buku dari kategori Teknik (mis. Engineering Mechanics),200,True,1.92,5,"The Book | Transactions on Engineering Technologies | Engineering Mechanics, Statics & Dynamics | Watchers | Electrical engineering",,"Anda sedang mencari buku teknik, ya? Kami memiliki beberapa pilihan buku teknik yang menarik. Berikut beberapa rekomendasi:
+
+1. **The Book** (Item #1) - Buku ini membahas topik terkait Art, Long Now Manual for Civilization, Survival.
+2. **Transactions on Engineering Technologies** (Item #2) - Buku ini membahas topik terkait Computer engineering, Software engineering, Engineering.
+3. **Engineering Mechanics, Statics & Dynamics** (Item #3) - Buku ini membahas topik terkait Applied Mechanics, Dynamics, Mechanics.
+4. **Electrical engineering** (Item #5) - Buku ini membahas topik terkait Electrical engineering, Electric engineering, Textbooks.
+
+Mana yang menarik bagi Anda?"
+10,novel,Relevan - umum,Muncul buku dari kategori Sastra (mis. The Picture of Dorian Gray),200,True,1.79,5,It Ends With Us | The Art of War | Shatter Me | A People's History of the United States | Watchers,,"Ternyata kamu mencari novel! Kami memiliki beberapa pilihan novel yang menarik. Apakah kamu ingin mencari novel yang sesuai dengan genre tertentu? Misalnya, fiksi, romansa, atau mungkin sejarah?"
+11,buku fiksi,Relevan - umum,Muncul buku dari kategori Sastra,200,True,2.018,5,It Ends With Us | Diary of a Wimpy Kid | Powerless | The Silent Patient | The Picture of Dorian Gray,,"Buku-buku yang tersedia di sistem kami yang termasuk dalam kategori ""Fiksi"" adalah:
+
+1. It Ends With Us (Colleen Hoover) - Item #1
+2. Diary of a Wimpy Kid (Jeff Kinney) - Item #2
+3. Powerless (Lauren Roberts) - Item #3
+4. The Silent Patient (Alex Michaelides) - Item #4
+5. The Picture of Dorian Gray (Oscar Wilde) - Item #5
+
+Semua buku tersebut merupakan fiksi."
+12,buku sejarah,Relevan - umum,Muncul buku dari kategori Ilmu Sosial (mis. A People's History of the US),200,True,1.876,5,A People's History of the United States | The Lessons of History | The Book | La conquête du pain | Mga gunita ng himagsikan,,"Anda sedang mencari buku sejarah. Kami memiliki beberapa pilihan buku sejarah yang menarik.
+
+1. ""A People's History of the United States"" oleh Howard Zinn (Item #1) - Ini adalah buku sejarah yang membahas tentang sejarah Amerika Serikat dari sudut pandang rakyat.
+2. ""The Lessons of History"" oleh Will Durant dan Ariel Durant (Item #2) - Ini adalah buku sejarah yang membahas tentang pelajaran-pelajaran yang dapat dipetik dari sejarah.
+3. ""Mga gunita ng himagsikan"" oleh Emilio Aguinaldo (Item #5) - Ini adalah buku sejarah yang membahas tentang sejarah Filipina.
+
+Kami juga memiliki beberapa buku sejarah lainnya yang dapat Anda lihat. Apakah Anda ingin tahu lebih lanjut tentang salah satu dari buku-buku tersebut?"
+13,buku filsafat,Relevan - spesifik,"Muncul ""The Story of Philosophy"" atau ""Ringkasan sejarat filsafat""",200,True,1.879,5,The Story of Philosophy | Ringkasan sejarat filsafat | The Lessons of History | Fundamentals of physics | The great conversation,,"Anda mencari buku terkait filsafat. Kami memiliki beberapa opsi buku terkait filsafat yang dapat Anda pilih.
+
+1. **The Story of Philosophy** oleh Will Durant (Item #1) - Buku ini membahas topik terkait filosof, filsafat, dan sejarah.
+2. **Ringkasan sejarat filsafat** oleh K. Bertens (Item #2) - Buku ini membahas topik terkait filsafat dan sejarah.
+3. **The Lessons of History** oleh Will Durant dan Ariel Durant (Item #3) - Buku ini membahas topik terkait filsafat, sejarah, dan sejarah dunia.
+4. **The great conversation** oleh Norman Melchert (Item #5) - Buku ini membahas topik terkait filsafat, teks, dan introduksi.
+
+Apakah Anda ingin tahu lebih lanjut tentang salah satu buku di atas?"
+14,buku tentang komputer,Relevan - umum,Muncul buku dari kategori Ilmu Komputer,200,True,2.028,5,"2001 | Code | Advances in Computers, Volume 49 (Advances in Computers) | The Difference Engine | Accelerate",,"Anda mencari buku tentang komputer! Kami memiliki beberapa pilihan buku yang relevan dengan topik komputer. Berikut beberapa rekomendasi:
+
+1. **Code** oleh Charles Petzold - Buku ini membahas tentang komputer programming dan coding theory.
+2. **Advances in Computers, Volume 49 (Advances in Computers)** oleh Marvin V. Zelkowitz dan Marshall C. Yovits - Buku ini membahas tentang komputer dan teknologi informasi.
+3. **Accelerate** oleh Nicole Forsgren, Jez Humble, dan Gene Kim - Buku ini membahas tentang software engineering dan pengembangan aplikasi komputer.
+
+Mana yang menarik perhatian Anda?"
+15,buku robotik,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,1.668,0,,,"Maaf, saya tidak memiliki informasi tentang buku robotik yang spesifik. Apakah Anda mencari rekomendasi buku robotik atau ingin tahu tentang topik robotik secara umum?"
+16,buku masak,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,1.679,4,Humble Pi | Code | Watchers | The Book,,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5064, Requested 1033. Please try again in 970ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."
+17,resep rendang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,2.096,0,,,"Maaf, saya tidak memiliki informasi tentang resep rendang yang spesifik. Namun, saya dapat memberikan beberapa informasi umum tentang resep rendang yang mungkin bermanfaat.
+
+Rendang adalah makanan khas Minangkabau, Sumatera Barat, yang terbuat dari daging sapi atau kambing yang dimasak dalam santan dan rempah-rempah. Berikut adalah beberapa bahan utama yang biasanya digunakan dalam resep rendang:
+
+- 500 gram daging sapi atau kambing
+- 2 liter santan
+- 5 siung bawang merah
+- 3 siung bawang putih
+- 2 batang serai
+- 2 lembar daun salam
+- 2 lembar daun kunyit
+- 1 sendok teh garam
+- 1 sendok teh gula pasir
+- 1 sendok teh merica bubuk
+- 1 sendok teh kaldu bubuk
+
+Anda dapat menambahkan atau mengubah bahan-bahan sesuai dengan selera Anda. Jika Anda ingin lebih detail tentang resep rendang, saya sarankan Anda mencari di internet atau buku masakan."
+18,buku kedokteran,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,1.809,5,Physics | Fundamentals of physics | Concepts of physics | Physics for scientists and engineers | Physical chemistry,,"Maaf, saya tidak menemukan informasi tentang buku kedokteran di daftar item yang Anda berikan. Item-item yang Anda berikan sebenarnya adalah buku teks fisika dan kimia. Jika Anda ingin mencari buku kedokteran, saya dapat membantu Anda mencari di database lain atau menyarankan beberapa buku kedokteran populer."
+19,buku bahasa jepang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,1.653,0,,,"Mohon maaf, saya tidak memiliki informasi yang spesifik tentang buku bahasa Jepang. Jika Anda mencari rekomendasi buku atau sumber belajar bahasa Jepang, saya dapat mencoba membantu Anda dengan informasi umum."
+20,halo,Greeting,Sapaan balik tanpa card,200,True,0.033,0,,,hai! saya asisten AI Anda. Ada yang bisa saya bantu hari ini?
+21,terus apa yg kamu bisa?,Ambigu/nggak jelas,Tidak ada card / jawaban jujur,200,True,1.984,0,,,"Saya bisa membantu Anda dengan pertanyaan dan informasi yang Anda perlu. Jika Anda memiliki pertanyaan atau topik yang ingin dibahas, saya akan berusaha menjawabnya dengan jujur dan akurat. Saya juga bisa membantu Anda dengan informasi umum, penjelasan, atau bahkan hanya berdiskusi. Gimana saya bisa membantu Anda hari ini?"
+22,aljabar,Relevan - spesifik (subtopik),Muncul buku terkait aljabar/matematika,200,True,1.701,0,,,Aljabar adalah cabang matematika yang mengkaji struktur dan operasi pada himpunan nilai yang umumnya tidak terdefinisi dengan bilangan biasa. Aljabar sering digunakan dalam penyelesaian sistem persamaan linear dan nonlinear.
+23,buku tentang uang,Relevan - umum (subtopik ekonomi),Muncul buku dari kategori Ekonomi & Bisnis (mis. Debt),200,True,1.896,2,Das Kapital | Debt,,"Saya menemukan dua buku yang terkait dengan topik uang pada daftar yang saya lihat. 
+
+Untuk Item #2: Judul ""Debt"" oleh David Graeber, buku tersebut membahas topik terkait uang, khususnya tentang utang. Anda dapat melihat informasinya pada konteks yang telah saya berikan sebelumnya."
+24,buku tentang psikologi manusia,Relevan - spesifik (subtopik),Muncul buku terkait (mis. Surrounded by Idiots),200,True,2.138,5,Concepts of physics | Read People Like a Book | Physics | Algorithms to Live By | Conceptual physics,,"Mohon maaf, saya tidak menemukan buku tentang psikologi manusia dalam daftar yang diberikan. Namun, saya melihat bahwa buku ""Read People Like a Book"" dengan ID 2072 memiliki topik terkait ""Social psychology"", yang mungkin relevan dengan psikologi manusia."
+25,buku tentang tesla,Relevan - spesifik,"Muncul ""My Inventions"" oleh Nikola Tesla",200,True,2.148,2,My inventions | Calculus,,"Buku yang Anda cari kemungkinan adalah ""My inventions"" karya Nikola Tesla. Buku ini memiliki judul yang relevan dengan topik tentang Tesla. Silakan mengecek rincian buku tersebut:
+
+* Judul: My inventions
+* Pengarang: Nikola Tesla
+* Id: 2077
+* Kode: OL71633W
+* Klasifikasi: Teknik
+* Jenis_buku: Buku Teks
+* Subjek: History, Electric engineers, Electric engineering
+
+Apakah informasi ini membantu?"

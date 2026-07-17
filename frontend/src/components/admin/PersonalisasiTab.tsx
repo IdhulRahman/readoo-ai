@@ -58,6 +58,9 @@ export const PersonalisasiTab: React.FC<PersonalisasiTabProps> = ({ onSuccess, s
   const [assistantName, setAssistantName] = useState('');
   const [greetingMessage, setGreetingMessage] = useState('');
   const [assistantJob, setAssistantJob] = useState('');
+  // NEW: gender avatar 3D, dipakai untuk menentukan model VRM mana yang dimuat
+  // di ChatPage (avatar perempuan/laki-laki), supaya konsisten sama Model Suara TTS
+  const [avatarGender, setAvatarGender] = useState('female');
 
   // LLM States
   const [llmProvider, setLlmProvider] = useState('groq');
@@ -95,6 +98,7 @@ export const PersonalisasiTab: React.FC<PersonalisasiTabProps> = ({ onSuccess, s
           assistant_name: sett.assistant_name || '',
           greeting_message: sett.greeting_message || '',
           assistant_job: sett.assistant_job || '',
+          avatar_gender: sett.avatar_gender || 'female',
           llm_provider: sett.llm_provider || '',
           llm_model: sett.llm_model || '',
           llm_api_key: sett.llm_api_key || '',
@@ -108,6 +112,7 @@ export const PersonalisasiTab: React.FC<PersonalisasiTabProps> = ({ onSuccess, s
         if (sett.assistant_name) setAssistantName(sett.assistant_name);
         if (sett.greeting_message) setGreetingMessage(sett.greeting_message);
         if (sett.assistant_job) setAssistantJob(sett.assistant_job);
+        if (sett.avatar_gender) setAvatarGender(sett.avatar_gender);
         if (sett.llm_provider) setLlmProvider(sett.llm_provider);
         if (sett.llm_model) {
           setLlmModel(sett.llm_model);
@@ -137,6 +142,7 @@ export const PersonalisasiTab: React.FC<PersonalisasiTabProps> = ({ onSuccess, s
       assistantName !== (initialSettingsRef.current.assistant_name || '') ||
       greetingMessage !== (initialSettingsRef.current.greeting_message || '') ||
       assistantJob !== (initialSettingsRef.current.assistant_job || '') ||
+      avatarGender !== (initialSettingsRef.current.avatar_gender || 'female') ||
       llmProvider !== (initialSettingsRef.current.llm_provider || '') ||
       llmModel !== (initialSettingsRef.current.llm_model || '') ||
       (llmApiKey !== '' && llmApiKey !== '********' && llmApiKey !== (initialSettingsRef.current.llm_api_key || '')) ||
@@ -151,6 +157,7 @@ export const PersonalisasiTab: React.FC<PersonalisasiTabProps> = ({ onSuccess, s
     assistantName,
     greetingMessage,
     assistantJob,
+    avatarGender,
     llmProvider,
     llmModel,
     llmApiKey,
@@ -279,6 +286,7 @@ export const PersonalisasiTab: React.FC<PersonalisasiTabProps> = ({ onSuccess, s
         assistant_name: assistantName,
         greeting_message: greetingMessage,
         assistant_job: assistantJob,
+        avatar_gender: avatarGender,
       };
       await admin.saveSettings(payload);
       
@@ -288,6 +296,7 @@ export const PersonalisasiTab: React.FC<PersonalisasiTabProps> = ({ onSuccess, s
         assistant_name: assistantName,
         greeting_message: greetingMessage,
         assistant_job: assistantJob,
+        avatar_gender: avatarGender,
       };
 
       setHasUnsavedChanges(false);
@@ -374,7 +383,7 @@ export const PersonalisasiTab: React.FC<PersonalisasiTabProps> = ({ onSuccess, s
           <MessageSquare className="w-5 h-5 text-primary-500" />
           <span>Identitas Asisten</span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Input
             label="Nama Asisten"
             value={assistantName}
@@ -386,6 +395,19 @@ export const PersonalisasiTab: React.FC<PersonalisasiTabProps> = ({ onSuccess, s
             value={assistantJob}
             onChange={(e) => setAssistantJob(e.target.value)}
             placeholder="Contoh: Customer Service Toko Elektronik, Sales Mobil, Pustakawan Digital"
+          />
+          {/* NEW: pilihan avatar 3D (perempuan/laki-laki). Model VRM sebenarnya
+              (sample.vrm / samplemale.vrm) ditentukan di frontend berdasarkan
+              value ini, supaya tampilan avatar konsisten sama Model Suara TTS
+              yang dipilih di kartu "Suara AI" sebelah kanan. */}
+          <Select
+            label="Avatar 3D"
+            value={avatarGender}
+            onChange={(e) => setAvatarGender(e.target.value)}
+            options={[
+              { value: 'female', label: 'Perempuan' },
+              { value: 'male', label: 'Laki-laki' },
+            ]}
           />
           <Input
             label="Pesan Sambutan"

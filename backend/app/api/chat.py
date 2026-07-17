@@ -4,12 +4,12 @@ from flask import request, jsonify, g
 
 from app.api import api_bp
 from app.api.middleware import require_auth, require_rate_limit
-from app.services.chat_service import ChatService
+from app.services.chat_service import get_chat_service
 from app.core.validators import ChatRequest
 
 logger = logging.getLogger(__name__)
 
-chat_service = ChatService()
+chat_service = get_chat_service()
 
 
 @api_bp.route("/chat/text", methods=["POST"])

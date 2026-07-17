@@ -222,3 +222,11 @@ export const admin = {
       body: JSON.stringify(data),
     }),
 };
+
+// Public settings (accessible by all logged-in users, not just admin)
+export const publicSettings = {
+  getAssistantInfo: () =>
+    request<{ assistant_name: string; assistant_job: string; greeting_message: string }>(
+      '/settings/public'
+    ),
+};

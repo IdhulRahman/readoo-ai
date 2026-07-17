@@ -1,0 +1,71 @@
+no,pertanyaan,kategori_uji,ekspektasi,status_code,ok,elapsed_sec,num_items,judul_muncul,error,reply
+1,rekomendasiin buku matematika,Relevan - umum,Muncul buku dari kategori Sains (mis. Calculus,200,True,21.149,3,"$100M Offers | How to Lie with Statistics | Light, Magnetism, and Electricity",,"Maaf, saya tidak menemukan buku matematika yang tepat di list yang saya miliki. Namun, saya dapat merekomendasikan beberapa opsi yang mungkin relevan.
+
+Ada dua buku yang berkategori Sains, tetapi tidak secara eksplisit kategori Matematika. Mungkin Anda dapat mempertimbangkan untuk membaca:
+
+- Item #2: ""How to Lie with Statistics"" oleh Darrell Huff, Irving Geis (1954) - Buku ini membahas topik terkait Statistics, Statistieken, Textbooks.
+- Item #3: ""Light, Magnetism, and Electricity"" oleh Isaac Asimov (1966) - Buku ini membahas topik terkait Physics, Physique.
+
+Jika Anda memiliki preferensi khusus atau ingin mencari buku yang lebih spesifik, saya dapat membantu Anda mencari lebih lanjut."
+2,buku kalkulus,Relevan - spesifik,"Muncul ""Calculus"" oleh James Stewart",200,True,0.614,7,"Hackers | Code | Watchers | $100M Offers | Light, Magnetism, and Electricity | 2001 | My inventions",,"Saya tidak menemukan buku yang berjudul ""Kalkulus"" di daftar buku yang saya miliki. Apakah Anda ingin saya mencari buku lain yang terkait dengan topik kalkulus?"
+3,buku statistik,Relevan - spesifik,"Muncul ""How to Lie with Statistics""",200,True,0.76,9,"Concepts of physics | Code | Watchers | Physics | $100M Offers | What is mathematics? | Light, Magnetism, and Electricity | 2001 | My inventions",,"Maaf, saya tidak menemukan buku dengan judul ""statistik"" dalam daftar yang diberikan. Buku-buku yang ada dalam daftar sebelumnya berhubungan dengan topik seperti fisika, komputer, matematika, dan lain-lain. Jika Anda ingin mencari buku dengan judul ""statistik"", saya mungkin tidak dapat membantu Anda berdasarkan informasi yang ada."
+4,buku tentang python,Relevan - spesifik,"Muncul ""Learning Python""",200,True,0.439,7,"Concepts of physics | Watchers | Physics | $100M Offers | Light, Magnetism, and Electricity | 2001 | My inventions",,"Maaf, saya tidak menemukan buku tentang Python di daftar yang saya miliki."
+5,buku machine learning,Relevan - spesifik,"Muncul ""Hands-On Machine Learning...""",200,True,0.435,4,"Concepts of physics | $100M Offers | Light, Magnetism, and Electricity | My inventions",,"Maaf, saya tidak menemukan informasi tentang buku ""Machine Learning"" di daftar yang saya miliki. Jika Anda mencari informasi tentang buku ""Machine Learning"", saya sarankan untuk mencari di sumber lain atau bertanya kepada petugas perpustakaan."
+6,buku ekonomi,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,200,True,0.627,5,Start with why | Never Split the Difference | Why Nations Fail | Start with why | Atomic Habits,,"Terdapat beberapa buku ekonomi yang tersedia. Berikut adalah beberapa rekomendasi:
+
+1. ""Why Nations Fail"" karya Daron Acemoglu dan James A. Robinson, yang membahas tentang Revolutions, Economic development, dan Economics.
+2. ""Why Nations Fail"" karya Daron Acemoglu dan James A. Robinson, yang membahas tentang Revolutions, Economic development, dan Economics.
+3. ""Start with why"" karya Simon Sinek, yang membahas tentang Business, Nonfiction, Leadership, dan Management.
+4. ""Never Split the Difference"" karya Chris Voss dan Tahl Raz, yang membahas tentang Negotiation, Negotiation in business, dan Business communication.
+5. ""Atomic Habits"" karya James Clear, yang membahas tentang Habit, Habit breaking, Behavior modification, dan Business.
+
+Apakah Anda ingin tahu lebih lanjut tentang salah satu buku tersebut?"
+7,buku bisnis,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,200,True,0.637,3,Como Europa subdesarrollo a Africa | Why Nations Fail | Atomic Habits,,"Kami memiliki beberapa pilihan buku bisnis yang menarik. Berikut adalah beberapa rekomendasi:
+
+- **Item #1: Como Europa subdesarrollo a Africa** oleh Walter Rodney ini membahas topik terkait Economic conditions, Colonial influence, Foreign economic relations.
+- **Item #2: Why Nations Fail** oleh Daron Acemoglu dan James A. Robinson membahas topik terkait Revolutions, Economic development, Economics.
+- **Item #3: Atomic Habits** oleh James Clear membahas topik terkait Habit, Habit breaking, Behavior modification, yang juga terkait dengan bisnis.
+
+Silakan pilih salah satu buku yang paling relevan dengan kebutuhan Anda."
+8,buku komunikasi,Relevan - umum,Muncul buku dari kategori Ilmu Komunikasi (mis. How to Talk to Anyone),200,True,11.93,6,"Concepts of physics | $100M Offers | La conquête du pain | Manifest der Kommunistischen Partei | Light, Magnetism, and Electricity | Men are From Mars, Women are From Venus",,"Ada beberapa buku komunikasi yang kami miliki. Berikut adalah beberapa contoh:
+
+- Item #3: Judul ""La conquête du pain"" oleh Peter Kropotkin, kategori utama Ilmu Komunikasi.
+- Item #4: Judul ""Manifest der Kommunistischen Partei"" oleh Karl Marx, Friedrich Engels, kategori utama Ilmu Komunikasi.
+- Item #6: Judul ""Men are From Mars, Women are From Venus"" oleh John Gray, kategori utama Ilmu Komunikasi.
+
+Apakah Anda ingin mengetahui lebih lanjut tentang salah satu buku tersebut?"
+9,buku teknik,Relevan - umum,Muncul buku dari kategori Teknik (mis. Engineering Mechanics),200,True,2.302,6,"Structural analysis | Watchers | Electrical engineering fundamentals | Engineering Mechanics, Statics & Dynamics | Transactions on Engineering Technologies | My inventions",,"Saya dapat menampilkan beberapa buku teknik yang tersedia. Berikut adalah beberapa contoh:
+
+1. **Structural analysis** oleh R. C. Hibbeler - Buku ini membahas topik terkait Structural analysis (Engineering) dan Structural engineering - general & miscellaneous.
+2. **Electrical engineering fundamentals** oleh Vincent Del Toro - Buku ini membahas topik terkait Electric engineering, Electric engineering, handbooks, manuals, etc., dan Electrical engineering.
+3. **Engineering Mechanics, Statics & Dynamics** oleh R. C. Hibbeler - Buku ini membahas topik terkait Applied Mechanics, Dynamics, Mechanics.
+4. **Transactions on Engineering Technologies** oleh Sio-Iong Ao, Haeng Kon Kim, Oscar Castillo - Buku ini membahas topik terkait Computer engineering, Software engineering, Engineering.
+5. **My inventions** oleh Nikola Tesla - Buku ini membahas topik terkait History, Electric engineers, Electric engineering.
+
+Apakah Anda ingin mencari buku teknik lainnya?"
+10,novel,Relevan - umum,Muncul buku dari kategori Sastra (mis. The Picture of Dorian Gray),200,True,0.425,0,,,"Novel adalah sebuah buku fiksi yang biasanya berisi cerita panjang dengan karakter, alur, dan plot yang kompleks. Novel dapat berupa fiksi ilmiah, romansa, misteri, atau genre lainnya. Apakah Anda mencari informasi tentang novel tertentu atau ingin tahu lebih lanjut tentang genre novel?"
+11,buku fiksi,Relevan - umum,Muncul buku dari kategori Sastra,200,True,0.455,3,"Concepts of physics | $100M Offers | Light, Magnetism, and Electricity",,"Maaf, saya tidak menemukan informasi tentang buku fiksi di daftar buku yang Anda berikan. Kedua buku yang saya lihat adalah buku non-fiksi, yaitu ""Concepts of physics"" oleh Harish Chandra Verma dan ""Light, Magnetism, and Electricity"" oleh Isaac Asimov. Saya tidak tahu apakah ada buku fiksi lainnya di daftar."
+12,buku sejarah,Relevan - umum,Muncul buku dari kategori Ilmu Sosial (mis. A People's History of the US),200,True,0.5,4,"Concepts of physics | $100M Offers | Thirty years of the Soviet state | Light, Magnetism, and Electricity",,"Saya menemukan beberapa buku yang terkait dengan subjek sejarah. Berikut beberapa pilihan:
+
+1. ""Thirty years of the Soviet state"" dengan ID 2101, yang membahas topik terkait Soviet Union -- History -- 1925-1953.
+2. Buku lainnya mungkin tersedia, saya tidak tahu lebih lanjut tentang buku-buku tersebut."
+13,buku filsafat,Relevan - spesifik,"Muncul ""The Story of Philosophy"" atau ""Ringkasan sejarat filsafat""",200,True,5.289,7,"Code | Watchers | $100M Offers | What is mathematics? | Light, Magnetism, and Electricity | 2001 | My inventions",,"Maaf, saya tidak menemukan buku filsafat di daftar yang kamu berikan. Buku-buku yang ada di daftar memiliki topik yang beragam, tetapi tidak ada judul yang terkait dengan filsafat."
+14,buku tentang komputer,Relevan - umum,Muncul buku dari kategori Ilmu Komputer,200,True,5.657,4,The Difference Engine | The Manager's Path | Software project management | Eloquent Javascript,,"Saya dapat merekomendasikan beberapa buku tentang komputer yang tersedia di perpustakaan kami. Berikut beberapa pilihan:
+
+1. ""The Difference Engine"" karya William Gibson dan Bruce Sterling (Item #1) - Buku ini membahas topik terkait American Science fiction, Computers, dan Steampunk.
+2. ""The Manager's Path"" karya Camille Fournier (Item #2) - Buku ini membahas topik terkait Management, Business, dan Software Development.
+3. ""Software project management"" karya Bob Hughes (Item #3) - Buku ini membahas topik terkait Software engineering dan Project management.
+4. ""Eloquent Javascript"" karya Marijn Haverbeke (Item #4) - Buku ini membahas topik terkait JavaScript (Computer program language), Computer science, dan programming languages.
+
+Jika Anda ingin mencari buku lain yang terkait dengan komputer, saya dapat membantu Anda mencari di perpustakaan kami."
+15,buku robotik,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,5.361,8,"Concepts of physics | Calculus | Code | Watchers | Physics | $100M Offers | Light, Magnetism, and Electricity | My inventions",,"Mohon maaf, saya tidak menemukan informasi tentang ""buku robotik"" di dalam daftar buku yang saya miliki. Jika Anda ingin mencari informasi tentang buku robotik, saya bisa membantu Anda mencari informasi lainnya atau merekomendasikan beberapa buku yang terkait dengan topik robotik."
+16,buku masak,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,2.203,4,"Concepts of physics | Code | $100M Offers | Light, Magnetism, and Electricity",,"Mohon maaf, saya tidak menemukan informasi tentang buku masak di dalam daftar yang saya miliki. Apakah Anda dapat memberikan lebih banyak detail tentang buku masak yang Anda cari, seperti judul atau pengarang? Saya akan melakukan pencarian lebih lanjut untuk membantu Anda."
+17,resep rendang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,0.479,0,,,"Maaf, saya tidak memiliki informasi tentang resep rendang yang spesifik. Rendang adalah masakan tradisional Indonesia yang sangat populer, tetapi saya tidak memiliki resep yang bisa saya bagikan kepada Anda. Jika Anda ingin mencari resep rendang, saya dapat merekomendasikan beberapa sumber online yang mungkin dapat membantu Anda."
+18,buku kedokteran,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,5.207,8,"Concepts of physics | Code | Watchers | $100M Offers | What is mathematics? | Light, Magnetism, and Electricity | 2001 | My inventions",,"Maaf, saya tidak menemukan buku dengan topik ""kedokteran"" dalam daftar buku yang tersedia."
+19,buku bahasa jepang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,11.826,8,"Concepts of physics | Calculus | Code | Watchers | Physics | What is mathematics? | Light, Magnetism, and Electricity | My inventions",,"Mohon maaf, saya tidak menemukan buku bahasa Jepang di dalam daftar yang telah saya berikan. Buku-buku yang tersedia dalam daftar tersebut berfokus pada subjek seperti Fisika, Matematika, Informatika, Teknik, dan lain-lain. Jika Anda sedang mencari buku bahasa Jepang, saya tidak memiliki informasi yang dapat membantu Anda."
+20,halo,Greeting,Sapaan balik tanpa card,200,True,0.035,0,,,hai! saya asisten AI Anda. Ada yang bisa saya bantu hari ini?
+21,terus apa yg kamu bisa?,Ambigu/nggak jelas,Tidak ada card / jawaban jujur,200,True,0.566,0,,,"Maaf, saya tidak terlalu tahu apa lagi yang bisa saya lakukan karena konteks tidak terdapat informasi yang relevan. Tapi saya siap membantu jika kamu memiliki pertanyaan atau kebutuhan lainnya. Saya akan berusaha memberikan jawaban yang jujur dan akurat."
+22,aljabar,Relevan - spesifik (subtopik),Muncul buku terkait aljabar/matematika,200,True,0.459,0,,,"Maaf, saya tidak tahu apa yang Anda maksud dengan ""aljabar"". Apakah Anda berbicara tentang aljabar sebagai bidang matematika atau ada konteks lainnya?"
+23,buku tentang uang,Relevan - umum (subtopik ekonomi),Muncul buku dari kategori Ekonomi & Bisnis (mis. Debt),200,True,0.847,8,"Concepts of physics | Code | Watchers | Physics | What is mathematics? | Light, Magnetism, and Electricity | 2001 | My inventions",,"Mohon maaf, saya tidak menemukan buku tentang ""uang"" dalam daftar buku yang saya miliki. Buku-buku yang saya miliki sebelumnya membahas tentang topik seperti fisika, matematika, komputer, teknik, dan lain-lain, tetapi tidak ada buku tentang uang. Jika Anda ingin mencari buku tentang uang, saya dapat membantu Anda mencari di perpustakaan lain atau merekomendasikan buku lain yang relevan."
+24,buku tentang psikologi manusia,Relevan - spesifik (subtopik),Muncul buku terkait (mis. Surrounded by Idiots),200,True,0.866,9,"Concepts of physics | Calculus | Code | Watchers | Physics | $100M Offers | What is mathematics? | Light, Magnetism, and Electricity | My inventions",,"Sayangnya, tidak ada buku yang membahas tentang psikologi manusia di daftar yang saya tampilkan. Buku-buku di daftar tersebut lebih banyak membahas tentang topik seperti fisika, matematika, informatika, dan teknik. Jika Anda ingin mencari buku tentang psikologi manusia, saya sarankan Anda mencari di sumber lain atau meminta rekomendasi dari penjual buku."
+25,buku tentang tesla,Relevan - spesifik,"Muncul ""My Inventions"" oleh Nikola Tesla",200,True,5.761,7,"Concepts of physics | Code | Watchers | $100M Offers | Light, Magnetism, and Electricity | 2001 | My inventions",,"Buku tentang Nikola Tesla yang saya temukan adalah ""My inventions"" dengan Id: 2077. Buku ini ditulis oleh Nikola Tesla sendiri dan membahas tentang sejarah, elektrokimia, dan inovasinya dalam bidang teknologi."

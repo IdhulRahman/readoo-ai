@@ -1,0 +1,125 @@
+no,pertanyaan,kategori_uji,ekspektasi,status_code,ok,elapsed_sec,num_items,judul_muncul,error,reply
+1,rekomendasiin buku matematika,Relevan - umum,Muncul buku dari kategori Sains (mis. Calculus,200,True,0.872,10,"Humble Pi | Discrete Mathematics with Applications | Introductory Mathematical Analysis | Applied mathematics for business, economics, and the social sciences | Discrete Mathematics with Applications | Calculus | What is mathematics? | How to solve it | Conceptual physics | Physics",,"Saya memiliki beberapa rekomendasi buku matematika yang menarik. Berikut beberapa saran:
+
+1. **Humble Pi** oleh Matt Parker - Buku ini membahas topik matematika dengan cara yang menyenangkan dan mudah dipahami. Cocok untuk orang yang ingin memahami matematika dengan cara yang santai.
+2. **Discrete Mathematics with Applications** oleh Susanna S. Epp - Buku ini adalah buku teks yang sangat baik untuk mempelajari matematika diskret. Cocok untuk siswa yang ingin memahami konsep-konsep matematika diskret.
+3. **Calculus** oleh James Stewart - Buku ini adalah salah satu buku teks yang paling populer untuk mempelajari kalkulus. Cocok untuk siswa yang ingin memahami konsep-konsep kalkulus.
+4. **Conceptual Physics** oleh Paul G. Hewitt - Buku ini membahas topik fisika dengan cara yang konsepual dan mudah dipahami. Cocok untuk orang yang ingin memahami konsep-konsep fisika dengan cara yang santai.
+
+Semoga rekomendasi ini membantu!"
+2,buku kalkulus,Relevan - spesifik,"Muncul ""Calculus"" oleh James Stewart",200,True,0.699,10,"Calculus | Humble Pi | Discrete Mathematics with Applications | What is mathematics? | Discrete Mathematics with Applications | Introductory Mathematical Analysis | Applied mathematics for business, economics, and the social sciences | Conceptual physics | Physics | Fundamentals of physics",,"Buku kalkulus yang tersedia adalah:
+
+1. Item #1: Calculus oleh James Stewart (Tahun terbit: 1986)
+2. Item #6: Introductory Mathematical Analysis oleh Ernest F. Haeussler dan Richard S. Paul (Tahun terbit: 1973)
+3. Item #7: Applied mathematics for business, economics, and the social sciences oleh Frank S. Budnick (Tahun terbit: 1979)
+
+Apakah anda ingin tahu lebih lanjut tentang salah satu buku di atas?"
+3,buku statistik,Relevan - spesifik,"Muncul ""How to Lie with Statistics""",200,True,11.692,10,How to Lie with Statistics | Freakonomics | Mga gunita ng himagsikan | Superfreakonomics | Your Next Five Moves | Humble Pi | Think and Grow Rich | Calculus | Looking out/looking in | The Book,,"Anda ingin mencari buku tentang statistik. 
+
+Kami memiliki beberapa buku yang terkait dengan statistik. Berikut beberapa opsi:
+
+1. ""How to Lie with Statistics"" oleh Darrell Huff dan Irving Geis (Id: 2011) - Buku ini membahas topik terkait Statistics, Statistieken, Textbooks.
+2. ""Humble Pi"" oleh Matt Parker (Id: 2014) - Buku ini membahas topik terkait Mathematics, Mathematics, popular works, Mathematics, miscellanea.
+
+Kedua buku ini dapat dijadikan pilihan jika Anda ingin mempelajari statistik. Apakah Anda ingin lebih lanjut informasi tentang salah satu buku tersebut?"
+4,buku tentang python,Relevan - spesifik,"Muncul ""Learning Python""",200,True,11.543,10,Learning Python | Calculus | Read People Like a Book | Code | Humble Pi | Physical chemistry | The great conversation | Conceptual physics | Ringkasan sejarat filsafat | The Story of Philosophy,,"Mohon maaf, saya tidak menemukan informasi tentang buku ""Python"" pada daftar Anda. Namun, saya menemukan sebuah buku dengan judul ""Learning Python"" dengan ID 2017. Apakah Anda ingin mencari informasi lebih lanjut tentang buku tersebut?"
+5,buku machine learning,Relevan - spesifik,"Muncul ""Hands-On Machine Learning...""",200,True,11.211,10,"Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow | Discrete Mathematics with Applications | Discrete Mathematics with Applications | Hacking for Dummies | Eloquent Javascript | Humble Pi | Object-Oriented Software Engineering | Masters of Doom | Code | Hackers",,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 3638, Requested 2686. Please try again in 3.24s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."
+6,buku ekonomi,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,200,True,0.889,10,"Basic economics | Freakonomics | Superfreakonomics | Das Kapital | Your Next Five Moves | Small Is Beautiful | Think and Grow Rich | Introductory Mathematical Analysis | Applied mathematics for business, economics, and the social sciences | Como Europa subdesarrollo a Africa",,"Terdapat beberapa pilihan buku ekonomi yang tersedia. Berikut beberapa opsi:
+
+1. **Basic economics** oleh Thomas Sowell (2000) - membahas topik terkait ekonomi dan kondisi ekonomi.
+2. **Freakonomics** oleh Steven D. Levitt dan Stephen J. Dubner (2005) - membahas topik terkait ekonomi dan aspek psikologis dan sosial ekonomi.
+3. **Superfreakonomics** oleh Steven D. Levitt dan Stephen J. Dubner (2009) - membahas topik terkait ekonomi dan aspek sosial dan psikologis ekonomi.
+4. **Das Kapital** oleh Karl Marx (1867) - membahas topik terkait ekonomi, kapital, dan komunisme.
+5. **Your Next Five Moves** oleh Patrick Bet-David dan Greg Dinkin (2020) - membahas topik terkait ekonomi.
+6. **Small Is Beautiful** oleh E. F. Schumacher (1905) - membahas topik terkait ekonomi, kebijakan ekonomi, dan pengembangan ekonomi.
+
+Silakan memilih buku yang sesuai dengan minat Anda!"
+7,buku bisnis,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,200,True,22.194,10,$100M Offers | Start with why | Trading in the zone | Start with why | Think and Grow Rich | The Hard Thing About Hard Things | The Book | Das Kapital | Zero to One | Looking out/looking in,,"Ada beberapa pilihan buku bisnis yang tersedia. Berikut beberapa rekomendasi:
+
+1. **$100M Offers** oleh Alex Hormozi - Buku ini membahas topik terkait bisnis dan pendanaan.
+2. **Start with why** oleh Simon Sinek - Buku ini membahas topik terkait kepemimpinan dan motivasi dalam bisnis.
+3. **Trading in the zone** oleh Mark Douglas - Buku ini membahas topik terkait perdagangan saham dan kebijaksanaan dalam bisnis.
+4. **Think and Grow Rich** oleh Napoleon Hill - Buku ini membahas topik terkait kekayaan dan kesuksesan dalam bisnis.
+5. **The Hard Thing About Hard Things** oleh Ben Horowitz - Buku ini membahas topik terkait entrepreneurship dan manajemen bisnis.
+6. **Zero to One** oleh Peter A. Thiel dan Blake Masters - Buku ini membahas topik terkait inovasi dan pendirian bisnis.
+7. **Das Kapital** oleh Karl Marx - Buku ini membahas topik terkait ekonomi dan kapitalisme.
+
+Silakan memilih buku yang paling relevan dengan kebutuhan Anda!"
+8,buku komunikasi,Relevan - umum,Muncul buku dari kategori Ilmu Komunikasi (mis. How to Talk to Anyone),200,True,1.135,10,"Looking out/looking in | How to Talk to Anyone | The great conversation | Surrounded by Idiots | Nonviolent Communication | Read People Like a Book | How to talk to anyone, anytime, anywhere | 2001 | Never Split the Difference | Convince them in 90 seconds or less",,"Anda mencari buku komunikasi. Kami memiliki beberapa pilihan buku komunikasi yang mungkin menarik bagi Anda. Berikut beberapa rekomendasi:
+
+1. **""Looking out/looking in""** oleh Ronald B. Adler dan Mary O Wieman (1974) - Ini adalah buku klasik tentang komunikasi interpersonal.
+2. **""How to Talk to Anyone""** oleh Leil Lowndes (1999) - Buku ini membahas tentang cara berkomunikasi efektif dengan orang lain.
+3. **""Surrounded by Idiots""** oleh Thomas Erikson (2014) - Buku ini membahas tentang cara berkomunikasi dengan orang-orang yang sulit.
+4. **""Nonviolent Communication""** oleh Marshall B. Rosenberg, Deepak Chopra, dan Magiarí Díaz Díaz (1999) - Buku ini membahas tentang cara berkomunikasi dengan cara yang damai dan efektif.
+5. **""Read People Like a Book""** oleh Patrick King (2020) - Buku ini membahas tentang cara memahami orang lain melalui komunikasi nonverbal.
+6. **""How to talk to anyone, anytime, anywhere""** oleh Larry King (1995) - Buku ini membahas tentang cara berkomunikasi dengan orang lain dalam berbagai situasi.
+7. **""Convince them in 90 seconds or less""** oleh Nicholas Boothman (2010) - Buku ini membahas tentang cara berkomunikasi efektif dalam waktu singkat.
+
+Silakan pilih salah satu buku yang menarik bagi Anda!"
+9,buku teknik,Relevan - umum,Muncul buku dari kategori Teknik (mis. Engineering Mechanics),200,True,11.323,10,The Book | Humble Pi | Fundamentals of physics | Physics | Conceptual physics | Physical chemistry | Looking out/looking in | Concepts of physics | Physics for scientists and engineers | College physics,,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 4113, Requested 1990. Please try again in 1.03s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."
+10,novel,Relevan - umum,Muncul buku dari kategori Sastra (mis. The Picture of Dorian Gray),200,True,1.042,10,Carmilla | The Book | The Picture of Dorian Gray | Powerless | Shatter Me | The Invisible Man | Watchers | Start with why | The Silent Patient | Start with why,,"Anda mencari novel, bukan? Kami memiliki beberapa pilihan novel yang menarik. 
+
+1. ""Carmilla"" oleh Sheridan Le Fanu (diterbitkan pada tahun 1871) - sebuah novel fantasi dan horor yang populer pada abad ke-19.
+2. ""The Picture of Dorian Gray"" oleh Oscar Wilde (diterbitkan pada tahun 1890) - sebuah novel klasik yang menceritakan tentang kehidupan seorang pria yang terobsesi dengan kecantikan dan keabadian.
+3. ""Shatter Me"" oleh Tahereh Mafi (diterbitkan pada tahun 2011) - sebuah novel fiksi ilmiah yang menceritakan tentang seorang gadis yang memiliki kekuatan unik.
+4. ""The Invisible Man"" oleh H. G. Wells (diterbitkan pada tahun 0) - sebuah novel sains fiksi yang menceritakan tentang seorang pria yang dapat menjadi tidak terlihat.
+5. ""The Silent Patient"" oleh Alex Michaelides (diterbitkan pada tahun 2018) - sebuah novel misteri dan psikologi yang menceritakan tentang seorang seniman yang menjadi bisu setelah kejadian tragis.
+
+Pilihlah yang menarik bagi Anda!"
+11,buku fiksi,Relevan - umum,Muncul buku dari kategori Sastra,200,True,11.528,10,Carmilla | The Picture of Dorian Gray | The Invisible Man | Powerless | Watchers | Shatter Me | The Book | The Summer I Turned Pretty Trilogy | 2001 | The player of games,,"Buku-buku fiksi yang tersedia di koleksi kami adalah:
+
+1. Carmilla oleh Sheridan Le Fanu
+2. The Picture of Dorian Gray oleh Oscar Wilde
+3. The Invisible Man oleh H.G. Wells
+4. Powerless oleh Lauren Roberts
+5. Shatter Me oleh Tahereh Mafi
+6. The Summer I Turned Pretty Trilogy oleh Jenny Han
+7. Watchers oleh Dean Koontz
+
+Klik pada judul buku untuk melihat detailnya lebih lanjut."
+12,buku sejarah,Relevan - umum,Muncul buku dari kategori Ilmu Sosial (mis. A People's History of the US),200,True,11.886,10,Mga gunita ng himagsikan | A People's History of the United States | The Lessons of History | Ringkasan sejarat filsafat | La conquête du pain | The Book | Freedom at Midnight | The great conversation | Como Europa subdesarrollo a Africa | Manifest der Kommunistischen Partei,,"Buku-buku sejarah yang tersedia adalah:
+
+1. Mga gunita ng himagsikan karya Emilio Aguinaldo (Id: 2102)
+2. A People's History of the United States karya Howard Zinn (Id: 2098)
+3. The Lessons of History karya Will Durant, Ariel Durant (Id: 2103)
+4. Ringkasan sejarat filsafat karya K. Bertens (Id: 2099)
+5. Freedom at Midnight karya Dominique Lapierre, Larry Collins (Id: 2104)
+6. The great conversation karya Norman Melchert (Id: 2100)
+
+Silakan memilih buku yang sesuai dengan minat Anda."
+13,buku filsafat,Relevan - spesifik,"Muncul ""The Story of Philosophy"" atau ""Ringkasan sejarat filsafat""",200,True,11.254,10,Ringkasan sejarat filsafat | The Story of Philosophy | The great conversation | Conceptual physics | The Lessons of History | Concepts of physics | Think and Grow Rich | Humble Pi | The Book | Fundamentals of physics,,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 4117, Requested 2177. Please try again in 2.94s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."
+14,buku tentang komputer,Relevan - umum,Muncul buku dari kategori Ilmu Komputer,200,True,2.716,10,"Advances in Computers, Volume 49 (Advances in Computers) | 2001 | Hackers | Transactions on Engineering Technologies | Transactions on Engineering Technologies | Code | Masters of Doom | Software Engineering | Hacking for Dummies | Systems Analysis and Design",,"Kami memiliki beberapa pilihan buku tentang komputer yang bisa kamu pilih. Berikut beberapa rekomendasi:
+
+1. **Advances in Computers, Volume 49 (Advances in Computers)** oleh Marvin V. Zelkowitz dan Marshall C. Yovits. Buku ini membahas topik terkait Computers, periodicals, Electronic data processing, Informatique.
+2. **Hackers** oleh Steven Levy. Buku ini membahas topik terkait Computer programming, Electronic digital computers, Programming.
+3. **Code** oleh Charles Petzold. Buku ini membahas topik terkait Computer programming, Coding theory, Datenverarbeitung.
+4. **Software Engineering** oleh Roger S. Pressman dan Bruce Maxim. Buku ini membahas topik terkait Software engineering, Electronic digital computers, Programming.
+5. **Hacking for Dummies** oleh Kevin Beaver dan Jutta Schmidt. Buku ini membahas topik terkait Computer Technology, Computer hackers, Computer networks.
+
+Kamu bisa memilih salah satu buku di atas yang sesuai dengan minatmu."
+15,buku robotik,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,11.204,10,"2001 | The player of games | The Invisible Man | Humble Pi | Engineering Mechanics, Statics | Engineering Mechanics, Statics & Dynamics | Read People Like a Book | The Book | Discrete Mathematics with Applications | Carmilla",,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 3556, Requested 2669. Please try again in 2.25s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."
+16,buku masak,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,0.568,10,The Book | Carmilla | The Picture of Dorian Gray | Watchers | Start with why | Think and Grow Rich | Diary of a Wimpy Kid | Physics | Start with why | Calculus,,"Mohon maaf, tapi saya tidak menemukan informasi tentang buku masak dalam daftar buku yang saya miliki. Apakah Anda ingin mencari buku dengan subjek tertentu atau ingin saya menampilkan daftar buku yang terkait dengan masak?"
+17,resep rendang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,5.317,10,The Book | Shatter Me | La conquête du pain | How to solve it | Calculus | The Obstacle is the Way | Your Next Five Moves | Manifest der Kommunistischen Partei | Start with why | Start with why,,"Mohon maaf, saya tidak menemukan informasi tentang resep rendang dalam konteks yang diberikan. Saya hanya dapat membantu dengan pertanyaan yang terkait dengan daftar buku yang telah disediakan. Jika Anda ingin mencari resep rendang, saya dapat merekomendasikan beberapa sumber online yang dapat membantu Anda."
+18,buku kedokteran,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,11.199,10,The Silent Patient | La conquête du pain | Physical chemistry | Humble Pi | Physics | Ringkasan sejarat filsafat | Fundamentals of physics | Siete breves lecciones de física | Read People Like a Book | Calculus,,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 3781, Requested 2738. Please try again in 5.189999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."
+19,buku bahasa jepang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,0.576,10,Looking out/looking in | Mga gunita ng himagsikan | Transactions on Engineering Technologies | The Art of War | Transactions on Engineering Technologies | $100M Offers | Eloquent Javascript | A People's History of the United States | The Summer I Turned Pretty Trilogy | Basic economics,,"Mohon maaf, saya tidak menemukan buku yang terkait dengan bahasa Jepang dalam daftar yang saya lihat sebelumnya. Jika Anda memiliki nama buku atau pengarang yang spesifik, saya dapat membantu mencari informasinya."
+20,halo,Greeting,Sapaan balik tanpa card,200,True,0.03,0,,,hai! saya asisten AI Anda. Ada yang bisa saya bantu hari ini?
+21,terus apa yg kamu bisa?,Ambigu/nggak jelas,Tidak ada card / jawaban jujur,200,True,2.217,10,"How to talk to anyone, anytime, anywhere | The Hard Thing About Hard Things | Eat That Frog! 21 Great Ways to Stop Procrastinating and Get More Done in Less Time | The Obstacle is the Way | How to Talk to Anyone | Convince them in 90 seconds or less | Shatter Me | The Book | How to solve it | Read People Like a Book",,"Saya dapat membantu Anda mencari informasi tentang buku-buku yang tersedia di katalog kami. Saya dapat menjawab pertanyaan Anda tentang kelasifikasi, pengarang, tahun terbit, subjek, dan lain-lain dari buku-buku yang ada di katalog kami.
+
+Apakah Anda memiliki pertanyaan spesifik tentang buku-buku yang ada di katalog kami?"
+22,aljabar,Relevan - spesifik (subtopik),Muncul buku terkait aljabar/matematika,200,True,11.88,10,Software project management | Mga gunita ng himagsikan | Looking out/looking in | Beautiful Code | Object-Oriented Software Engineering | Introduction to software engineering | The Manager's Path | The Art of War | The Book | Surrounded by Idiots,,"Maaf, saya tidak menemukan informasi tentang aljabar pada konteks yang disediakan. Buku-buku yang terdaftar lebih berfokus pada topik seperti software engineering, project management, komunikasi, dan sejarah."
+23,buku tentang uang,Relevan - umum (subtopik ekonomi),Muncul buku dari kategori Ekonomi & Bisnis (mis. Debt),200,True,11.369,10,Think and Grow Rich | Debt | $100M Offers | Freakonomics | Trading in the zone | The Book | Basic economics | Superfreakonomics | Your Next Five Moves | Das Kapital,,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 3905, Requested 2198. Please try again in 1.03s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."
+24,buku tentang psikologi manusia,Relevan - spesifik (subtopik),Muncul buku terkait (mis. Surrounded by Idiots),200,True,0.721,10,Read People Like a Book | Looking out/looking in | Freakonomics | Surrounded by Idiots | 2001 | The Book | Algorithms to Live By | La conquête du pain | The Story of Philosophy | Superfreakonomics,,"Buku-buku yang terkait dengan psikologi manusia yang ada di koleksi kami adalah:
+
+1. Item #2: ""Looking out/looking in"" oleh Ronald B. Adler, Ronald Adler, MARY O WIEMAN - Buku ini membahas topik terkait Interpersonal communication, Textbooks, Communication.
+2. Item #4: ""Surrounded by Idiots"" oleh Thomas Erikson - Buku ini membahas topik terkait Sociology, Communication, social aspects, Communication, psychological aspects.
+3. Item #6: La conquête du pain oleh Peter Kropotkin - Buku ini membahas topik terkait History, Communism, Anarchism.
+
+Namun, jika Anda mencari buku yang lebih spesifik tentang psikologi manusia, saya sarankan Anda memilih Item #4: ""Surrounded by Idiots"" oleh Thomas Erikson. Buku ini membahas topik terkait psikologi manusia dan komunikasi."
+25,buku tentang tesla,Relevan - spesifik,"Muncul ""My Inventions"" oleh Nikola Tesla",200,True,11.198,10,Humble Pi | Read People Like a Book | How to Lie with Statistics | Calculus | Physics | Mga gunita ng himagsikan | College physics | Conceptual physics | The Book | Looking out/looking in,,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 4231, Requested 2091. Please try again in 3.22s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."

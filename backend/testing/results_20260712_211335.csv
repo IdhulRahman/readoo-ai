@@ -1,0 +1,51 @@
+no,pertanyaan,kategori_uji,ekspektasi,status_code,ok,elapsed_sec,num_items,judul_muncul,error,reply
+1,rekomendasiin buku matematika,Relevan - umum,Muncul buku dari kategori Sains (mis. Calculus,401,False,0.054,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+2,buku kalkulus,Relevan - spesifik,"Muncul ""Calculus"" oleh James Stewart",401,False,0.012,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+3,buku statistik,Relevan - spesifik,"Muncul ""How to Lie with Statistics""",401,False,0.008,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+4,buku tentang python,Relevan - spesifik,"Muncul ""Learning Python""",401,False,0.022,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+5,buku machine learning,Relevan - spesifik,"Muncul ""Hands-On Machine Learning...""",401,False,0.008,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+6,buku ekonomi,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,401,False,0.006,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+7,buku bisnis,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,401,False,0.007,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+8,buku komunikasi,Relevan - umum,Muncul buku dari kategori Ilmu Komunikasi (mis. How to Talk to Anyone),401,False,0.008,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+9,buku teknik,Relevan - umum,Muncul buku dari kategori Teknik (mis. Engineering Mechanics),401,False,0.008,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+10,novel,Relevan - umum,Muncul buku dari kategori Sastra (mis. The Picture of Dorian Gray),401,False,0.021,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+11,buku fiksi,Relevan - umum,Muncul buku dari kategori Sastra,401,False,0.025,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+12,buku sejarah,Relevan - umum,Muncul buku dari kategori Ilmu Sosial (mis. A People's History of the US),401,False,0.01,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+13,buku filsafat,Relevan - spesifik,"Muncul ""The Story of Philosophy"" atau ""Ringkasan sejarat filsafat""",401,False,0.007,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+14,buku tentang komputer,Relevan - umum,Muncul buku dari kategori Ilmu Komputer,401,False,0.01,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+15,buku robotik,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,401,False,0.023,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+16,buku masak,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,401,False,0.028,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+17,resep rendang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,401,False,0.005,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+18,buku kedokteran,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,401,False,0.019,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+19,buku bahasa jepang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,401,False,0.007,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+20,halo,Greeting,Sapaan balik tanpa card,401,False,0.008,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+21,terus apa yg kamu bisa?,Ambigu/nggak jelas,Tidak ada card / jawaban jujur,401,False,0.007,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+22,aljabar,Relevan - spesifik (subtopik),Muncul buku terkait aljabar/matematika,401,False,0.005,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+23,buku tentang uang,Relevan - umum (subtopik ekonomi),Muncul buku dari kategori Ekonomi & Bisnis (mis. Debt),401,False,0.019,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+24,buku tentang psikologi manusia,Relevan - spesifik (subtopik),Muncul buku terkait (mis. Surrounded by Idiots),401,False,0.021,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",
+25,buku tentang tesla,Relevan - spesifik,"Muncul ""My Inventions"" oleh Nikola Tesla",401,False,0.005,0,,"{""error"":""Sesi tidak valid atau telah kedaluwarsa""}
+",

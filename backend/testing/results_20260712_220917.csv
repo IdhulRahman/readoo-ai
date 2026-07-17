@@ -1,0 +1,90 @@
+no,pertanyaan,kategori_uji,ekspektasi,status_code,ok,elapsed_sec,num_items,judul_muncul,error,reply
+1,rekomendasiin buku matematika,Relevan - umum,Muncul buku dari kategori Sains (mis. Calculus,200,True,52.298,0,,,"Mohon maaf, saya tidak memiliki informasi tentang rekomendasi buku matematika secara spesifik. Namun, saya dapat merekomendasikan beberapa kategori buku matematika yang populer, seperti:
+
+1. Buku teks dasar matematika seperti ""Aljabar"" atau ""Geometri"" dari penulis seperti Michael Spivak atau David Guichard.
+2. Buku matematika yang fokus pada topik tertentu seperti kalkulus, statistik, atau probabilistik.
+3. Buku matematika yang ditulis oleh penulis terkenal seperti Terence Tao atau Richard Hamming.
+
+Jika Anda memiliki preferensi atau kebutuhan spesifik, saya dapat mencoba merekomendasikan buku yang lebih sesuai."
+2,buku kalkulus,Relevan - spesifik,"Muncul ""Calculus"" oleh James Stewart",200,True,1.842,1,Calculus,,"Mohon maaf, saya tidak mengerti apa yang Anda maksudkan dengan ""buku kalkulus"". Apakah Anda sedang mencari informasi tentang buku ""Calculus"" yang saya tampilkan di atas?"
+3,buku statistik,Relevan - spesifik,"Muncul ""How to Lie with Statistics""",200,True,1.819,1,How to Lie with Statistics,,"Buku yang Anda cari adalah ""How to Lie with Statistics"" karya Darrell Huff dan Irving Geis. Buku ini membahas tentang statistik dan bagaimana cara menggunakannya dengan benar untuk menghindari penipuan atau kesalahan interpretasi data."
+4,buku tentang python,Relevan - spesifik,"Muncul ""Learning Python""",200,True,2.127,1,Learning Python,,"Mohon maaf, tapi saya tidak mencatat apa buku tentang python lainnya. Namun, saya bisa menunjukkan buku ""Learning Python"" sebagai salah satu pilihan. Buku ini ditulis oleh Mark Lutz dan David Ascher, dan sudah diterbitkan sejak tahun 1999. Anda dapat melihat detailnya di item dengan ID 2017."
+5,buku machine learning,Relevan - spesifik,"Muncul ""Hands-On Machine Learning...""",200,True,2.343,2,"Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow | $100M Offers",,"Kamu mencari buku tentang Machine Learning. Saya memiliki informasi tentang dua buku yang terkait dengan topik tersebut.
+
+1. Buku ""Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow"" dengan ID 2013, ditulis oleh Aurélien Géron. Buku ini membahas topik terkait machine learning dan matematika.
+2. Saya tidak memiliki informasi lebih lanjut tentang buku machine learning lainnya.
+
+Apakah kamu ingin mengetahui lebih banyak tentang buku tersebut?"
+6,buku ekonomi,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,200,True,2.393,3,Basic economics | Think and Grow Rich | Your Next Five Moves,,"Saya memiliki beberapa buku ekonomi yang mungkin Anda cari. Berikut beberapa pilihan:
+
+1. ""Basic Economics"" oleh Thomas Sowell (Item #1) - Buku ini membahas topik terkait Economics, Economic conditions, dan Economics, study and teaching.
+2. ""Your Next Five Moves"" oleh Patrick Bet-David dan Greg Dinkin (Item #3) - Buku ini membahas topik terkait Economics.
+3. Buku lainnya yang mungkin relevan, tetapi saya tidak memiliki informasi lebih lanjut tentangnya, adalah ""Think and Grow Rich"" oleh Napoleon Hill (Item #2) - Buku ini membahas topik terkait Wealth, Success, dan Filosofía.
+
+Silakan pilih salah satu buku yang Anda minati, atau saya dapat membantu Anda mencari buku ekonomi lainnya yang lebih relevan dengan kebutuhan Anda."
+7,buku bisnis,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,200,True,2.29,4,$100M Offers | Trading in the zone | Start with why | The Hard Thing About Hard Things,,"Kami memiliki beberapa buku bisnis yang menarik! Berikut beberapa rekomendasi:
+
+1. **$100M Offers** oleh Alex Hormozi - Buku ini membahas tentang membuat tawaran yang efektif dalam bisnis.
+2. **Trading in the zone** oleh Mark Douglas - Buku ini membahas tentang strategi trading yang efektif.
+3. **Start with why** oleh Simon Sinek - Buku ini membahas tentang pentingnya memahami tujuan dan visi dalam bisnis.
+4. **The Hard Thing About Hard Things** oleh Ben Horowitz - Buku ini membahas tentang bagaimana menghadapi tantangan dalam bisnis.
+
+Apakah Anda ingin tahu lebih lanjut tentang salah satu buku di atas?"
+8,buku komunikasi,Relevan - umum,Muncul buku dari kategori Ilmu Komunikasi (mis. How to Talk to Anyone),200,True,1.915,5,"Manifest der Kommunistischen Partei | How to Talk to Anyone | La conquête du pain | How to talk to anyone, anytime, anywhere | Convince them in 90 seconds or less",,"Kami memiliki beberapa buku yang terkait dengan komunikasi. Berikut beberapa saran:
+
+- Item #1: Manifest der Kommunistischen Partei oleh Karl Marx, Friedrich Engels
+- Item #2: How to Talk to Anyone oleh Leil Lowndes
+- Item #3: La conquête du pain oleh Peter Kropotkin
+- Item #4: How to talk to anyone, anytime, anywhere oleh Larry King
+- Item #5: Convince them in 90 seconds or less oleh Nicholas Boothman
+
+Silakan pilih salah satu buku yang sesuai dengan kebutuhan Anda."
+9,buku teknik,Relevan - umum,Muncul buku dari kategori Teknik (mis. Engineering Mechanics),200,True,2.383,5,"The Book | Transactions on Engineering Technologies | Engineering Mechanics, Statics & Dynamics | Watchers | Electrical engineering",,"Kami memiliki beberapa pilihan buku teknik yang menarik. Berikut beberapa opsi yang mungkin sesuai dengan kebutuhan Anda:
+
+1. ""The Book"" dengan Judul: The Book, Pengarang: Hungry Minds, dan Kode: OL37851715W. Buku ini membahas topik terkait Art, Long Now Manual for Civilization, Survival.
+2. ""Transactions on Engineering Technologies"" dengan Judul: Transactions on Engineering Technologies, Pengarang: Sio-Iong Ao, Haeng Kon Kim, Oscar Castillo, dan Kode: OL20667190W. Buku ini membahas topik terkait Computer engineering, Software engineering, Engineering.
+3. ""Engineering Mechanics, Statics & Dynamics"" dengan Judul: Engineering Mechanics, Statics & Dynamics, Pengarang: R. C. Hibbeler, dan Kode: OL1865037W. Buku ini membahas topik terkait Applied Mechanics, Dynamics, Mechanics.
+4. ""Electrical engineering"" dengan Judul: Electrical engineering, Pengarang: Allan R. Hambley, dan Kode: OL16979883W. Buku ini membahas topik terkait Electrical engineering, Electric engineering, Textbooks.
+
+Silakan pilih salah satu buku yang paling menarik bagi Anda!"
+10,novel,Relevan - umum,Muncul buku dari kategori Sastra (mis. The Picture of Dorian Gray),200,True,2.092,0,,,"Novel adalah sebuah karya sastra yang berbentuk prosa, biasanya berupa cerita panjang yang memiliki empat elemen utama: karakter, plot, setting, dan tema. Novel dapat berupa fiksi (cerita rekaan) atau non-fiksi (cerita nyata). Apakah Anda ingin tahu lebih lanjut tentang novel?"
+11,buku fiksi,Relevan - umum,Muncul buku dari kategori Sastra,200,True,2.123,4,It Ends With Us | Diary of a Wimpy Kid | Powerless | The Silent Patient,,"Buku-buku fiksi yang tersedia di daftar adalah:
+
+1. It Ends With Us karya Colleen Hoover (Id: 2092)
+2. Diary of a Wimpy Kid karya Jeff Kinney (Id: 2091)
+3. Powerless karya Lauren Roberts (Id: 2094)
+4. The Silent Patient karya Alex Michaelides (Id: 2089)
+
+Semua buku tersebut termasuk dalam kategori fiksi."
+12,buku sejarah,Relevan - umum,Muncul buku dari kategori Ilmu Sosial (mis. A People's History of the US),200,True,1.945,1,A People's History of the United States,,"Buku ""A People's History of the United States"" oleh Howard Zinn adalah contoh buku sejarah. Judul buku ini sendiri sudah mengindikasikan bahwa buku ini membahas tentang sejarah Amerika Serikat dari sudut pandang rakyat."
+13,buku filsafat,Relevan - spesifik,"Muncul ""The Story of Philosophy"" atau ""Ringkasan sejarat filsafat""",200,True,1.945,1,The Story of Philosophy,,"Ya, buku ""The Story of Philosophy"" yang Anda cari adalah buku filsafat. Buku ini ditulis oleh Will Durant dan membahas topik terkait filsuf, filsafat, sejarah, dan biografi."
+14,buku tentang komputer,Relevan - umum,Muncul buku dari kategori Ilmu Komputer,200,True,2.287,2,2001 | Code,,"Anda mencari buku tentang komputer. Kami memiliki beberapa pilihan buku yang relevan.
+
+Salah satu contoh adalah buku dengan ID 2019, berjudul ""2001"" karya Arthur C. Clarke. Buku ini membahas topik terkait Human-computer interaction dan Computers.
+
+Selain itu, kami juga memiliki buku dengan ID 2022, berjudul ""Code"" karya Charles Petzold. Buku ini membahas topik terkait Computer programming, Coding theory, dan Computers.
+
+Kami memiliki 2 pilihan buku yang relevan. Apakah Anda ingin tahu lebih lanjut tentang salah satu buku tersebut?"
+15,buku robotik,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,1.832,0,,,"Mohon maaf, saya tidak memiliki informasi tentang buku robotik yang Anda cari. Apakah Anda dapat memberikan lebih banyak detail tentang buku tersebut, seperti judul atau nama penulis? Saya akan melakukan pencarian lanjutan untuk membantu Anda."
+16,buku masak,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,2.052,0,,,"Maaf, saya tidak tahu apa yang Anda maksud dengan ""buku masak"". Apakah Anda sedang mencari buku resep masakan atau apa?"
+17,resep rendang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,1.915,0,,,"Mohon maaf, saya tidak memiliki informasi tentang resep rendang. Bisa Anda memberikan lebih banyak detail atau konteks tentang resep yang Anda cari?"
+18,buku kedokteran,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,2.107,4,Physics | Fundamentals of physics | Concepts of physics | Physics for scientists and engineers,,"Mohon maaf, saya tidak menemukan informasi tentang buku kedokteran di dalam konteks yang diberikan. Semua informasi yang tersedia menunjukkan bahwa buku-buku yang terdaftar adalah buku teks fisika. Jika Anda ingin mengetahui informasi tentang buku kedokteran, saya sarankan Anda untuk mencari informasi di tempat lain."
+19,buku bahasa jepang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,2.227,0,,,Kami tidak memiliki informasi tentang buku bahasa Jepang yang kami tahu. Apakah Anda ingin mengetahui informasi tentang buku-buku bahasa Jepang populer atau merekomendasikan sumber belajar bahasa Jepang?
+20,halo,Greeting,Sapaan balik tanpa card,200,True,0.052,0,,,Halo! saya asisten AI Anda. Ada yang bisa saya bantu hari ini?
+21,terus apa yg kamu bisa?,Ambigu/nggak jelas,Tidak ada card / jawaban jujur,200,True,2.314,0,,,"Saya bisa membantu menjawab pertanyaan-pertanyaan Anda, memberikan informasi yang relevan, dan membantu Anda menemukan solusi untuk masalah yang Anda hadapi. Jika saya tidak tahu jawaban suatu pertanyaan, saya akan mengatakan ""Saya tidak tahu jawabannya"" dan tidak membuat-buat informasi. Saya juga dapat membantu dalam berbagai topik, seperti teknologi, bisnis, pendidikan, dan lain-lain. Apa yang bisa saya lakukan untuk membantu Anda hari ini?"
+22,aljabar,Relevan - spesifik (subtopik),Muncul buku terkait aljabar/matematika,200,True,2.616,0,,,"Maaf, saya tidak menemukan informasi yang relevan tentang ""aljabar"". Jika Anda ingin tahu lebih lanjut tentang aljabar, saya dapat memberikan informasi umum bahwa aljabar adalah cabang matematika yang mempelajari struktur aljabar seperti gaya, ring, polinom, dan matriks. Namun, saya tidak memiliki informasi yang lebih spesifik tentang topik ini. Apakah Anda memiliki pertanyaan lebih spesifik tentang aljabar?"
+23,buku tentang uang,Relevan - umum (subtopik ekonomi),Muncul buku dari kategori Ekonomi & Bisnis (mis. Debt),200,True,1.989,2,Das Kapital | Debt,,"Mohon maaf, saya tidak menemukan buku yang secara spesifik membahas tentang ""uang"" saja. Namun, saya dapat merekomendasikan beberapa buku yang terkait dengan tema ""uang"" atau ""debt"" (utang) yang ada dalam daftar buku kami.
+
+Salah satu buku yang terkait dengan tema ""uang"" adalah ""Debt"" yang ditulis oleh David Graeber dengan Id: 2096. Buku ini membahas tentang topik terkait Money, Debt, Financial crises.
+
+Jika Anda ingin mencari buku yang lebih spesifik tentang ""uang"", saya sarankan Anda untuk mencari di kategori ""Ekonomi & Bisnis"" atau ""Ilmu Sosial"" di daftar buku kami."
+24,buku tentang psikologi manusia,Relevan - spesifik (subtopik),Muncul buku terkait (mis. Surrounded by Idiots),200,True,2.144,0,,,"Maaf, saya tidak dapat menemukan informasi tentang buku psikologi manusia yang spesifik. Namun, saya dapat memberikan beberapa saran tentang buku-buku psikologi manusia yang populer.
+
+Beberapa contoh buku psikologi manusia yang populer adalah:
+
+- ""Psikologi Sosial"" oleh Elliot Aronson
+- ""Kecemasan dan Ketakutan"" oleh Albert Ellis
+- ""Psikologi Perilaku"" oleh John W. Atkinson
+
+Jika Anda memiliki preferensi tertentu (misalnya, topik yang spesifik, penulis tertentu, atau jenis gaya tulisan), saya dapat mencoba membantu Anda mencari buku yang lebih sesuai."
+25,buku tentang tesla,Relevan - spesifik,"Muncul ""My Inventions"" oleh Nikola Tesla",200,True,2.044,1,My inventions,,"Buku ""My Inventions"" dengan ID 2077 adalah buku yang membahas tentang Nikola Tesla, sehingga jawabannya adalah iya, buku ini tentang Tesla."

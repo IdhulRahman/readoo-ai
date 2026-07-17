@@ -1,0 +1,26 @@
+﻿no,pertanyaan,kategori_uji,ekspektasi
+1,rekomendasiin buku matematika,Relevan - umum,Muncul buku dari kategori Sains (mis. Calculus, Discrete Mathematics)
+2,buku kalkulus,Relevan - spesifik,Muncul "Calculus" oleh James Stewart
+3,buku statistik,Relevan - spesifik,Muncul "How to Lie with Statistics"
+4,buku tentang python,Relevan - spesifik,Muncul "Learning Python"
+5,buku machine learning,Relevan - spesifik,Muncul "Hands-On Machine Learning..."
+6,buku ekonomi,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis
+7,buku bisnis,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis
+8,buku komunikasi,Relevan - umum,Muncul buku dari kategori Ilmu Komunikasi (mis. How to Talk to Anyone)
+9,buku teknik,Relevan - umum,Muncul buku dari kategori Teknik (mis. Engineering Mechanics)
+10,novel,Relevan - umum,Muncul buku dari kategori Sastra (mis. The Picture of Dorian Gray)
+11,buku fiksi,Relevan - umum,Muncul buku dari kategori Sastra
+12,buku sejarah,Relevan - umum,Muncul buku dari kategori Ilmu Sosial (mis. A People's History of the US)
+13,buku filsafat,Relevan - spesifik,Muncul "The Story of Philosophy" atau "Ringkasan sejarat filsafat"
+14,buku tentang komputer,Relevan - umum,Muncul buku dari kategori Ilmu Komputer
+15,buku robotik,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia
+16,buku masak,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia
+17,resep rendang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia
+18,buku kedokteran,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia
+19,buku bahasa jepang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia
+20,halo,Greeting,Sapaan balik tanpa card
+21,terus apa yg kamu bisa?,Ambigu/nggak jelas,Tidak ada card / jawaban jujur
+22,aljabar,Relevan - spesifik (subtopik),Muncul buku terkait aljabar/matematika
+23,buku tentang uang,Relevan - umum (subtopik ekonomi),Muncul buku dari kategori Ekonomi & Bisnis (mis. Debt)
+24,buku tentang psikologi manusia,Relevan - spesifik (subtopik),Muncul buku terkait (mis. Surrounded by Idiots)
+25,buku tentang tesla,Relevan - spesifik,Muncul "My Inventions" oleh Nikola Tesla

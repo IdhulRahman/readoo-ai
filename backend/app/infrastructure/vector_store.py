@@ -29,9 +29,16 @@ class VectorStore:
         self.store_dir = os.path.join(self.data_dir, "vector_store")
         os.makedirs(self.store_dir, exist_ok=True)
 
-        # Initialize embedding model
-        self.encoder = SentenceTransformer(settings.EMBEDDING_MODEL)
-        self.dimension = self.encoder.get_sentence_embedding_dimension()
+        # Initialize embedding model (ONNX backend, O2-optimized for CPU inference)
+        self.encoder = SentenceTransformer(
+            settings.EMBEDDING_MODEL,
+            backend="onnx",
+            model_kwargs={
+                "provider": "CPUExecutionProvider",
+                "file_name": "onnx/model_O2.onnx",
+            },
+        )
+        self.dimension = self.encoder.get_embedding_dimension()
 
         # Initialize CrossEncoder reranker if configured
         if settings.USE_RERANKER:
@@ -57,7 +64,7 @@ class VectorStore:
                     return
                 except Exception as e:
                     logger.error("Failed to load FAISS index at %s: %s", index_path, e)
-            
+
             # Rebuild index if file is missing
             self.rebuild_index(col_id)
         else:
@@ -74,7 +81,7 @@ class VectorStore:
             return
 
         logger.info("Rebuilding FAISS index for collection %d with %d documents...", collection_id, len(rows))
-        
+
         doc_ids = []
         texts = []
         for r in rows:
@@ -88,14 +95,14 @@ class VectorStore:
         # Create IndexIDMap to preserve SQLite Primary Key IDs inside FAISS
         sub_index = faiss.IndexFlatL2(self.dimension)
         index = faiss.IndexIDMap(sub_index)
-        
+
         ids_arr = np.array(doc_ids, dtype=np.int64)
         index.add_with_ids(embeddings, ids_arr)
 
         # Save to disk
         index_path = os.path.join(self.store_dir, f"collection_{collection_id}.index")
         faiss.write_index(index, index_path)
-        
+
         # Reload if active
         active_row = CollectionRepository.get_collection(collection_id)
 
@@ -109,17 +116,17 @@ class VectorStore:
     def _rank_bm25(self, query, documents, k1=1.5, b=0.75):
         import math
         from collections import Counter
-        
+
         # Tokenize query
         query_tokens = query.lower().split()
         if not query_tokens or not documents:
             return []
-            
+
         corpus_size = len(documents)
         doc_lengths = []
         doc_term_freqs = []
         df = Counter()
-        
+
         for doc in documents:
             content = doc.get("_content", "")
             tokens = content.lower().split()
@@ -128,9 +135,9 @@ class VectorStore:
             doc_term_freqs.append(tf)
             for term in set(tokens):
                 df[term] += 1
-                
+
         avg_dl = sum(doc_lengths) / corpus_size if corpus_size > 0 else 1
-        
+
         scored_docs = []
         for idx, doc in enumerate(documents):
             score = 0.0
@@ -147,27 +154,27 @@ class VectorStore:
                     score += idf * (numerator / denominator)
             if score > 0:
                 scored_docs.append((score, doc))
-                
+
         scored_docs.sort(key=lambda x: x[0], reverse=True)
         return [doc for score, doc in scored_docs]
 
     def _reciprocal_rank_fusion(self, semantic_results, keyword_results, k=60):
         rrf_scores = {}
-        
+
         # Add semantic rank scores
         for rank, doc in enumerate(semantic_results):
             doc_id = doc["id"]
             if doc_id not in rrf_scores:
                 rrf_scores[doc_id] = {"doc": doc, "score": 0.0}
             rrf_scores[doc_id]["score"] += 1.0 / (k + (rank + 1))
-            
+
         # Add keyword rank scores
         for rank, doc in enumerate(keyword_results):
             doc_id = doc["id"]
             if doc_id not in rrf_scores:
                 rrf_scores[doc_id] = {"doc": doc, "score": 0.0}
             rrf_scores[doc_id]["score"] += 1.0 / (k + (rank + 1))
-            
+
         # Sort docs by score descending
         sorted_items = sorted(rrf_scores.values(), key=lambda x: x["score"], reverse=True)
         return [item["doc"] for item in sorted_items]
@@ -185,8 +192,8 @@ class VectorStore:
             query_vec = np.array(query_vec, dtype=np.float32)
 
             # Search FAISS
-            distances, ids = self.index.search(query_vec, 20) # get top 20 candidates for fusion
-            
+            distances, ids = self.index.search(query_vec, 20)  # get top 20 candidates for fusion
+
             # Filter padding IDs (-1)
             matched_ids = [int(i) for i in ids[0] if i != -1]
             if matched_ids:
@@ -214,7 +221,7 @@ class VectorStore:
             candidates.append(meta)
 
         keyword_results = self._rank_bm25(query_text, candidates)
-        keyword_results = keyword_results[:20] # get top 20 candidates for fusion
+        keyword_results = keyword_results[:20]  # get top 20 candidates for fusion
 
         # 3. Reciprocal Rank Fusion (RRF)
         fused_results = self._reciprocal_rank_fusion(semantic_results, keyword_results, k=60)
@@ -222,20 +229,26 @@ class VectorStore:
         # 4. Limit to top_k before returning
         return fused_results[:top_k]
 
-    def rerank(self, query_text, documents, top_k=5):
+    def rerank(self, query_text, documents, top_k=None):
         if not self.reranker or not documents:
-            return documents[:top_k]
+            return documents[:top_k] if top_k else documents
 
+        import math
         pairs = [[query_text, doc.get("_content", "")] for doc in documents]
-        scores = self.reranker.compute_score(pairs)
+        raw_scores = self.reranker.predict(pairs)
+        scores = [1 / (1 + math.exp(-float(s))) for s in raw_scores]
+        logger.info("Rerank scores for query '%s': %s", query_text, [round(s, 3) for s in scores])
 
         if isinstance(scores, float):
             scores = [scores]
 
         ranked = []
         for d, score in zip(documents, scores):
+            # Skor kemiripan semantik MURNI, dipakai khusus untuk pengecekan
+            # threshold relevansi di chat_service.py (fungsi _search_and_rerank).
+            d["rerank_score_raw"] = float(score)
             d["rerank_score"] = float(score)
-            
+
             # Metric popular scaling if views or popularity is present in metadata
             views = 0
             for key in ["views", "dilihat", "popularity"]:
@@ -249,12 +262,19 @@ class VectorStore:
             ranked.append(d)
 
         ranked.sort(key=lambda x: x["rerank_score"], reverse=True)
-        return ranked[:top_k]
+
+        # FIX: kembalikan SEMUA kandidat (sudah terurut berdasar skor+boost
+        # popularitas), bukan langsung dipotong ke top_k di sini. Supaya
+        # chat_service.py bisa mengecek threshold relevansi terhadap
+        # rerank_score_raw dari SELURUH kandidat, bukan cuma yang kebetulan
+        # lolos ke top-N gara-gara boost popularitas. Pemotongan ke jumlah
+        # final dilakukan belakangan di chat_service.py, SETELAH threshold.
+        return ranked
 
     def add_collection_from_csv(self, name, embedding_cols, display_cols, df):
         import sqlite3
         CollectionRepository.deactivate_all_collections()
-        
+
         now = datetime.now().isoformat()
         try:
             col_id = CollectionRepository.create_collection(
@@ -272,7 +292,7 @@ class VectorStore:
                 if col in row:
                     content_parts.append(str(row[col]))
             content = " ".join(content_parts).strip()
-            
+
             if not content:
                 continue
 
@@ -286,43 +306,43 @@ class VectorStore:
             CollectionRepository.create_document(col_id, content, json.dumps(meta))
 
         self.rebuild_index(col_id)
-        
+
         # Load in memory
         self.active_collection_id = col_id
         index_path = os.path.join(self.store_dir, f"collection_{col_id}.index")
         self.index = faiss.read_index(index_path)
-        
+
         return col_id
 
     def add_collection_from_unstructured(self, name, chunks, original_filename):
         import sqlite3
         CollectionRepository.deactivate_all_collections()
-        
+
         now = datetime.now().isoformat()
         embedding_cols = ["text"]
         display_cols = ["text"]
-        
+
         try:
             col_id = CollectionRepository.create_collection(
                 name, json.dumps(embedding_cols), json.dumps(display_cols), 1, now
             )
         except sqlite3.IntegrityError:
             raise ValueError(f"Collection with name '{name}' already exists.")
-            
+
         for chunk in chunks:
             content = chunk["content"]
             meta = chunk["metadata"]
             meta["source"] = original_filename
             CollectionRepository.create_document(col_id, content, json.dumps(meta))
-            
+
         # Rebuild FAISS index
         self.rebuild_index(col_id)
-        
+
         # Load in memory
         self.active_collection_id = col_id
         index_path = os.path.join(self.store_dir, f"collection_{col_id}.index")
         self.index = faiss.read_index(index_path)
-        
+
         return col_id
 
     def delete_collection(self, collection_id):

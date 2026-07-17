@@ -18,16 +18,85 @@ export default function ChatPage() {
   const { user, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [mode, setMode] = useState<ChatMode>('chat');
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+
+  // NEW: nama asisten dinamis, diambil dari /api/settings/public.
+  // Default 'Aiko' dipakai sebagai fallback selama fetch belum selesai
+  // atau kalau fetch gagal, supaya UI tetap ada teksnya (gak kosong/blank).
+  const [assistantName, setAssistantName] = useState('Aiko');
+
+  // NEW: gender avatar 3D, diambil dari endpoint yang sama (/api/settings/public).
+  // Default 'female' dipakai sebagai fallback selama fetch belum selesai/gagal,
+  // konsisten sama default di backend & di komponen VrmAvatar.
+  const [avatarGender, setAvatarGender] = useState<'female' | 'male'>('female');
+
+  useEffect(() => {
+    const fetchAssistantName = async () => {
+      try {
+        const res = await fetch('/api/settings/public', {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+          },
+        });
+        if (!res.ok) return; // biarkan fallback 'Aiko' kalau request gagal
+        const data = await res.json();
+        if (data?.assistant_name) {
+          setAssistantName(data.assistant_name);
+        }
+        // NEW: set avatarGender dari response yang sama, hanya kalau nilainya
+        // valid ('male' atau 'female') supaya gak ke-set ke value aneh/undefined.
+        if (data?.avatar_gender === 'male' || data?.avatar_gender === 'female') {
+          setAvatarGender(data.avatar_gender);
+        }
+      } catch {
+        // biarkan fallback 'Aiko' kalau network/parse error
+      }
+    };
+    fetchAssistantName();
+  }, []);
+
+  // FIX: state messages & session DIPISAH per mode, supaya percakapan di
+  // mode "Chatting" dan mode "3D Avatar" independen satu sama lain —
+  // gak saling "kebawa" saat pindah mode.
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [avatarMessages, setAvatarMessages] = useState<ChatMessage[]>([]);
+  const [chatSession, setChatSession] = useState<string | null>(null);
+  const [avatarSession, setAvatarSession] = useState<string | null>(null);
+
+  // Helper supaya kode di bawah tetap ringkas: "messages" & "currentSession"
+  // otomatis merujuk ke state yang sesuai dengan mode yang lagi aktif.
+  const messages = mode === 'chat' ? chatMessages : avatarMessages;
+  const currentSession = mode === 'chat' ? chatSession : avatarSession;
+
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [streaming, setStreaming] = useState(false);
   const [sessions, setSessions] = useState<ChatSession[]>([]);
-  const [currentSession, setCurrentSession] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [items, setItems] = useState<ChatItem[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [avatarAnim, setAvatarAnim] = useState<'idle' | 'wave' | 'thinking'>('idle');
+
+  // FIX (dark mode bug): dulu warna background caption bubble di-hardcode putih
+  // lewat inline `style.backgroundImage`, yang selalu override class Tailwind
+  // (termasuk `dark:bg-...`). Akibatnya background bubble tetap putih walau
+  // dark mode aktif, sementara teks di dalamnya ikut berubah terang -> teks
+  // jadi nyaris tak terbaca. `isDark` di sini dipakai buat set warna gradient
+  // background secara manual sesuai tema aktif, dan otomatis update lewat
+  // MutationObserver setiap kali user toggle dark/light mode.
+  const [isDark, setIsDark] = useState(() =>
+    document.documentElement.classList.contains('dark')
+  );
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+    return () => observer.disconnect();
+  }, []);
+
   // Change Password Modal states
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [oldPassword, setOldPassword] = useState('');
@@ -43,7 +112,7 @@ export default function ChatPage() {
     if (mode === 'chat') {
       scrollToBottom();
     }
-  }, [messages, mode]);
+  }, [chatMessages, mode]);
 
   const loadSessions = useCallback(async () => {
     try {
@@ -66,17 +135,17 @@ export default function ChatPage() {
 
   const sendMessageText = async (userMsg: string) => {
     const userMessage: ChatMessage = { role: 'user', content: userMsg };
-    setMessages((prev) => [...prev, userMessage]);
+    setChatMessages((prev) => [...prev, userMessage]);
     setLoading(true);
 
     try {
-      const eventSource = await chat.streamMessage(userMsg, currentSession || undefined);
+      const eventSource = await chat.streamMessage(userMsg, chatSession || undefined);
       const reader = eventSource.body?.getReader();
       const decoder = new TextDecoder();
       setStreaming(true);
 
       let aiMessage = '';
-      setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
+      setChatMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
 
       if (reader) {
         while (true) {
@@ -94,23 +163,33 @@ export default function ChatPage() {
               const parsed = JSON.parse(data);
               if (parsed.type === 'chunk') {
                 aiMessage += parsed.text;
-                setMessages((prev) => {
+                setChatMessages((prev) => {
                   const newMsgs = [...prev];
                   const last = newMsgs[newMsgs.length - 1];
-                  if (last.role === 'assistant') last.content = aiMessage;
+                  if (last.role === 'assistant') {
+                    newMsgs[newMsgs.length - 1] = { ...last, content: aiMessage };
+                  }
                   return newMsgs;
                 });
               } else if (parsed.type === 'items' && parsed.items) {
-                setItems(parsed.items);
-              } else if (parsed.type === 'reply') {
-                setMessages((prev) => {
+                setChatMessages((prev) => {
                   const newMsgs = [...prev];
-                  newMsgs[newMsgs.length - 1] = { role: 'assistant', content: parsed.text };
+                  const last = newMsgs[newMsgs.length - 1];
+                  if (last.role === 'assistant') {
+                    newMsgs[newMsgs.length - 1] = { ...last, items: parsed.items };
+                  }
+                  return newMsgs;
+                });
+              } else if (parsed.type === 'reply') {
+                setChatMessages((prev) => {
+                  const newMsgs = [...prev];
+                  const last = newMsgs[newMsgs.length - 1];
+                  newMsgs[newMsgs.length - 1] = { ...last, content: parsed.text };
                   return newMsgs;
                 });
               }
               if (parsed.session_id) {
-                setCurrentSession(parsed.session_id);
+                setChatSession(parsed.session_id);
                 loadSessions();
               }
             } catch {
@@ -120,7 +199,7 @@ export default function ChatPage() {
         }
       }
     } catch (err) {
-      setMessages((prev) => [
+      setChatMessages((prev) => [
         ...prev,
         { role: 'assistant', content: 'Error: Gagal terhubung ke server.' },
       ]);
@@ -132,20 +211,24 @@ export default function ChatPage() {
 
   const sendMessageAvatar = async (userMsg: string) => {
     const userMessage: ChatMessage = { role: 'user', content: userMsg };
-    setMessages((prev) => [...prev, userMessage]);
+    setAvatarMessages((prev) => [...prev, userMessage]);
     setLoading(true);
     setAvatarAnim('thinking');
 
     try {
-      const res = await chat.sendAvatarMessage(userMsg, currentSession || undefined);
-      setMessages((prev) => [...prev, { role: 'assistant', content: res.speech_text }]);
-      
+      const res = await chat.sendAvatarMessage(userMsg, avatarSession || undefined);
+      setAvatarMessages((prev) => [
+        ...prev,
+        {
+          role: 'assistant',
+          content: res.speech_text,
+          items: res.items as ChatItem[] | undefined,
+        },
+      ]);
+
       if (res.session_id) {
-        setCurrentSession(res.session_id);
+        setAvatarSession(res.session_id);
         loadSessions();
-      }
-      if (res.items) {
-        setItems(res.items as ChatItem[]);
       }
 
       setAvatarAnim('wave');
@@ -157,7 +240,7 @@ export default function ChatPage() {
           audioEl.src = ttsRes.audio_url;
           audioEl.load();
           audioEl.play().catch((e) => console.warn('Audio play blocked:', e));
-          
+
           audioEl.onended = () => {
             setAvatarAnim('idle');
           };
@@ -166,7 +249,7 @@ export default function ChatPage() {
         setAvatarAnim('idle');
       }
     } catch (err) {
-      setMessages((prev) => [
+      setAvatarMessages((prev) => [
         ...prev,
         { role: 'assistant', content: 'Error: Gagal memproses pesan avatar.' },
       ]);
@@ -198,10 +281,11 @@ export default function ChatPage() {
   const selectSession = async (sessionId: string) => {
     try {
       const msgs = await chat.getSessionMessages(sessionId);
-      setMessages(msgs as ChatMessage[]);
-      setCurrentSession(sessionId);
+      // Sesi yang dipilih dari sidebar selalu masuk ke riwayat mode "chat"
+      // (sidebar cuma tersedia di mode Chatting).
+      setChatMessages(msgs as ChatMessage[]);
+      setChatSession(sessionId);
       setSidebarOpen(false);
-      setItems([]);
     } catch {
       /* ignore */
     }
@@ -210,9 +294,13 @@ export default function ChatPage() {
   const deleteSession = async (sessionId: string) => {
     try {
       await chat.deleteSession(sessionId);
-      if (currentSession === sessionId) {
-        setMessages([]);
-        setCurrentSession(null);
+      if (chatSession === sessionId) {
+        setChatMessages([]);
+        setChatSession(null);
+      }
+      if (avatarSession === sessionId) {
+        setAvatarMessages([]);
+        setAvatarSession(null);
       }
       loadSessions();
     } catch {
@@ -221,12 +309,19 @@ export default function ChatPage() {
   };
 
   const newChat = () => {
-    setMessages([]);
-    setCurrentSession(null);
-    setItems([]);
+    setChatMessages([]);
+    setChatSession(null);
     setSidebarOpen(false);
     setAvatarAnim('idle');
   };
+
+  // Mulai percakapan avatar yang baru/kosong (independen dari mode chat)
+  const newAvatarChat = () => {
+    setAvatarMessages([]);
+    setAvatarSession(null);
+    setAvatarAnim('idle');
+  };
+
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setPasswordError('');
@@ -264,12 +359,18 @@ export default function ChatPage() {
       setPasswordLoading(false);
     }
   };
+
+  const lastAssistantItems =
+    avatarMessages.length > 0 && avatarMessages[avatarMessages.length - 1].role === 'assistant'
+      ? avatarMessages[avatarMessages.length - 1].items
+      : undefined;
+
   return (
     <div className="flex h-screen bg-white dark:bg-gray-900">
       {mode === 'chat' && (
         <Sidebar
           sessions={sessions}
-          currentSession={currentSession}
+          currentSession={chatSession}
           onSelectSession={selectSession}
           onDeleteSession={deleteSession}
           onNewChat={newChat}
@@ -305,7 +406,7 @@ export default function ChatPage() {
               )}
               <h1 className="font-semibold text-gray-900 dark:text-white">Readoo AI</h1>
             </div>
-            
+
             {/* Mode Switcher */}
             <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5 border border-gray-200/50 dark:border-gray-700/50 shadow-inner">
               <button
@@ -362,30 +463,31 @@ export default function ChatPage() {
         {/* Chatting View */}
         {mode === 'chat' ? (
           <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-            {messages.length === 0 && (
+            {chatMessages.length === 0 && (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center text-gray-400 dark:text-gray-500">
                   <MessageSquare className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p>Mulai chat dengan Aiko, asisten AI Anda</p>
+                  <p>Mulai chat dengan {assistantName}, asisten AI Anda</p>
                 </div>
               </div>
             )}
-            {messages.map((msg, i) => (
-              <ChatBubble
-                key={i}
-                message={msg}
-                isStreaming={streaming && i === messages.length - 1}
-              />
-            ))}
+            {chatMessages.map((msg, i) => (
+              <div key={i}>
+                <ChatBubble
+                  message={msg}
+                  isStreaming={streaming && i === chatMessages.length - 1}
+                />
 
-            {/* Items display */}
-            {items.length > 0 && messages.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 animate-fade-in">
-                {items.map((item, i) => (
-                  <ItemCard key={i} item={item} />
-                ))}
+                {/* Rekomendasi buku nempel di bawah jawaban ini saja, permanen */}
+                {msg.role === 'assistant' && msg.items && msg.items.length > 0 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 animate-fade-in">
+                    {msg.items.map((item, j) => (
+                      <ItemCard key={j} item={item} />
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
+            ))}
 
             {loading && !streaming && (
               <div className="flex justify-start">
@@ -413,22 +515,84 @@ export default function ChatPage() {
           /* 3D Avatar View (Constrained to Chat Text Box bounds for perfect horizontal alignment) */
           <div className="flex-1 w-full relative p-4 flex flex-col justify-end">
             <div className="max-w-4xl mx-auto w-full h-full relative flex items-center justify-center">
-              <VrmAvatar animation={avatarAnim} />
+              <VrmAvatar
+                animation={avatarAnim}
+                assistantName={assistantName}
+                avatarGender={avatarGender}
+              />
 
-              {/* Float Speech Bubble Overlay */}
-              {messages.length > 0 && messages[messages.length - 1].role === 'assistant' && (
-                <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white/95 dark:bg-gray-850/95 shadow-xl rounded-2xl p-4 max-w-md w-full border border-gray-150 dark:border-gray-700 backdrop-blur z-10 transition-all animate-fade-in">
-                  <p className="text-xs font-bold text-primary-600 dark:text-primary-400 mb-1">Aiko</p>
-                  <p className="text-sm text-gray-800 dark:text-gray-100 leading-relaxed max-h-32 overflow-y-auto">
-                    {messages[messages.length - 1].content}
-                  </p>
-                </div>
-              )}
+              {/* Caption Bubble — ukuran FIXED (gak melar ikut panjang teks), teks di dalam
+                  di-scroll kalau kepanjangan. Diposisikan di pojok kanan-atas supaya:
+                  - Wajah avatar (di tengah frame) tetap full kelihatan, gak ketutup
+                  - Gak numpuk sama card rekomendasi buku yang anchor di bawah (bottom-6)
+                  Avatar TETAP di tengah, gak digeser sama sekali. */}
+              {avatarMessages.length > 0 &&
+                avatarMessages[avatarMessages.length - 1].role === 'assistant' &&
+                avatarAnim === 'wave' && (
+                  <div className="absolute top-4 right-4 w-72 z-10 animate-fade-in">
+                    {/* Bubble utama - ukuran fixed w-72 h-32, isi di-scroll.
+                        FIX (dark mode bug): background gradient dulu hardcode putih
+                        terus (inline style selalu override class Tailwind), jadi
+                        `dark:bg-gray-850/95` di className gak pernah kepakai dan
+                        `gray-850` sendiri bukan warna valid Tailwind. Sekarang warna
+                        base gradient diset manual lewat `isDark` supaya ikut ganti
+                        gelap pas dark mode aktif. */}
+                    <div
+                      className="relative w-72 h-32 shadow-xl rounded-2xl p-3 border-2 border-transparent bg-clip-padding backdrop-blur flex flex-col"
+                      style={{
+                        backgroundImage: `linear-gradient(${isDark ? '#1f2937' : '#ffffff'}, ${
+                          isDark ? '#1f2937' : '#ffffff'
+                        }), linear-gradient(135deg, #6366f1, #a855f7)`,
+                        backgroundOrigin: 'border-box',
+                        backgroundClip: 'padding-box, border-box',
+                      }}
+                    >
+                      {/* Header: mini avatar icon + nama + speaking indicator */}
+                      <div className="flex items-center gap-1.5 mb-1 flex-shrink-0">
+                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center text-white text-[9px] font-bold flex-shrink-0">
+                          {assistantName.charAt(0).toUpperCase()}
+                        </div>
+                        <p className="text-xs font-bold text-primary-600 dark:text-primary-400 flex-1">
+                          {assistantName}
+                        </p>
+                        {/* Speaking indicator: 3 bar animasi, cuma nongol pas avatar bicara */}
+                        <div className="flex items-end gap-0.5 h-3 flex-shrink-0">
+                          <span
+                            className="w-0.5 bg-primary-500 rounded-full animate-bounce"
+                            style={{ height: '60%', animationDelay: '0ms' }}
+                          />
+                          <span
+                            className="w-0.5 bg-primary-500 rounded-full animate-bounce"
+                            style={{ height: '100%', animationDelay: '150ms' }}
+                          />
+                          <span
+                            className="w-0.5 bg-primary-500 rounded-full animate-bounce"
+                            style={{ height: '40%', animationDelay: '300ms' }}
+                          />
+                        </div>
+                      </div>
 
-              {/* Recommendations horizontally scrollable container */}
-              {items.length > 0 && messages.length > 0 && (
+                      {/* Teks — box gak melar, teks yang di-scroll di dalamnya */}
+                      <p className="text-sm text-gray-800 dark:text-gray-100 leading-relaxed overflow-y-auto flex-1 pr-1">
+                        {avatarMessages[avatarMessages.length - 1].content}
+                      </p>
+                    </div>
+
+                    {/* Tail / ekor bubble kecil di pojok kiri-bawah bubble.
+                        FIX (dark mode bug): sama kayak bubble utama, `dark:bg-gray-850/95`
+                        diganti jadi warna solid via inline style yang ikut `isDark`,
+                        biar warnanya konsisten sama bubble utama di kedua mode. */}
+                    <div
+                      className="absolute -bottom-1.5 left-6 w-3 h-3 border-b-2 border-l-2 border-primary-500/30 transform rotate-[-45deg]"
+                      style={{ backgroundColor: isDark ? '#1f2937' : '#ffffff' }}
+                    />
+                  </div>
+                )}
+
+              {/* Recommendations horizontally scrollable container (avatar mode: cuma tampilin yang terbaru) */}
+              {lastAssistantItems && lastAssistantItems.length > 0 && (
                 <div className="absolute bottom-6 inset-x-4 overflow-x-auto flex gap-3 p-2 z-10 scrollbar-none snap-x pointer-events-auto">
-                  {items.map((item, i) => (
+                  {lastAssistantItems.map((item, i) => (
                     <div key={i} className="flex-shrink-0 w-72 snap-center shadow-lg rounded-xl">
                       <ItemCard item={item} />
                     </div>

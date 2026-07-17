@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 # Load .env file from root directory
-base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 load_dotenv(os.path.join(base_dir, ".env"))
 
 
@@ -26,6 +26,16 @@ class Settings:
     EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2")
     RERANKER_MODEL: str = os.getenv("RERANKER_MODEL", "jinaai/jina-reranker-v2-base-multilingual")
     RERANK_THRESHOLD: float = float(os.getenv("RERANK_THRESHOLD", 0.45))
+    # FIX (bug: item tidak relevan tetap muncul di card):
+    # RERANK_RELATIVE_CUTOFF -- item harus punya skor minimal sekian persen
+    # dari skor tertinggi di antara kandidat query yang sama, biar item yang
+    # jauh lebih lemah dari yang terbaik tidak ikut lolos (sebelumnya 0.15,
+    # terlalu longgar).
+    # RERANK_MIN_ITEM_SCORE -- lantai skor mutlak, dipakai supaya cutoff
+    # relatif di atas tidak pernah turun terlalu rendah walau skor tertinggi
+    # di antara kandidat itu sendiri sudah rendah.
+    RERANK_RELATIVE_CUTOFF: float = float(os.getenv("RERANK_RELATIVE_CUTOFF", 0.6))
+    RERANK_MIN_ITEM_SCORE: float = float(os.getenv("RERANK_MIN_ITEM_SCORE", 0.3))
 
     # Voice & Audio configuration
     TTS_PROVIDER: str = os.getenv("TTS_PROVIDER", "edge-tts").lower()

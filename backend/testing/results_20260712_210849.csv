@@ -1,0 +1,86 @@
+no,pertanyaan,kategori_uji,ekspektasi,status_code,ok,elapsed_sec,num_items,judul_muncul,error,reply
+1,rekomendasiin buku matematika,Relevan - umum,Muncul buku dari kategori Sains (mis. Calculus,200,True,53.806,5,"Discrete Mathematics with Applications | Applied mathematics for business, economics, and the social sciences | Humble Pi | Discrete Mathematics with Applications | Calculus",,"Halo! Saya senang membantu Anda dengan rekomendasi buku matematika.
+
+Kami memiliki beberapa pilihan buku matematika yang populer dan bermanfaat. Berikut beberapa rekomendasi:
+
+1. **Discrete Mathematics with Applications** oleh Susanna S. Epp - Buku ini membahas topik matematika diskrit dan aplikasinya. Dengan judul yang sama, ada dua pilihan buku yang berbeda, tetapi saya sarankan untuk memilih yang berdasarkan klasifikasi Matematika (Item #1) karena lebih relevan.
+2. **Humble Pi** oleh Matt Parker - Buku ini membahas topik matematika dengan cara yang menyenangkan dan humoris. Cocok untuk mereka yang ingin mempelajari matematika dengan cara yang lebih santai.
+3. **Calculus** oleh James Stewart - Buku ini membahas topik kalkulus dan aplikasinya. Cocok untuk mereka yang ingin mempelajari matematika yang lebih lanjut.
+
+Semua buku di atas memiliki rating yang tinggi dan merupakan pilihan yang baik untuk memulai atau melanjutkan mempelajari matematika."
+2,buku kalkulus,Relevan - spesifik,"Muncul ""Calculus"" oleh James Stewart",200,True,1.865,2,Calculus | Code,,"Kamu cari buku kalkulus, ya? Saya memiliki informasi tentang buku ""Calculus"" yang diterbitkan oleh McGraw-Hill Ryerson pada tahun 1986. Buku ini ditulis oleh James Stewart dan telah dilihat sebanyak 321 kali. Apakah ini buku yang kamu cari?"
+3,buku statistik,Relevan - spesifik,"Muncul ""How to Lie with Statistics""",200,True,2.036,1,How to Lie with Statistics,,"Kamu sedang mencari buku statistik, ya? Saya memiliki rekomendasi yang tepat untukmu. Buku ""How to Lie with Statistics"" oleh Darrell Huff dan Irving Geis adalah salah satu pilihan terbaik untuk mempelajari statistik dengan baik. Buku ini sudah diterbitkan pada tahun 1954 dan telah dibaca oleh 179 orang. Kamu bisa menemukan informasi lebih lanjut tentang buku ini dengan kode OL2975846W. Apakah kamu ingin tahu lebih banyak tentang buku ini?"
+4,buku tentang python,Relevan - spesifik,"Muncul ""Learning Python""",200,True,2.111,1,Learning Python,,"Kami memiliki buku tentang Python dengan judul ""Learning Python"" yang ditulis oleh Mark Lutz dan David Ascher. Buku ini memuat informasi tentang bahasa pemrograman Python. Jika Anda tertarik, silakan melihat detail buku dengan ID 2017."
+5,buku machine learning,Relevan - spesifik,"Muncul ""Hands-On Machine Learning...""",200,True,1.96,3,"Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow | $100M Offers | Learning Python",,"Saya memiliki buku terkait Machine Learning dengan judul ""Hands-On Machine Learning with Scikit-Learn, Keras, dan TensorFlow"" yang ditulis oleh Aurélien Géron. Buku ini merupakan buku teks yang membahas topik terkait Machine Learning dan Matematika. Kode buku adalah OL20709638W dan kategori utamanya adalah Sains."
+6,buku ekonomi,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,200,True,2.094,5,Basic economics | Think and Grow Rich | Your Next Five Moves | Freakonomics | $100M Offers,,"Kami memiliki beberapa pilihan buku ekonomi yang menarik. Berikut beberapa rekomendasi:
+
+1. **Basic Economics** oleh Thomas Sowell (Tahun terbit: 2000) - Buku ini membahas topik terkait ekonomi, kondisi ekonomi, dan pengajaran ekonomi.
+2. **Your Next Five Moves** oleh Patrick Bet-David dan Greg Dinkin (Tahun terbit: 2020) - Buku ini membahas topik terkait ekonomi dan strategi bisnis.
+3. **Freakonomics** oleh Steven D. Levitt dan Stephen J. Dubner (Tahun terbit: 2005) - Buku ini membahas topik terkait ekonomi, psikologi, dan aspek sosial ekonomi.
+
+Klik pada judul buku untuk melihat detail lebih lanjut."
+7,buku bisnis,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,200,True,2.33,5,$100M Offers | Trading in the zone | Start with why | The Hard Thing About Hard Things | Think and Grow Rich,,"Kamu mencari buku bisnis, ya? Saya memiliki beberapa opsi untukmu. Berikut beberapa buku bisnis yang mungkin menarik bagi kamu:
+
+1. **$100M Offers** oleh Alex Hormozi - Buku ini membahas tentang bagaimana membuat tawaran yang efektif dalam bisnis.
+2. **Trading in the Zone** oleh Mark Douglas - Buku ini membahas tentang bagaimana berinvestasi dengan efektif dan mengelola risiko.
+3. **Start with Why** oleh Simon Sinek - Buku ini membahas tentang bagaimana menciptakan visi dan tujuan yang jelas dalam bisnis.
+4. **The Hard Thing About Hard Things** oleh Ben Horowitz - Buku ini membahas tentang bagaimana menghadapi tantangan dalam bisnis dan mengembangkan kemampuan leadership.
+5. **Think and Grow Rich** oleh Napoleon Hill - Buku ini membahas tentang bagaimana mengembangkan kemampuan untuk mencapai kesuksesan dalam bisnis dan kehidupan.
+
+Mana buku bisnis yang menarik bagi kamu?"
+8,buku komunikasi,Relevan - umum,Muncul buku dari kategori Ilmu Komunikasi (mis. How to Talk to Anyone),200,True,2.261,5,"Manifest der Kommunistischen Partei | How to Talk to Anyone | La conquête du pain | How to talk to anyone, anytime, anywhere | Convince them in 90 seconds or less",,"Anda mencari buku tentang komunikasi? Kami memiliki beberapa pilihan buku yang relevan dengan topik tersebut. Berikut adalah beberapa opsi:
+
+1. **Manifest der Kommunistischen Partei** oleh Karl Marx dan Friedrich Engels (1848) - Buku ini membahas topik terkait komunisme, sumber, kapitalisme, dan konflik sosial.
+2. **How to Talk to Anyone** oleh Leil Lowndes (1999) - Buku ini membahas topik terkait komunikasi interpersonal, self-improvement, bahasa tubuh, dan komunikasi nonverbal.
+3. **La conquête du pain** oleh Peter Kropotkin (1892) - Buku ini membahas topik terkait sejarah, komunisme, dan anarkisme.
+4. **How to talk to anyone, anytime, anywhere** oleh Larry King (1995) - Buku ini membahas topik terkait percakapan, komunikasi interpersonal.
+5. **Convince them in 90 seconds or less** oleh Nicholas Boothman (2010) - Buku ini membahas topik terkait kesuksesan dalam bisnis, komunikasi nonverbal, dan komunikasi interpersonal.
+
+Mana buku yang menarik bagi Anda?"
+9,buku teknik,Relevan - umum,Muncul buku dari kategori Teknik (mis. Engineering Mechanics),200,True,2.279,5,"The Book | Transactions on Engineering Technologies | Engineering Mechanics, Statics & Dynamics | Watchers | Electrical engineering",,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5503, Requested 1250. Please try again in 7.53s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."
+10,novel,Relevan - umum,Muncul buku dari kategori Sastra (mis. The Picture of Dorian Gray),200,True,2.039,5,It Ends With Us | The Art of War | Shatter Me | A People's History of the United States | Watchers,,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 4946, Requested 1252. Please try again in 1.98s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."
+11,buku fiksi,Relevan - umum,Muncul buku dari kategori Sastra,200,True,2.081,5,It Ends With Us | Diary of a Wimpy Kid | Powerless | The Silent Patient | The Picture of Dorian Gray,,"Saya telah menemukan beberapa pilihan buku fiksi di katalog kami. Berikut beberapa pilihan yang mungkin menarik:
+
+- It Ends With Us oleh Colleen Hoover
+- Diary of a Wimpy Kid oleh Jeff Kinney
+- Powerless oleh Lauren Roberts
+- The Silent Patient oleh Alex Michaelides
+- The Picture of Dorian Gray oleh Oscar Wilde
+
+Kategori utama dari semua pilihan buku fiksi di atas adalah Sastra. Apakah Anda ingin mengetahui lebih lanjut tentang salah satu pilihan buku di atas?"
+12,buku sejarah,Relevan - umum,Muncul buku dari kategori Ilmu Sosial (mis. A People's History of the US),200,True,1.665,5,A People's History of the United States | The Lessons of History | The Book | La conquête du pain | Mga gunita ng himagsikan,,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5149, Requested 1281. Please try again in 4.3s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."
+13,buku filsafat,Relevan - spesifik,"Muncul ""The Story of Philosophy"" atau ""Ringkasan sejarat filsafat""",200,True,2.153,5,The Story of Philosophy | Ringkasan sejarat filsafat | The Lessons of History | Fundamentals of physics | The great conversation,,"Kami memiliki beberapa buku filsafat yang tersedia. Berikut beberapa pilihan yang mungkin Anda sukai:
+
+1. ""The Story of Philosophy"" karya Will Durant (Item #1) - Buku ini membahas topik terkait filosofi, sejarah, dan biografi para filosof terkenal.
+2. ""Ringkasan sejarat filsafat"" karya K. Bertens (Item #2) - Buku ini membahas topik terkait filosofi dan sejarah dengan ringkasan yang singkat dan mudah dipahami.
+3. ""The Great Conversation"" karya Norman Melchert (Item #5) - Buku ini membahas topik terkait filosofi, sejarah, dan introduksi dengan cara yang interaktif dan menyenangkan.
+4. ""The Lessons of History"" karya Will Durant dan Ariel Durant (Item #3) - Buku ini membahas topik terkait filosofi, sejarah, dan histori dengan cara yang menyenangkan dan mudah dipahami.
+
+Mohon pilih salah satu buku yang Anda sukai untuk mendapatkan informasi lebih lanjut!"
+14,buku tentang komputer,Relevan - umum,Muncul buku dari kategori Ilmu Komputer,200,True,1.898,5,"2001 | Code | Advances in Computers, Volume 49 (Advances in Computers) | The Difference Engine | Accelerate",,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5394, Requested 1282. Please try again in 6.76s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."
+15,buku robotik,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,429,False,0.018,0,,"{""error"":""Batas request terlampaui. Maksimal 10 request per 60 detik.""}
+",
+16,buku masak,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,429,False,0.006,0,,"{""error"":""Batas request terlampaui. Maksimal 10 request per 60 detik.""}
+",
+17,resep rendang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,429,False,0.004,0,,"{""error"":""Batas request terlampaui. Maksimal 10 request per 60 detik.""}
+",
+18,buku kedokteran,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,2.146,5,Physics | Fundamentals of physics | Concepts of physics | Physics for scientists and engineers | Physical chemistry,,"Maaf, saya tidak menemukan informasi tentang buku kedokteran di dalam daftar item yang Anda berikan. Semua item yang ada tampaknya merupakan buku tentang fisika atau kimia. Jika Anda ingin mencari informasi tentang buku kedokteran, saya dapat membantu Anda mencari di tempat lain."
+19,buku bahasa jepang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,2.159,5,A People's History of the United States | Code | Looking out/looking in | Concepts of physics | Calculus,,"Maaf, saya tidak menemukan informasi tentang buku bahasa Jepang di dalam daftar item yang Anda berikan. Jika Anda sedang mencari buku bahasa Jepang, saya tidak memiliki informasi yang relevan di dalam database ini."
+20,halo,Greeting,Sapaan balik tanpa card,200,True,0.022,0,,,Halo! saya asisten AI Anda. Ada yang bisa saya bantu hari ini?
+21,terus apa yg kamu bisa?,Ambigu/nggak jelas,Tidak ada card / jawaban jujur,200,True,1.95,5,The Obstacle is the Way | Convince them in 90 seconds or less | Zero to One | Start with why | How to Talk to Anyone,,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 4823, Requested 1342. Please try again in 1.65s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."
+22,aljabar,Relevan - spesifik (subtopik),Muncul buku terkait aljabar/matematika,200,True,1.723,5,Looking out/looking in | The Manager's Path | Object-Oriented Software Engineering | Start with why | How to solve it,,"Maaf, saya tidak menemukan informasi tentang ""aljabar"" di daftar buku yang Anda berikan. Apakah Anda ingin tahu tentang buku yang terkait dengan topik ""aljabar""?"
+23,buku tentang uang,Relevan - umum (subtopik ekonomi),Muncul buku dari kategori Ekonomi & Bisnis (mis. Debt),200,True,2.034,3,Das Kapital | Debt | Code,,"Saya menemukan beberapa buku yang terkait dengan topik ""uang"". 
+
+Buku pertama yang saya temukan adalah ""Debt"" dengan ID 2096, ditulis oleh David Graeber. Buku ini membahas topik terkait ""Money"" dan ""Debt"".
+
+Jika Anda ingin mencari buku lain yang lebih spesifik tentang ""uang"", saya sarankan Anda mencari di kategori ""Ekonomi & Bisnis"" atau ""Ilmu Sosial"", karena banyak buku yang terkait dengan topik ini ada di kategori tersebut.
+
+Apakah Anda ingin saya menemukan buku lain yang lebih spesifik tentang ""uang""?"
+24,buku tentang psikologi manusia,Relevan - spesifik (subtopik),Muncul buku terkait (mis. Surrounded by Idiots),200,True,3.766,5,Concepts of physics | Read People Like a Book | Physics | Algorithms to Live By | Conceptual physics,,"Error: Gagal memanggil model AI (litellm.RateLimitError: RateLimitError: GroqException - {""error"":{""message"":""Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01kwbmwzy7e889fyaxq13nrwmk` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5072, Requested 1242. Please try again in 3.14s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+). Silakan periksa konfigurasi LLM Anda di dashboard Admin."
+25,buku tentang tesla,Relevan - spesifik,"Muncul ""My Inventions"" oleh Nikola Tesla",200,True,1.881,2,My inventions | Calculus,,"Kamu mencari buku tentang Nikola Tesla, ya. Buku yang kamu cari adalah ""My inventions"" dengan Id: 2077. Buku ini ditulis oleh Nikola Tesla sendiri dan membahas tentang penemuannya, termasuk sejarah dan teknik listrik."

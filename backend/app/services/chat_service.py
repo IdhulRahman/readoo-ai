@@ -1,9 +1,16 @@
 import re
 import json
 import logging
+import time
 import uuid
 from datetime import datetime
 from typing import Optional, Generator
+
+import litellm  # FIX: dipindah ke top-level supaya cuma di-import SEKALI pas server startup,
+                 # bukan setiap kali fungsi _call_llm/_call_llm_stream dipanggil.
+                 # Sebelumnya ini nyebabin gap ~14 detik di request PERTAMA saja,
+                 # karena litellm meng-import banyak provider SDK sekaligus di baliknya.
+litellm.telemetry = False
 
 from app.core.config import settings
 from app.repositories import ChatRepository, SettingsRepository, CollectionRepository
@@ -39,22 +46,49 @@ class ChatService:
     def _create_or_get_session(self, user_id: int, session_id: Optional[str] = None) -> str:
         """Create a new session or return existing one."""
         now = datetime.now().isoformat()
-        
+
         if session_id:
             row = ChatRepository.get_chat_session(session_id, user_id)
             if row:
                 ChatRepository.update_chat_session_timestamp(session_id, now)
                 return session_id
-        
+
         # Create new session
         new_id = uuid.uuid4().hex[:12]
         ChatRepository.create_chat_session(new_id, user_id, "Chat Baru", now, now)
         return new_id
 
     def _search_and_rerank(self, query: str) -> tuple[list[dict], list[str]]:
-        """Search vector store and rerank results."""
+        """Search vector store, rerank results, and filter out irrelevant matches."""
+        FINAL_TOP_K = 10
+
         retrieved = self.vector_store.search(query, top_k=20)
-        reranked = self.vector_store.rerank(query, retrieved, top_k=5)
+
+        # FIX (bug: "item muncul walau harusnya kosong"):
+        # Rerank SEMUA kandidat, bukan langsung dipotong ke FINAL_TOP_K di
+        # sini, supaya threshold relevansi di bawah bisa dicek terhadap
+        # seluruh himpunan kandidat, bukan cuma yang kebetulan lolos duluan
+        # gara-gara boost popularitas di VectorStore.rerank().
+        reranked = self.vector_store.rerank(query, retrieved)
+
+        # Filter 2 lapis: (1) buang query yang secara keseluruhan nggak nyambung
+        # sama sekali ke dataset (skor terbaiknya sendiri rendah), (2) di antara
+        # yang lolos, buang item yang jauh lebih lemah dibanding skor terbaik
+        # query itu sendiri (threshold relatif, bukan angka absolut tetap).
+        # Menggunakan rerank_score_raw (skor semantik murni, tanpa boost
+        # popularitas) supaya buku populer tidak "memaksa" lolos threshold
+        # walau topiknya tidak relevan dengan query.
+        if reranked and "rerank_score_raw" in reranked[0]:
+            top_score = max(d["rerank_score_raw"] for d in reranked)
+            if top_score < settings.RERANK_THRESHOLD:
+                reranked = []
+            else:
+                relative_cutoff = top_score * 0.15
+                reranked = [d for d in reranked if d["rerank_score_raw"] >= relative_cutoff]
+
+        # Baru potong ke jumlah final yang ditampilkan ke user, SETELAH
+        # difilter relevansinya -- bukan sebelumnya.
+        reranked = reranked[:FINAL_TOP_K]
 
         # Get display columns
         col_row = CollectionRepository.get_collection(self.vector_store.active_collection_id)
@@ -65,7 +99,7 @@ class ChatService:
         """Build context string from documents."""
         if not documents:
             return "Tidak ada dokumen atau data relevan ditemukan."
-        
+
         context_str = ""
         for idx, doc in enumerate(documents, 1):
             context_str += f"Item #{idx}:\n"
@@ -85,13 +119,35 @@ class ChatService:
         words = cleaned.split()
         return any(w in greetings for w in words)
 
+    def _completion_with_retry(self, max_retries: int = 3, base_delay: float = 1.5, **kwargs):
+        """
+        Wrapper litellm.completion() dengan retry otomatis kalau kena rate limit
+        dari provider (mis. Groq TPM limit). Pakai exponential backoff:
+        percobaan ke-1 tunggu ~1.5s, ke-2 ~3s, ke-3 ~6s, sebelum akhirnya raise.
+        """
+        last_error = None
+        for attempt in range(max_retries + 1):
+            try:
+                return litellm.completion(**kwargs)
+            except litellm.RateLimitError as e:
+                last_error = e
+                if attempt == max_retries:
+                    break
+                wait_time = base_delay * (2 ** attempt)
+                logger.warning(
+                    "Rate limit dari LLM provider (percobaan %d/%d), tunggu %.1fs sebelum retry: %s",
+                    attempt + 1, max_retries, wait_time, e
+                )
+                time.sleep(wait_time)
+        raise last_error
+
     def _call_llm(self, system_prompt: str, messages: list[dict]) -> str:
         """Call LLM with system prompt and messages."""
         llm_cfg = self._get_llm_settings()
         provider = llm_cfg.get("llm_provider", "groq").lower()
         model_name = llm_cfg.get("llm_model", "llama-3.1-8b-instant")
         encrypted_key = llm_cfg.get("llm_api_key", "")
-        
+
         try:
             max_tokens = int(llm_cfg.get("llm_max_tokens", 200))
         except ValueError:
@@ -101,20 +157,18 @@ class ChatService:
             temperature = float(llm_cfg.get("llm_temperature", 0.7))
         except ValueError:
             temperature = 0.7
-        
+
         from app.core.security import decrypt_api_key
         api_key = decrypt_api_key(encrypted_key)
 
         model_string = f"{provider}/{model_name}" if "/" not in model_name else model_name
 
         try:
-            import litellm
-            litellm.telemetry = False
-            
+            # NOTE: litellm sudah di-import di top-level file ini (lihat atas).
             full_messages = [{"role": "system", "content": system_prompt}] + messages
-            
+
             if provider == "ollama":
-                res = litellm.completion(
+                res = self._completion_with_retry(
                     model=model_string,
                     messages=full_messages,
                     api_base=settings.OLLAMA_BASE_URL,
@@ -123,7 +177,7 @@ class ChatService:
                     timeout=30
                 )
             else:
-                res = litellm.completion(
+                res = self._completion_with_retry(
                     model=model_string,
                     messages=full_messages,
                     api_key=api_key if api_key else None,
@@ -142,7 +196,7 @@ class ChatService:
         provider = llm_cfg.get("llm_provider", "groq").lower()
         model_name = llm_cfg.get("llm_model", "llama-3.1-8b-instant")
         encrypted_key = llm_cfg.get("llm_api_key", "")
-        
+
         try:
             max_tokens = int(llm_cfg.get("llm_max_tokens", 200))
         except ValueError:
@@ -152,20 +206,18 @@ class ChatService:
             temperature = float(llm_cfg.get("llm_temperature", 0.7))
         except ValueError:
             temperature = 0.7
-        
+
         from app.core.security import decrypt_api_key
         api_key = decrypt_api_key(encrypted_key)
 
         model_string = f"{provider}/{model_name}" if "/" not in model_name else model_name
 
         try:
-            import litellm
-            litellm.telemetry = False
-            
+            # NOTE: litellm sudah di-import di top-level file ini (lihat atas).
             full_messages = [{"role": "system", "content": system_prompt}] + messages
-            
+
             if provider == "ollama":
-                response = litellm.completion(
+                response = self._completion_with_retry(
                     model=model_string,
                     messages=full_messages,
                     api_base=settings.OLLAMA_BASE_URL,
@@ -175,7 +227,7 @@ class ChatService:
                     stream=True
                 )
             else:
-                response = litellm.completion(
+                response = self._completion_with_retry(
                     model=model_string,
                     messages=full_messages,
                     api_key=api_key if api_key else None,
@@ -184,7 +236,7 @@ class ChatService:
                     timeout=30,
                     stream=True
                 )
-            
+
             for chunk in response:
                 if chunk.choices[0].delta.content:
                     yield chunk.choices[0].delta.content
@@ -200,7 +252,7 @@ class ChatService:
             item_info = {}
             for col in display_cols:
                 item_info[col] = doc.get(col, "")
-            
+
             item_info["id"] = doc.get("id")
             item_info["cover_image"] = doc.get("cover_image", doc.get("image_base64", ""))
             item_info["cover_color"] = int(np.random.randint(0, 360))
@@ -366,3 +418,15 @@ class ChatService:
     def delete_session(self, session_id: str, user_id: int) -> None:
         """Delete a chat session and its messages."""
         ChatRepository.delete_chat_session(session_id, user_id)
+
+
+# Singleton instance — hindari re-load model berkali-kali
+_chat_service_instance: Optional["ChatService"] = None
+
+
+def get_chat_service() -> "ChatService":
+    """Get or create the shared ChatService singleton."""
+    global _chat_service_instance
+    if _chat_service_instance is None:
+        _chat_service_instance = ChatService()
+    return _chat_service_instance

@@ -16,6 +16,7 @@ export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
   created_at?: string;
+  items?: ChatItem[];
 }
 
 export interface ChatSession {

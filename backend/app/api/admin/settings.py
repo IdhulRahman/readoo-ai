@@ -67,8 +67,8 @@ def admin_health_check():
     
     # Vector store check
     try:
-        from app.services.chat_service import ChatService
-        vs = ChatService().vector_store
+        from app.services.chat_service import get_chat_service
+        vs = get_chat_service().vector_store
         health["checks"]["vector_store"] = {
             "status": "ok",
             "active_collection": vs.active_collection_id,
@@ -148,3 +148,16 @@ def admin_get_stats():
     except Exception as e:
         logger.exception("Failed to get stats")
         return jsonify({"error": str(e)}), 500
+
+@api_bp.route("/settings/public", methods=["GET"])
+@require_auth()
+def get_public_settings():
+    """Endpoint publik (semua user login) untuk info identitas asisten saja."""
+    keys = ["assistant_name", "assistant_job", "greeting_message", "avatar_gender"]
+    sett = SettingsRepository.get_settings_by_keys(keys)
+    return jsonify({
+        "assistant_name": sett.get("assistant_name") or "Aiko",
+        "assistant_job": sett.get("assistant_job") or "",
+        "greeting_message": sett.get("greeting_message") or "",
+        "avatar_gender": sett.get("avatar_gender") or "female",
+    })

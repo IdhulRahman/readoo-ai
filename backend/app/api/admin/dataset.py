@@ -7,10 +7,10 @@ from flask import request, jsonify
 
 from app.api import api_bp
 from app.api.middleware import require_auth
-from app.services.chat_service import ChatService
+from app.services.chat_service import get_chat_service
 
 logger = logging.getLogger(__name__)
-chat_service = ChatService()
+chat_service = get_chat_service()
 
 base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 UPLOAD_DIR = os.path.join(base_dir, "data", "uploads")

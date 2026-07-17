@@ -1,0 +1,84 @@
+no,pertanyaan,kategori_uji,ekspektasi,status_code,ok,elapsed_sec,num_items,judul_muncul,error,reply
+1,rekomendasiin buku matematika,Relevan - umum,Muncul buku dari kategori Sains (mis. Calculus,200,True,52.177,0,,,"Maaf, saya tidak dapat menemukan informasi tentang rekomendasi buku matematika yang spesifik. Namun, saya dapat memberikan beberapa saran umum.
+
+Untuk pelajar SMA, beberapa buku matematika yang populer adalah:
+- Matematika untuk SMA karya Indra Imawan
+- Matematika untuk Kelas 10-12 karya Dedi Mulyadi
+
+Untuk pelajar kuliah, beberapa buku matematika yang populer adalah:
+- Teori Matematika karya David Hilbert
+- Aljabar Modern karya Serge Lang
+
+Namun, perlu diingat bahwa rekomendasi buku matematika dapat berbeda-beda tergantung pada tujuan dan level pendidikan.
+
+Jika Anda memiliki kebutuhan yang lebih spesifik, saya dapat membantu Anda mencari informasi lebih lanjut."
+2,buku kalkulus,Relevan - spesifik,"Muncul ""Calculus"" oleh James Stewart",200,True,1.791,1,Calculus,,"Saya memiliki item dengan judul ""Calculus"" yang mungkin Anda cari. Buku ini ditulis oleh James Stewart dan diterbitkan oleh McGraw-Hill Ryerson pada tahun 1986."
+3,buku statistik,Relevan - spesifik,"Muncul ""How to Lie with Statistics""",200,True,2.233,1,How to Lie with Statistics,,"Buku ""How to Lie with Statistics"" yang saya bagikan di atas adalah contoh buku tentang statistik. Jika Anda tertarik dengan subjek statistik, saya sarankan Anda untuk membaca buku ini."
+4,buku tentang python,Relevan - spesifik,"Muncul ""Learning Python""",200,True,1.886,1,Learning Python,,"Buku yang Anda cari adalah ""Learning Python"" dengan ID 2017. Buku ini ditulis oleh Mark Lutz dan David Ascher dan diterbitkan oleh O'Reilly pada tahun 1999. Buku ini membahas tentang bahasa pemrograman Python. Apakah Anda ingin tahu lebih lanjut tentang buku ini?"
+5,buku machine learning,Relevan - spesifik,"Muncul ""Hands-On Machine Learning...""",200,True,2.316,2,"Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow | $100M Offers",,"Saya bisa membantu Anda. Buku terkait machine learning yang saya temukan adalah:
+
+- Judul: Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow
+- Pengarang: Aurélien Géron
+- Kode: OL20709638W
+- Tahun_terbit: 2019
+
+Buku ini membahas topik terkait machine learning dan Mathematics. Jika Anda tertarik, saya bisa memberikan informasi lebih lanjut tentang buku ini."
+6,buku ekonomi,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,200,True,2.237,3,Basic economics | Think and Grow Rich | Your Next Five Moves,,"Kami memiliki beberapa pilihan buku ekonomi yang menarik. Berikut beberapa rekomendasi:
+
+1. **Basic Economics** oleh Thomas Sowell - Buku ini membahas topik terkait Economics, Economic conditions, dan Economics, study and teaching. Tahun terbit: 2000.
+2. **Your Next Five Moves** oleh Patrick Bet-David dan Greg Dinkin - Buku ini membahas topik terkait Economics dan memberikan strategi untuk meningkatkan kemampuan ekonomi. Tahun terbit: 2020.
+
+Apakah Anda tertarik untuk membaca salah satu dari kedua buku tersebut?"
+7,buku bisnis,Relevan - umum,Muncul buku dari kategori Ekonomi & Bisnis,200,True,2.251,4,$100M Offers | Trading in the zone | Start with why | The Hard Thing About Hard Things,,"Kami memiliki beberapa pilihan buku bisnis yang menarik. Berikut beberapa rekomendasi:
+
+1. '$100M Offers' oleh Alex Hormozi - Buku ini membahas topik terkait Business, Education, dan dapat membantu Anda meningkatkan kemampuan bisnis Anda.
+2. 'Trading in the zone' oleh Mark Douglas - Buku ini membahas topik terkait Business, Nonfiction, Speculation, dan dapat membantu Anda meningkatkan kemampuan investasi dan bisnis Anda.
+3. 'Start with why' oleh Simon Sinek - Buku ini membahas topik terkait Business, Nonfiction, Leadership, dan dapat membantu Anda meningkatkan kemampuan kepemimpinan dan bisnis Anda.
+4. 'The Hard Thing About Hard Things' oleh Ben Horowitz - Buku ini membahas topik terkait Entrepreneurship, Management, New business enterprises, dan dapat membantu Anda meningkatkan kemampuan bisnis dan kepemimpinan Anda.
+
+Kami memiliki koleksi buku bisnis yang lebih luas. Apakah Anda ingin mencari buku bisnis dengan topik tertentu atau ingin saya merekomendasikan buku bisnis lainnya?"
+8,buku komunikasi,Relevan - umum,Muncul buku dari kategori Ilmu Komunikasi (mis. How to Talk to Anyone),200,True,2.411,5,"Manifest der Kommunistischen Partei | How to Talk to Anyone | La conquête du pain | How to talk to anyone, anytime, anywhere | Convince them in 90 seconds or less",,"Kami memiliki beberapa pilihan buku komunikasi yang menarik. Berikut beberapa rekomendasi:
+
+1. **Manifest der Kommunistischen Partei** oleh Karl Marx dan Friedrich Engels (Tahun 1848) - Buku klasik yang membahas tentang komunisme dan sumber-sumbernya.
+2. **How to Talk to Anyone** oleh Leil Lowndes (Tahun 1999) - Buku yang membahas tentang komunikasi interpersonal dan self-improvement.
+3. **La conquête du pain** oleh Peter Kropotkin (Tahun 1892) - Buku yang membahas tentang sejarah, komunisme, dan anarkisme.
+4. **How to talk to anyone, anytime, anywhere** oleh Larry King (Tahun 1995) - Buku yang membahas tentang percakapan dan komunikasi interpersonal.
+5. **Convince them in 90 seconds or less** oleh Nicholas Boothman (Tahun 2010) - Buku yang membahas tentang sukses dalam bisnis, komunikasi nonverbal, dan interpersonal.
+
+Mana yang menarik perhatian Anda?"
+9,buku teknik,Relevan - umum,Muncul buku dari kategori Teknik (mis. Engineering Mechanics),200,True,2.199,5,"The Book | Transactions on Engineering Technologies | Engineering Mechanics, Statics & Dynamics | Watchers | Electrical engineering",,"Saya menemukan beberapa buku teknik yang mungkin Anda cari. Berikut beberapa pilihan:
+
+1. **The Book** (Id: 2084) - Buku ini membahas topik terkait Art, Long Now Manual for Civilization, Survival, dan memiliki kategori utama Teknik.
+2. **Transactions on Engineering Technologies** (Id: 2080) - Buku ini membahas topik terkait Computer engineering, Software engineering, Engineering, dan memiliki kategori utama Teknik.
+3. **Engineering Mechanics, Statics & Dynamics** (Id: 2076) - Buku ini membahas topik terkait Applied Mechanics, Dynamics, Mechanics, dan memiliki kategori utama Teknik.
+4. **Electrical engineering** (Id: 2083) - Buku ini membahas topik terkait Electrical engineering, Electric engineering, dan memiliki kategori utama Teknik.
+
+Mohon pilih salah satu buku yang sesuai dengan kebutuhan Anda."
+10,novel,Relevan - umum,Muncul buku dari kategori Sastra (mis. The Picture of Dorian Gray),200,True,1.988,0,,,"Novel adalah jenis karya sastra yang berupa cerita panjang, biasanya berupa fiksi. Contohnya adalah novel-novel klasik seperti ""Don Quixote"" atau ""Pride and Prejudice"". Apakah Anda memiliki pertanyaan lebih lanjut tentang novel?"
+11,buku fiksi,Relevan - umum,Muncul buku dari kategori Sastra,200,True,2.051,4,It Ends With Us | Diary of a Wimpy Kid | Powerless | The Silent Patient,,Buku fiksi adalah salah satu kategori buku yang ada di antara pilihan-pilihan buku di sini.
+12,buku sejarah,Relevan - umum,Muncul buku dari kategori Ilmu Sosial (mis. A People's History of the US),200,True,2.2,1,A People's History of the United States,,"Ya, item #1 yang Anda cari adalah buku sejarah."
+13,buku filsafat,Relevan - spesifik,"Muncul ""The Story of Philosophy"" atau ""Ringkasan sejarat filsafat""",200,True,2.506,1,The Story of Philosophy,,"Saya dapat membantu Anda! Buku ""The Story of Philosophy"" oleh Will Durant termasuk dalam kategori buku filsafat. Apakah Anda ingin tahu lebih lanjut tentang buku ini?"
+14,buku tentang komputer,Relevan - umum,Muncul buku dari kategori Ilmu Komputer,200,True,2.704,2,2001 | Code,,"Penggunaan kata ""buku tentang komputer"" cukup luas, sehingga saya perlu meminta klarifikasi lebih lanjut. 
+
+Namun, berdasarkan informasi yang ada, saya melihat bahwa ada dua buku yang terkait dengan topik komputer:
+
+1. Buku dengan id 2019 (judul ""2001"" oleh Arthur C. Clarke) memiliki subjek ""Computers"" dan termasuk dalam kategori ""Ilmu Komputer"".
+2. Buku dengan id 2022 (judul ""Code"" oleh Charles Petzold) memiliki subjek ""Computer programming"", ""Coding theory"", dan ""Datenverarbeitung"" yang terkait dengan komputer.
+
+Jika Anda ingin tahu lebih lanjut tentang salah satu dari dua buku tersebut, atau jika Anda memiliki klarifikasi lebih lanjut tentang ""buku tentang komputer"", saya akan sangat senang membantu."
+15,buku robotik,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,2.187,0,,,"Maaf, saya tidak memiliki informasi tentang buku robotik yang spesifik. Bisa Anda memberikan lebih banyak detail seperti judul buku atau penulisnya? Saya akan mencoba membantu Anda jika memungkinkan."
+16,buku masak,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,2.355,0,,,"Maaf, saya tidak tahu apa yang Anda maksud dengan ""buku masak"". Apakah Anda berbicara tentang buku resep masakan atau buku lain yang memiliki nama ""masak""? Saya senang membantu jika Anda dapat memberikan informasi lebih lanjut tentang apa yang Anda cari."
+17,resep rendang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,2.604,0,,,"Maaf, saya tidak memiliki informasi tentang resep rendang pada konteks ini. Apakah Anda ingin saya mencari informasi tentang resep rendang atau menghubungi tim support untuk membantu Anda?"
+18,buku kedokteran,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,2.201,4,Physics | Fundamentals of physics | Concepts of physics | Physics for scientists and engineers,,"Maaf, saya tidak menemukan informasi tentang buku kedokteran di daftar yang Anda berikan. Buku-buku yang Anda berikan semua terkait dengan fisika, tidak ada buku kedokteran. Apakah Anda ingin mencari buku kedokteran lainnya?"
+19,buku bahasa jepang,Tidak relevan,Tidak ada card / jawaban jujur tidak tersedia,200,True,2.018,0,,,"Maaf, saya tidak menemukan informasi tentang buku bahasa Jepang yang spesifik. Apakah Anda mencari buku pelajaran bahasa Jepang untuk pemula, atau mungkin terjemahan buku dalam bahasa Jepang? Saya akan berusaha membantu Anda dengan informasi yang lebih akurat."
+20,halo,Greeting,Sapaan balik tanpa card,200,True,0.031,0,,,Halo! saya asisten AI Anda. Ada yang bisa saya bantu hari ini?
+21,terus apa yg kamu bisa?,Ambigu/nggak jelas,Tidak ada card / jawaban jujur,200,True,2.114,0,,,"Maaf, saya tidak memiliki informasi yang cukup untuk menjawab pertanyaan Anda. Saya hanya bisa berinteraksi berdasarkan konteks yang tersedia, dan pada kasus ini, konteks tidak terdapat data atau dokumen relevan. Jika Anda memiliki pertanyaan lain, saya akan senang membantu jika saya bisa."
+22,aljabar,Relevan - spesifik (subtopik),Muncul buku terkait aljabar/matematika,200,True,1.908,0,,,"Maaf, saya tidak tahu apa yang Anda maksud dengan ""aljabar"". Apakah Anda ingin tahu tentang definisi aljabar, penggunaan aljabar dalam matematika, atau mungkin ada topik lain tentang aljabar yang ingin Anda tahu?"
+23,buku tentang uang,Relevan - umum (subtopik ekonomi),Muncul buku dari kategori Ekonomi & Bisnis (mis. Debt),200,True,2.272,2,Das Kapital | Debt,,"Mohon maaf, saya tidak menemukan buku yang secara spesifik membahas tentang ""uang"" saja dalam daftar buku yang saya miliki. Namun, saya memiliki dua buku yang terkait dengan topik terkait uang, yaitu:
+
+1. Item #1: ""Das Kapital"" oleh Karl Marx - Buku ini membahas topik terkait Economics, Capital, Communism, yang meliputi uang dalam konteks ekonomi dan kapitalisme.
+2. Item #2: ""Debt"" oleh David Graeber - Buku ini membahas topik terkait Money, Debt, Financial crises, yang meliputi uang dalam konteks keuangan dan krisis keuangan.
+
+Jika Anda ingin mencari buku yang lebih spesifik tentang ""uang"", saya sarankan untuk memasukkan kata kunci ""uang"" dalam pencarian buku lainnya."
+24,buku tentang psikologi manusia,Relevan - spesifik (subtopik),Muncul buku terkait (mis. Surrounded by Idiots),200,True,1.996,0,,,"Mohon maaf, saya tidak memiliki informasi tentang buku yang terkait dengan psikologi manusia. Apakah Anda memiliki informasi tambahan tentang buku yang Anda cari, seperti nama penulis, tahun publikasi, atau topik khusus? Saya akan berusaha membantu Anda mencari informasi yang lebih spesifik."
+25,buku tentang tesla,Relevan - spesifik,"Muncul ""My Inventions"" oleh Nikola Tesla",200,True,2.098,1,My inventions,,"Buku ""My Inventions"" dengan Id 2077 dan Kode OL71633W adalah tentang karya-karya dan penemuan-penemuan Nikola Tesla, seorang ilmuwan dan insinyur listrik terkenal. Buku ini membahas sejarah dan pengalaman Tesla dalam mengembangkan teknologi listrik."

@@ -4,12 +4,12 @@ from flask import request, jsonify
 
 from app.api import api_bp
 from app.api.middleware import require_auth
-from app.services.chat_service import ChatService
+from app.services.chat_service import get_chat_service
 from app.repositories.collection_repository import CollectionRepository
 
 logger = logging.getLogger(__name__)
 
-chat_service = ChatService()
+chat_service = get_chat_service()
 
 
 @api_bp.route("/admin/collections", methods=["GET"])
