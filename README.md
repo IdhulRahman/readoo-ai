@@ -173,7 +173,7 @@ Pastikan Anda sudah menginstal:
 
 ```bash
 # 1. Clone repositori
-git clone https://github.com/username/readoo-ai.git
+git clone https://github.com/IdhulRahman/readoo-ai.git
 cd readoo-ai
 
 # 2. Buat file environment dari template
@@ -195,7 +195,7 @@ docker-compose up -d --build
 
 ```bash
 # 1. Clone repositori
-git clone https://github.com/username/readoo-ai.git
+git clone https://github.com/IdhulRahman/readoo-ai.git
 cd readoo-ai
 
 # 2. Setup Backend
